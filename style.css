@@ -50,6 +50,14 @@ input[type="search"]{
   overflow: hidden; /* Masque tout contenu dépassant du conteneur */
   animation: scrollImages 100s linear infinite; /* Défilement automatique sur une période de 10 secondes */
 }
+.image:nth-child(2) {
+  animation-delay: 5s; /* Retarde l'animation de la deuxième image de 5 secondes */
+}
+
+.image:nth-child(3) {
+  animation-delay: 10s; /* Retarde l'animation de la troisième image de 10 secondes */
+}
+
 @keyframes scrollImages {
   0% {
     transform: translateX(0);
@@ -59,13 +67,5 @@ input[type="search"]{
   }
 }
 besoins */
-}
-
-.image:nth-child(2) {
-  animation-delay: 5s; /* Retarde l'animation de la deuxième image de 5 secondes */
-}
-
-.image:nth-child(3) {
-  animation-delay: 10s; /* Retarde l'animation de la troisième image de 10 secondes */
 }
 
