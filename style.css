@@ -1,8 +1,7 @@
-@media {
-  max-width: 600px
-  /* Styles spécifiques pour les écrans de 600 pixels de large ou moins */
-}
-
+@media (max-width: 600px) {
+  body {
+    font-size:80px; /* Réduire la taille de la police pour les petits écrans */
+  }
 body{
   margin: 0px;
   padding: 0px;
