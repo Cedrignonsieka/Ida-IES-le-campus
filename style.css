@@ -8,12 +8,12 @@ body{
 .header{
   background-color:#287265;
   height: 80px;
-  margin: 10px;
+  margin: 100%;
 }
 nav ul li{
   list-style-type: none;
   display: inline-block;
-  padding: 10px;
+  padding: 100%;
 }
 ul li a{
   color:#fff;
@@ -41,8 +41,8 @@ input[type="search"]{
   display: flex;
 }
 .image {
-  margin: 020px; /* Espacement entre les images, ajustez selon vos préférences */
-  width: 100%; /* Ajustez la largeur selon vos besoins */
+  margin: 040px; /* Espacement entre les images, ajustez selon vos préférences */
+  width: 200%; /* Ajustez la largeur selon vos besoins */
   height: auto; /* Garantit le maintien des proportions originales de l'image */
 }
 .image-container {
