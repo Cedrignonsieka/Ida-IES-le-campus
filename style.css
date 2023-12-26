@@ -40,13 +40,22 @@ input[type="search"]{
 .image-container {
   display: flex;
 }
-
 .image {
-  margin: 0 10px; /* Espacement entre les images, ajustez selon vos préférences */
-}
-.image {
-  margin: 0 10px; /* Espacement entre les images, ajustez selon vos préférences */
-  width: 150px; /* Ajustez la largeur selon vos besoins */
+  margin: 020px; /* Espacement entre les images, ajustez selon vos préférences */
+  width: 100%; /* Ajustez la largeur selon vos besoins */
   height: auto; /* Garantit le maintien des proportions originales de l'image */
+}
+.image-container {
+  display: flex;
+  overflow: hidden; /* Masque tout contenu dépassant du conteneur */
+  animation: scrollImages 10s linear infinite; /* Défilement automatique sur une période de 10 secondes */
+}
+@keyframes scrollImages {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%); /* Déplace le contenu complètement hors du conteneur */
+  }
 }
 
