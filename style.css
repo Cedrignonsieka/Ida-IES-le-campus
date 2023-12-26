@@ -48,7 +48,7 @@ input[type="search"]{
 .image-container {
   display: flex;
   overflow: hidden; /* Masque tout contenu dépassant du conteneur */
-  animation: scrollImages 50s linear infinite; /* Défilement automatique sur une période de 10 secondes */
+  animation: scrollImages 100s linear infinite; /* Défilement automatique sur une période de 10 secondes */
 }
 @keyframes scrollImages {
   0% {
