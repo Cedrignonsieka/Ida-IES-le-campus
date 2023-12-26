@@ -1,4 +1,5 @@
-@media (max-width: 600px) {
+@media {
+  max-width: 600px
   /* Styles spécifiques pour les écrans de 600 pixels de large ou moins */
 }
 
