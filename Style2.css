@@ -10,5 +10,7 @@ html, body {
     border: 2px solid #3498db;
     padding: 10px 20px;
     text-decoration: none;
-    color: #3498db;
+    background-color: #3498db; /* Couleur de fond */
+    color: black; /* Couleur du texte */
 }
+
