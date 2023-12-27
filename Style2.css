@@ -10,7 +10,8 @@ html, body {
     border: 2px solid #3498db;
     padding: 10px 20px;
     text-decoration: none;
-    background-color: #3498db; /* Couleur de fond */
-    color: black; /* Couleur du texte */
+    background-color: #3498db;
+    color: black;
+    border-radius: 10px; /* Ajoutez cette propriété pour des coins arrondis */
 }
 
