@@ -57,7 +57,6 @@ input[type="search"]{
 .image:nth-child(3) {
   animation-delay: 10s; /* Retarde l'animation de la troisième image de 10 secondes */
 }
-
 @keyframes scrollImages {
   0% {
     transform: translateX(0);
@@ -65,7 +64,5 @@ input[type="search"]{
   100% {
     transform: translateX(-100%); /* Déplace le contenu complètement hors du conteneur */
   }
-}
-besoins */
 }
 
