@@ -5,53 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-image: url(A3.jpg.JPG);
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .login-box {
-            width: 300px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .login-box h2 {
-            color: #333;
-        }
-
-        .login-box input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .login-box button {
-            width: 100%;
-            padding: 10px;
-            background: #3498db;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .login-box button:hover {
-            background: #267bb5;
-        }
+        /* Vos styles existants */
     </style>
+</head>
 <body>
 <div class="login-box">
     <h2>CONNEXION DANS L'ESPACE ADMINISTRATION</h2>
@@ -64,9 +20,9 @@
 </div>
 <script>
     function validateForm() {
-        // Ajoutez ici votre logique de validation du formulaire
-        var username = document.getElementById("Lecampus").value;
-        var password = document.getElementById("ida").value;
+        // Utilisez les bons identifiants pour récupérer les valeurs des champs
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
 
         // Exemple de vérification simple
         if (username === "Lecampus" && password === "ida") {
