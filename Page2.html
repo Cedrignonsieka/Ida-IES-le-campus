@@ -3,31 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription</title>
+    <title>Connexion</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-image: url(A3.jpg.JPG);
             text-align: center;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
-        .signup-box {
+        .login-box {
             width: 300px;
-            margin: auto;
             background: #fff;
             padding: 20px;
-            margin-top: 100px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .signup-box h2 {
+        .login-box h2 {
             color: #333;
         }
 
-        .signup-box input {
+        .login-box input {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
@@ -36,34 +38,53 @@
             border-radius: 4px;
         }
 
-        .signup-box button {
+        .login-box button {
             width: 100%;
             padding: 10px;
-            background: #4caf50;
+            background: #3498db;
             color: #fff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
 
-        .signup-box button:hover {
-            background: #45a049;
+        .login-box button:hover {
+            background: #267bb5;
         }
     </style>
 </head>
 <body>
-
-<div class="signup-box">
-    <h2>INSCRIPTION DANS L'ESPACE ETUDIANT</h2>
-    <form>
-        <input type="text" placeholder="Nom complet" required>
-        <input type="text" placeholder="Nom d'utilisateur" required>
-        <input type="email" placeholder="Matricule etudiant">
-        <input type="password" placeholder="Mot de passe" required>
-        <input type="password" placeholder="Confirmer le mot de passe" required>
-        <button type="submit">S'inscrire</button>
+<div class="login-box">
+    <h2>CONNEXION DANS L'ESPACE ADMINISTRATION</h2>
+    <form id="loginForm" onsubmit="return validateForm()">
+        <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+        <input type="password" id="password" placeholder="Mot de passe" required>
+        <button type="submit">Se connecter</button>
+        <p><a href="#" id="forgotPassword">Mot de passe oublié ?</a></p>
     </form>
 </div>
+<script>
+    function validateForm() {
+        // Utilisez les bons identifiants pour récupérer les valeurs des champs
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
 
+        // Exemple de vérification simple
+        if (username === "Lecampus" && password === "ida") {
+            // Redirection vers la page souhaitée
+            window.location.href = "Page2.html";
+            return false; // Empêche le formulaire de soumettre les données
+        } else {
+            alert("Nom d'utilisateur ou mot de passe incorrect");
+            return false;
+        }
+    }
+
+    // Ajoutez un gestionnaire d'événement pour le lien "Mot de passe oublié ?"
+    document.getElementById("forgotPassword").addEventListener("click", function() {
+        // Ajoutez ici la logique de redirection pour la récupération du mot de passe
+        alert("Rediriger vers la page de récupération du mot de passe");
+    });
+</script>  
 </body>
 </html>
