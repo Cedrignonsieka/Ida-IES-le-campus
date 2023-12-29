@@ -52,18 +52,38 @@
             background: #267bb5;
         }
     </style>
-</head>
 <body>
-
 <div class="login-box">
-    <h2>CONNEXION DANS L'ESPACE ADMISTRATION</h2>
-    <form>
-        <input type="text" placeholder="Nom d'utilisateur" required>
-        <input type="password" placeholder="Mot de passe" required>
+    <h2>CONNEXION DANS L'ESPACE ADMINISTRATION</h2>
+    <form id="loginForm" onsubmit="return validateForm()">
+        <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+        <input type="password" id="password" placeholder="Mot de passe" required>
         <button type="submit">Se connecter</button>
-        <p><p><a href="">Mot de passe oublié ?</a></p>
+        <p><a href="#" id="forgotPassword">Mot de passe oublié ?</a></p>
     </form>
 </div>
+<script>
+    function validateForm() {
+        // Ajoutez ici votre logique de validation du formulaire
+        var username = document.getElementById("Lecampus").value;
+        var password = document.getElementById("ida").value;
 
+        // Exemple de vérification simple
+        if (username === "Lecampus" && password === "ida") {
+            // Redirection vers la page souhaitée
+            window.location.href = "Page2.html";
+            return false; // Empêche le formulaire de soumettre les données
+        } else {
+            alert("Nom d'utilisateur ou mot de passe incorrect");
+            return false;
+        }
+    }
+
+    // Ajoutez un gestionnaire d'événement pour le lien "Mot de passe oublié ?"
+    document.getElementById("forgotPassword").addEventListener("click", function() {
+        // Ajoutez ici la logique de redirection pour la récupération du mot de passe
+        alert("Rediriger vers la page de récupération du mot de passe");
+    });
+</script>  
 </body>
 </html>
