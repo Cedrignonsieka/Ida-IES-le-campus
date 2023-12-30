@@ -12,6 +12,29 @@
       max-width: 100%;
       height: auto;
     }
+
+    .image-container {
+      display: flex;
+      overflow: hidden;
+      width: 100%;
+      animation: scrollImages 100s linear infinite;
+    }
+
+    .image {
+      margin: 0;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    @keyframes scrollImages {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
   </style>
   <script>
     window.onload = function() {
