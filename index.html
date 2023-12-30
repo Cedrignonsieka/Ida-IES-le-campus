@@ -11,6 +11,7 @@
       width: 100%;
       max-width: 100%;
       height: auto;
+      margin-right: 20px; /* Ajustez la marge selon vos préférences */
     }
 
     .image-container {
@@ -20,11 +21,8 @@
       animation: scrollImages 100s linear infinite;
     }
 
-    .image {
-      margin: 0;
-      width: 100%;
-      height: auto;
-      object-fit: cover;
+    .image:last-child {
+      margin-right: 0; /* Supprime la marge à droite pour la dernière image */
     }
 
     @keyframes scrollImages {
@@ -38,7 +36,7 @@
   </style>
   <script>
     window.onload = function() {
-      alert("Ce site créé par le développeur TIEDE GNONSIEKA SEDRIC (étudiant à IES-LE CAMPUS DE YOPOUGON) ,est en cours de construction d'où par défaut toutes ces structures sont un exemple du site à venir. MERCI ET BONNE VISITE 🙏");
+      alert("Ce site créé par le développeur TIEDE GNONSIEKA SEDRIC (étudiant à IES-LE CAMPUS DE YOPOUGON), est en cours de construction d'où par défaut toutes ces structures sont un exemple du site à venir. MERCI ET BONNE VISITE 🙏");
     };
   </script>
 </head>
