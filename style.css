@@ -68,3 +68,10 @@ input[type="search"] {
     transform: translateX(-100%);
   }
 }
+
+/* Nouveaux styles pour centrer le titre h1 */
+h1 {
+  text-align: center;
+  margin-top: 50px; /* Ajuste la marge supérieure selon tes préférences */
+  color: #fff; /* Ajoute la couleur du texte selon tes préférences */
+}
