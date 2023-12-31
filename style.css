@@ -1,117 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
-  <title>cedric</title>
-  <link rel="stylesheet" href="style.css"> 
-  <script src="cdg.js" defer></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-image: url(A3.jpg.JPG);
-      background-attachment: fixed;
-      background-position: center;
-      background-repeat: no-repeat; /* Évite la répétition de l'image de fond */
-    }
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url(A3.jpg.JPG);
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat; /* Évite la répétition de l'image de fond */
+}
 
-    .header {
-      background-color: #287265;
-      height: 80px;
-      margin: 15px;
-      font-size: 25px;
-    }
+.header {
+  background-color: #287265;
+  height: 80px;
+  margin: 15px;
+  font-size: 25px;
+}
 
-    nav ul li {
-      list-style-type: none;
-      display: inline-block;
-      padding: 15px;
-    }
+nav ul li {
+  list-style-type: none;
+  display: inline-block;
+  padding: 15px;
+}
 
-    ul li a {
-      color: #fff;
-      letter-spacing: 0.1rem;
-    }
+ul li a {
+  color: #fff;
+  letter-spacing: 0.1rem;
+}
 
-    ul li a:hover {
-      color: #ffd358;
-      text-decoration: underline;
-    }
+ul li a:hover {
+  color: #ffd358;
+  text-decoration: underline;
+}
 
-    .menu li {
-      float: left;
-      padding: 10px;
-    }
+.menu li {
+  float: left;
+  padding: 10px;
+}
 
-    .menu li a {
-      text-decoration: none;
-    }
+.menu li a {
+  text-decoration: none;
+}
 
-    form {
-      padding: 35px;
-      text-align: right;
-    }
+form {
+  padding: 35px;
+  text-align: right;
+}
 
-    input[type="search"] {
-      font-size: 17px;
-    }
+input[type="search"] {
+  font-size: 17px;
+}
 
-    .image-container {
-      display: flex;
-      overflow: hidden;
-      width: 100%; /* Ajuste la largeur du conteneur */
-    }
+.image-container {
+  display: flex;
+  overflow: hidden;
+  width: 100%; /* Ajuste la largeur du conteneur */
+}
 
-    .image {
-      margin: 0; /* Ajuste l'espacement entre les images à zéro */
-      width: 100%; /* Ajuste la largeur des images */
-      height: auto;
-      object-fit: cover; /* Assure que l'image couvre tout le conteneur sans déformation */
-    }
+.image {
+  margin: 0; /* Ajuste l'espacement entre les images à zéro */
+  width: 100%; /* Ajuste la largeur des images */
+  height: auto;
+  object-fit: cover; /* Assure que l'image couvre tout le conteneur sans déformation */
+}
 
-    @keyframes scrollImages {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(-100%);
-      }
-    }
+@keyframes scrollImages {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
 
-    /* Nouveaux styles pour centrer le titre h1 */
-    h1 {
-      text-align: center;
-      margin-top: 50px; /* Ajuste la marge supérieure selon tes préférences */
-      color: #fff; /* Ajoute la couleur du texte selon tes préférences */
-    }
-  </style>
-  <script>
-    window.onload = function() {
-      alert("Ce site créé par le développeur TIEDE GNONSIEKA SEDRIC (étudiant à IES-LE CAMPUS DE YOPOUGON) ,est en cours de construction d'où par défaut toutes ces structures sont un exemple du site à venir. MERCI ET BONNE VISITE 🙏");
-    };
-  </script>
-</head>
-<body>
-  <div class="header">
-    <nav>
-      <ul class="menu">
-        <li><a href="ex.html">ACCUEIL</a></li> 
-        <li><a href="#">SERVICES</a></li>
-        <li><a href="Page3.html">CONNEXION</a></li>
-        <li><a href="Page4.html">INSCRIPTION</a></li>
-        <li><a href="#">CONTACTS</a></li>
-      </ul>
-      <form>
-        <input type="search" name="q" placeholder="Recherche">
-      </form>
-    </nav>
-  </div>
-  <h1>NOS VALEURS IMPULSES VOS PARCOURS</h1>
-  <div class="image-container">
-    <!-- Ajoutez vos images ici -->
-    <img src="07.jpg" class="image" alt="Image 7">
-    <img src="08.jpg" class="image" alt="Image 8">
-    <img src="09.jpg" class="image" alt="Image 9">
-  </div>
-</body>
-</html>
+/* Nouveaux styles pour centrer le titre h1 */
+h1 {
+  text-align: center;
+  margin-top: 50px; /* Ajuste la marge supérieure selon tes préférences */
+  color: #fff; /* Ajoute la couleur du texte selon tes préférences */
+}
