@@ -46,10 +46,7 @@
     </div>
 
     <script>
-        // Récupérer les paramètres de l'URL
-var params = new URLSearchParams(window.location.search);
-
-        // Remplir les éléments avec les données du formulaire d'inscription
+        var params = new URLSearchParams(window.location.search);
         document.getElementById("fullName").innerText = params.get("fullname");
         document.getElementById("username").innerText = params.get("username");
         document.getElementById("adminCode").innerText = params.get("admincode");
