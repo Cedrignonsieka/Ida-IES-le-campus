@@ -13,6 +13,5 @@ html, body {
     text-decoration: none;
     background-color: #3498db;
     color: black;
-    border-radius: 10px; /* Ajoutez cette propriété pour des coins arrondis */
+    border-radius: 10px;
 }
-
