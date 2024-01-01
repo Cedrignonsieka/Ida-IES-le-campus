@@ -54,13 +54,13 @@
 <body>
 
 <div class="signup-box">
-    <h2>INSCRITION DANS L'ESPACE ADMISTRATION</h2>
-    <form>
-        <input type="text" placeholder="Nom complet" required>
-        <input type="text" placeholder="Nom d'utilisateur" required>
-        <input type="password" placeholder="Code d'admistration">
-        <input type="password" placeholder="Mot de passe" required>
-        <input type="password" placeholder="Confirmer le mot de passe" required>
+    <h2>INSCRIPTION DANS L'ESPACE ADMINISTRATION</h2>
+    <form onsubmit="return registerUser()">
+        <input type="text" id="fullName" placeholder="Nom complet" required>
+        <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+        <input type="password" id="adminCode" placeholder="Code d'administration">
+        <input type="password" id="password" placeholder="Mot de passe" required>
+        <input type="password" id="confirmPassword" placeholder="Confirmer le mot de passe" required>
         <button type="submit">S'inscrire</button>
     </form>
 </div>
