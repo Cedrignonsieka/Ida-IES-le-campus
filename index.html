@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
   <title>cedric</title>
@@ -32,48 +32,6 @@
         transform: translateX(-100%);
       }
     }
-
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
-
-    .header {
-      background-color: #333;
-      padding: 10px;
-    }
-
-    .menu {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-    }
-
-    .menu li {
-      float: left;
-    }
-
-    .menu li a {
-      display: block;
-      color: white;
-      text-align: center;
-      padding: 8px 10px;
-      text-decoration: none;
-      transition: background-color 0.3s;
-    }
-
-    .menu li a:hover {
-      background-color: #555;
-    }
-
-    h1 {
-      color: #333;
-      font-size: 2em;
-    }
   </style>
   <script>
     window.onload = function() {
@@ -83,19 +41,24 @@
 </head>
 <body>
   <div class="header">
-    <h1>BIENVENUE SUR LE SITE DU 🔥CHEF-BANDIT🔥😅</h1>
-    <ul class="menu">
-      <li><a href="ex.html">ACCUEIL</a></li> 
-      <li><a href="#">SERVICES</a></li>
-      <li><a href="Page3.html">CONNEXION</a></li>
-      <li><a href="Page4.html">INSCRIPTION</a></li>
-      <li><a href="#">CONTACTS</a></li>
-    </ul>
+    <nav>
+      <ul class="menu">
+        <li><a href="ex.html">ACCUEIL</a></li> 
+        <li><a href="#">SERVICES</a></li>
+        <li><a href="Page3.html">CONNEXION</a></li>
+        <li><a href="Page4.html">INSCRIPTION</a></li>
+        <li><a href="#">CONTACTS</a></li>
+      </ul>
+      <form>
+        <input type="search" name="q" placeholder="Recherche">
+      </form>
+    </nav>
   </div>
+  <h1>BIENVENUE SUR LE SITE DU 🔥CHEF-BANDIT🔥😅</h1>
   <div class="image-container">
     <img src="07.jpg" class="image" alt="Image 7">
     <img src="08.jpg" class="image" alt="Image 8">
-    <img src="01.jpg" class="image" alt="Image 9">
+    <img src="09.jpg" class="image" alt="Image 9">
   </div>
 </body>
 </html>
