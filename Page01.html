@@ -65,24 +65,19 @@
 </div>
 <script>
     function validateForm() {
-        // Utilisez les bons identifiants pour récupérer les valeurs des champs
         var username = document.getElementById("username").value;
         var password = document.getElementById("password").value;
 
-        // Exemple de vérification simple
         if (username === "Lecampus" && password === "ida") {
-            // Redirection vers la page souhaitée
             window.location.href = "Pageprofile.html";
-            return false; // Empêche le formulaire de soumettre les données
+            return false;
         } else {
             alert("Nom d'utilisateur ou mot de passe incorrect");
             return false;
         }
     }
 
-    // Ajoutez un gestionnaire d'événement pour le lien "Mot de passe oublié ?"
     document.getElementById("forgotPassword").addEventListener("click", function() {
-        // Ajoutez ici la logique de redirection pour la récupération du mot de passe
         alert("Rediriger vers la page de récupération du mot de passe");
     });
 </script>  
