@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
   <title>cedric</title>
@@ -33,12 +33,23 @@
       }
     }
 
-    /* Style du menu */
-    .menu {
-      list-style: none;
-      padding: 0;
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      text-align: center;
       margin: 0;
+      padding: 0;
+    }
+
+    .header {
       background-color: #333;
+      padding: 20px;
+    }
+
+    .menu {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
       overflow: hidden;
     }
 
@@ -46,7 +57,7 @@
       float: left;
     }
 
-    .menu a {
+    .menu li a {
       display: block;
       color: white;
       text-align: center;
@@ -55,25 +66,12 @@
       transition: background-color 0.3s;
     }
 
-    .menu a:hover {
+    .menu li a:hover {
       background-color: #555;
     }
 
-    /* Style du formulaire de recherche */
-    form {
-      float: right;
-      margin-top: 10px;
-    }
-
-    form input[type="search"] {
-      padding: 8px;
-      margin-right: 10px;
-    }
-
-    /* Style du titre */
     h1 {
       color: #333;
-      text-align: center;
       font-size: 2em;
     }
   </style>
@@ -85,24 +83,20 @@
 </head>
 <body>
   <div class="header">
-    <nav>
-      <ul class="menu">
-        <li><a href="ex.html">ACCUEIL</a></li> 
-        <li><a href="#">SERVICES</a></li>
-        <li><a href="Page3.html">CONNEXION</a></li>
-        <li><a href="Page4.html">INSCRIPTION</a></li>
-        <li><a href="#">CONTACTS</a></li>
-      </ul>
-      <form>
-        <input type="search" name="q" placeholder="Recherche">
-      </form>
-    </nav>
+    <h1>BIENVENUE SUR LE SITE DU 🔥CHEF-BANDIT🔥😅</h1>
+    <ul class="menu">
+      <li><a href="ex.html">ACCUEIL</a></li> 
+      <li><a href="#">SERVICES</a></li>
+      <li><a href="Page3.html">CONNEXION</a></li>
+      <li><a href="Page4.html">INSCRIPTION</a></li>
+      <li><a href="#">CONTACTS</a></li>
+    </ul>
   </div>
-  <h1>BIENVENUE SUR LE SITE DU 🔥CHEF-BANDIT🔥😅</h1>
   <div class="image-container">
     <img src="07.jpg" class="image" alt="Image 7">
     <img src="08.jpg" class="image" alt="Image 8">
     <img src="01.jpg" class="image" alt="Image 9">
   </div>
 </body>
-</html>
+  </html>
+  
