@@ -67,19 +67,13 @@
 
 <script>
     function registerUser() {
-        // Récupérer les données du formulaire
         var fullName = document.getElementById("fullName").value;
         var username = document.getElementById("username").value;
         var adminCode = document.getElementById("adminCode").value;
         var password = document.getElementById("password").value;
         var confirmPassword = document.getElementById("confirmPassword").value;
 
-        // Vous pouvez ajouter ici des vérifications supplémentaires si nécessaire
-
-        // Redirection vers la page de profil avec les données
         window.location.href = "profile.html?fullname=" + fullName + "&username=" + username + "&admincode=" + adminCode;
-        
-        // Empêcher le formulaire de soumettre les données
         return false;
     }
 </script>
