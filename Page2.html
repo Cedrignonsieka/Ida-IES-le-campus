@@ -54,7 +54,7 @@
 <body>
 
 <div class="signup-box">
-    <h2>INSCRIPTION DANS L'ESPACE ADMINISTRATION</h2>
+    <h2>INSCRIPTION DANS L'ESPACE ÉTUDIANT</h2>
     <form id="signupForm" onsubmit="return registerUser()">
         <input type="text" id="fullName" placeholder="Nom complet" required>
         <input type="text" id="username" placeholder="Nom d'utilisateur" required>
@@ -69,6 +69,7 @@
     function registerUser() {
         var fullName = document.getElementById("fullName").value;
         var username = document.getElementById("username").value;
+        var email = document.getElementById("email").value;
         var adminCode = document.getElementById("adminCode").value;
         var password = document.getElementById("password").value;
         var confirmPassword = document.getElementById("confirmPassword").value;
