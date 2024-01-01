@@ -1,83 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-image: url(A3.jpg.JPG);
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <title>cedric</title>
+  <link rel="stylesheet" href="style.css"> 
+  <script src="cdg.js" defer></script>
+  <style>
+    .image {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      margin-right: 20px;
+    }
 
-        .signup-box {
-            width: 300px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            margin-top: 100px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    .image-container {
+      display: flex;
+      overflow: hidden;
+      width: 100%;
+      animation: scrollImages 100s linear infinite;
+    }
 
-        .signup-box h2 {
-            color: #333;
-        }
+    .image:last-child {
+      margin-right: 0;
+    }
 
-        .signup-box input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
+    @keyframes scrollImages {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
 
-        .signup-box button {
-            width: 100%;
-            padding: 10px;
-            background: #4caf50;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+    /* Style du menu */
+    .menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      background-color: #333;
+      overflow: hidden;
+    }
 
-        .signup-box button:hover {
-            background: #45a049;
-        }
-    </style>
+    .menu li {
+      float: left;
+    }
+
+    .menu a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    .menu a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    /* Style du formulaire de recherche */
+    form {
+      float: right;
+      margin-top: 10px;
+    }
+
+    form input[type="search"] {
+      padding: 8px;
+      margin-right: 10px;
+    }
+
+    /* Style du titre */
+    h1 {
+      color: #333;
+      text-align: center;
+      font-size: 2em;
+    }
+  </style>
+  <script>
+    window.onload = function() {
+      alert("Ce site créé par le développeur TIEDE GNONSIEKA SEDRIC (étudiant à IES-LE CAMPUS DE YOPOUGON), n'est pas au terme de son architecture. Effet,le site est en cours de construction d'où par défaut toutes ces structures présentes sont un exemple du site à venir. MERCI ET BONNE VISITE 😉");
+    };
+  </script>
 </head>
 <body>
-
-<div class="signup-box">
-    <h2>INSCRIPTION DANS L'ESPACE ADMINISTRATION</h2>
-    <form onsubmit="return registerUser()">
-        <input type="text" id="fullName" placeholder="Nom complet" required>
-        <input type="text" id="username" placeholder="Nom d'utilisateur" required>
-        <input type="password" id="adminCode" placeholder="Code d'administration">
-        <input type="email" id="email" placeholder="Adresse e-mail" required>
-        <input type="password" id="password" placeholder="Mot de passe" required>
-        <input type="password" id="confirmPassword" placeholder="Confirmer le mot de passe" required>
-        <button type="submit">S'inscrire</button>
-    </form>
-</div>
-    
-<script>
-    function registerUser() {
-        var fullName = document.getElementById("fullName").value;
-        var username = document.getElementById("username").value;
-        var adminCode = document.getElementById("adminCode").value;
-        var email = document.getElementById("email").value;
-        var password = document.getElementById("password").value;
-        var confirmPassword = document.getElementById("confirmPassword").value;
-
-        window.location.href = "profile.html?fullname=" + fullName + "&username=" + username + "&admincode=" + adminCode;
-        return false;
-    }
-</script>
+  <div class="header">
+    <nav>
+      <ul class="menu">
+        <li><a href="ex.html">ACCUEIL</a></li> 
+        <li><a href="#">SERVICES</a></li>
+        <li><a href="Page3.html">CONNEXION</a></li>
+        <li><a href="Page4.html">INSCRIPTION</a></li>
+        <li><a href="#">CONTACTS</a></li>
+      </ul>
+      <form>
+        <input type="search" name="q" placeholder="Recherche">
+      </form>
+    </nav>
+  </div>
+  <h1>BIENVENUE SUR LE SITE DU 🔥CHEF-BANDIT🔥😅</h1>
+  <div class="image-container">
+    <img src="07.jpg" class="image" alt="Image 7">
+    <img src="08.jpg" class="image" alt="Image 8">
+    <img src="01.jpg" class="image" alt="Image 9">
+  </div>
 </body>
-</html>
+    </html>
+    
