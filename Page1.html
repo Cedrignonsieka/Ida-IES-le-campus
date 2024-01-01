@@ -63,6 +63,23 @@
         <button type="submit">Se connecter</button>
     </form>
 </div>
+  <script>
+    function validateForm() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
 
+        if (username === "Lecampus" && password === "ida") {
+            window.location.href = "Pageprofile.html";
+            return false;
+        } else {
+            alert("Nom d'utilisateur ou mot de passe incorrect");
+            return false;
+        }
+    }
+
+    document.getElementById("forgotPassword").addEventListener("click", function() {
+        alert("Vous serez rediriger vers la page de récupération du mot de passe");
+    });
+</script>    
 </body>
 </html>
