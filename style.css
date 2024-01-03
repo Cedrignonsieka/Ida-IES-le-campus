@@ -44,34 +44,7 @@ form {
   padding: 35px;
   text-align: right;
 }
-
-input[type="search"] {
-  font-size: 17px;
 }
-
-.image-container {
-  display: flex;
-  overflow: hidden;
-  width: 100%; /* Ajuste la largeur du conteneur */
-}
-
-.image {
-  margin: 0; /* Ajuste l'espacement entre les images à zéro */
-  width: 100%; /* Ajuste la largeur des images */
-  height: auto;
-  object-fit: cover; /* Assure que l'image couvre tout le conteneur sans déformation */
-}
-
-@keyframes scrollImages {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-/* Nouveaux styles pour centrer le titre h1 */
 h1 {
   text-align: center;
   margin-top: 50px; /* Ajuste la marge supérieure selon tes préférences */
