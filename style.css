@@ -44,9 +44,9 @@ form {
   padding: 35px;
   text-align: right;
 }
-}
+
 h1 {
   text-align: center;
-  margin-top: 50px; /* Ajuste la marge supérieure selon tes préférences */
-  color: #fff; /* Ajoute la couleur du texte selon tes préférences */
+  margin-top: 50px;
+  color: #fff;
 }
