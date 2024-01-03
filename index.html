@@ -10,6 +10,27 @@
     body {
       margin: 0;
       padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      background-color: #333;
+      overflow: hidden;
+    }
+
+    .navbar a {
+      float: left;
+      display: block;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 18px 20px; /* Augmentation de la taille */
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .navbar a:hover {
+      background-color: #ff8c00; /* Orange */
+      color: black;
     }
 
     .search-container {
@@ -39,8 +60,6 @@
       border-radius: 3px;
       cursor: pointer;
     }
-
-    /* Vos autres styles CSS restent inchangés */
   </style>
   <script>
     window.onload = function() {
@@ -49,16 +68,12 @@
   </script>
 </head>
 <body>
-  <div class="header">
-    <nav>
-      <ul class="menu">
-        <li><a href="Ex.html">ACCUEIL</a></li> 
-        <li><a href="#">SERVICES</a></li>
-        <li><a href="Page3.html">CONNEXION</a></li>
-        <li><a href="Page4.html">INSCRIPTION</a></li>
-        <li><a href="#">CONTACTS</a></li>
-      </ul>
-    </nav>
+  <div class="navbar">
+    <a href="Ex.html">ACCUEIL</a>
+    <a href="#">SERVICES</a>
+    <a href="Page3.html">CONNEXION</a>
+    <a href="Page4.html">INSCRIPTION</a>
+    <a href="#">CONTACTS</a>
   </div>
   <h1>BIENVENUE SUR LE SITE DU 🔥CHEF-BANDIT🔥😅</h1>
   <div class="search-container">
