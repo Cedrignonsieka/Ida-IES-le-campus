@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barre de Recherche</title>
+  <style>
+    /* Ajoutez du style à votre barre de recherche ici */
+    .search-container {
+      text-align: center;
+      margin: 20px;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      width: 200px;
+      box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+      padding: 8px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="search-container">
+    <form action="/rechercher" method="get">
+      <input type="text" name="search" placeholder="Rechercher...">
+      <input type="submit" value="Rechercher">
+    </form>
+  </div>
+
+</body>
+</html>
