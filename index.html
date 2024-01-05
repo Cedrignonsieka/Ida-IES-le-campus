@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=0.7">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>www.ieslecampus.com</title>
   <link rel="stylesheet" href="style.css"> 
   <script src="cdg.js" defer></script>
@@ -44,11 +44,12 @@
     input[type="text"] {
       padding: 12px;
       width: 300px;
+      box-sizing: border-box; /* Pour inclure le padding dans la largeur */
     }
 
     input[type="submit"] {
       padding: 12px;
-      background-color: #4CAF50; /* Couleur verte */
+      background-color: #4CAF50;
       color: white;
       border: none;
       border-radius: 3px;
@@ -57,7 +58,7 @@
   </style>
   <script>
     window.onload = function() {
-      alert("Ce site créé par le développeur TIEDE GNONSIEKA SEDRIC (étudiant à IES-LE CAMPUS DE YOPOUGON), n'est pas au terme de son architecture. Effet, le site est en cours de construction d'où par défaut toutes ces structures présentes sont un exemple du site à venir. MERCI ET BONNE VISITE 😉");
+      alert("Ce site créé par le développeur TIEDE GNONSIEKA SEDRIC (étudiant à IES-LE CAMPUS DE YOPOUGON) est en cours de construction. Merci et bonne visite!");
     };
   </script>
 </head>
@@ -72,7 +73,6 @@
   <div class="search-container">
     <form action="/rechercher" method="get">
       <input type="text" name="search" placeholder="Rechercher...">
-      <br>
       <input type="submit" value="Rechercher">
     </form>
   </div>
