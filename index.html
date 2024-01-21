@@ -16,18 +16,18 @@
     .navbar {
       background-color: #333;
       overflow: hidden;
-      text-align: left; /* Alignement à gauche */
+      text-align: right; /* Alignement à droite */
     }
 
     .navbar a {
-      display: inline-block; /* Affichage en ligne pour créer un menu horizontal */
+      display: inline-block;
       color: #f2f2f2;
       text-align: center;
       padding: 18px 15px;
       text-decoration: none;
       transition: background-color 0.2s;
       border-radius: 20px;
-      margin-right: 10px; /* Espace entre les éléments du menu */
+      margin-left: 10px; /* Espace entre les éléments du menu */
     }
 
     .navbar a:hover {
@@ -62,10 +62,10 @@
     .search-container {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end; /* Alignement à droite */
       height: 20vh;
       text-align: center;
-      border-radius: 20px;
+      padding-right: 20px; /* Espace entre le menu et la barre de recherche */
     }
 
     input[type="text"] {
@@ -111,8 +111,8 @@
   </header>
   <h1>LE PLUS FORT GARDE TOUJOURS SON CALME</h1>
   <div class="search-container">
-    <form action="www.google.com" method="get">
-      <input type="text" name="search" placeholder="Rechercher...">
+    <form action="https://www.google.com/search" method="get">
+      <input type="text" name="q" placeholder="Rechercher...">
       <input type="submit" value="Rechercher">
     </form>
   </div>
