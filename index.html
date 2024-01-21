@@ -7,28 +7,109 @@
   <link rel="stylesheet" href="style.css"> 
   <script src="cdg.js" defer></script>
   <style>
-    /* ... Votre style ici ... */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      background-color: #333;
+      overflow: hidden;
+      text-align: left; /* Alignement à gauche */
+    }
+
+    .navbar a {
+      display: inline-block; /* Affichage en ligne pour créer un menu horizontal */
+      color: #f2f2f2;
+      text-align: center;
+      padding: 18px 15px;
+      text-decoration: none;
+      transition: background-color 0.2s;
+      border-radius: 20px;
+      margin-right: 10px; /* Espace entre les éléments du menu */
+    }
+
+    .navbar a:hover {
+      background-color: #ff8c00;
+      color: black;
+      border-radius: 20px;
+    }
+
+    .navbar .dropdown {
+      display: inline-block;
+    }
+
+    .navbar .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #333;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .navbar .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .navbar .dropdown-content a {
+      color: #f2f2f2;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 20vh;
+      text-align: center;
+      border-radius: 20px;
+    }
+
+    input[type="text"] {
+      padding: 12px;
+      width: 300px;
+      box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+      padding: 12px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+    }
   </style>
   <script>
     window.onload = function() {
       alert("Ce site créé par le développeur TIEDE GNONSIEKA SEDRIC (étudiant à IES-LE CAMPUS DE YOPOUGON) est en cours de construction. Merci et bonne visite!");
-
-      // Regrouper les éléments du menu dans un conteneur sur les petits écrans
-      const navbar = document.querySelector('.navbar');
-      const menuContainer = document.createElement('div');
-      menuContainer.classList.add('menu-container');
-      navbar.parentNode.insertBefore(menuContainer, navbar);
-      menuContainer.appendChild(navbar);
     };
   </script>
 </head>
 <body>
   <header>
     <div class="navbar">
-      <!-- ... Votre contenu de navbar ici ... -->
+      <div class="dropdown">
+        <a href="#">SERVICES</a>
+        <div class="dropdown-content">
+          <a href="#">ACTUALITES</a>
+          <a href="#">COURS</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <a href="#">ESPACE MEMBRE</a>
+        <div class="dropdown-content">
+          <a href="Page3.html">CONNEXION</a>
+          <a href="Page4.html">INSCRIPTION</a>
+        </div>
+      </div>
+      <a href="#">CONTACTS</a>
     </div>
   </header>
-  <h1>BIENVENUE SUR LE SITE DU 🔥CHEF-BANDIT🔥😅</h1>
+  <h1>LE PLUS FORT GARDE TOUJOURS SON CALME</h1>
   <div class="search-container">
     <form action="www.google.com" method="get">
       <input type="text" name="search" placeholder="Rechercher...">
