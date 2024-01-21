@@ -1,76 +1,76 @@
 body {
   margin: 0;
   padding: 0;
-  background-image: url(A3.jpg.JPG);
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  font-family: Arial, sans-serif;
 }
 
-.header {
-  background-color: #287265;
-  height: 80px;
-  margin: 15px;
-  font-size: 25px;
+.navbar {
+  background-color: #333;
+  overflow: hidden;
+  text-align: right; /* Alignement à droite */
 }
 
-nav ul li {
-  list-style-type: none;
+.navbar a {
   display: inline-block;
-  padding: 15px;
-}
-
-ul li a {
-  color: #fff;
-  letter-spacing: 0.1rem;
-}
-
-ul li a:hover {
-  color: #ffd358;
-  text-decoration: underline;
-}
-
-.menu li {
-  float: left;
-  padding: 10px;
-}
-
-.menu li a {
-  text-decoration: none;
-}
-
-form {
-  padding: 35px;
-  text-align: right;
-}
-
-h1 {
+  color: #f2f2f2;
   text-align: center;
-  margin-top: 50px;
-  color: #fff;
+  padding: 18px 15px;
+  text-decoration: none;
+  transition: background-color 0.2s;
+  border-radius: 20px;
+  margin-left: 10px; /* Espace entre les éléments du menu */
 }
+
+.navbar a:hover {
+  background-color: #ff8c00;
+  color: black;
+  border-radius: 20px;
+}
+
+.navbar .dropdown {
+  display: inline-block;
+}
+
+.navbar .dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.navbar .dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.navbar .dropdown-content a {
+  color: #f2f2f2;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
 .search-container {
-      text-align: center;
-      margin: 30px;
-    }
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrer horizontalement */
+  height: 20vh;
+  text-align: center;
+  margin-top: 20px; /* Espacement depuis le haut */
+}
 
-    input[type="text"],
-    input[type="submit"] {
-      line-height: 24px; /* Ajustez cette valeur selon vos préférences */
-    }
+input[type="text"] {
+  padding: 12px;
+  width: 300px;
+  box-sizing: border-box;
+  border-radius: 20px; /* Réduction des bords */
+}
 
-    input[type="text"] {
-      padding: 8px;
-      width: 200px;
-      box-sizing: border-box;
-    }
-
-    input[type="submit"] {
-      padding: 8px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 3px;
-      cursor: pointer;
-    }
+input[type="submit"] {
+  padding: 12px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
