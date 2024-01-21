@@ -1,10 +1,9 @@
-/* Vos styles existants ici... */
 
 body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background: url('A3.jpg.JPG') center/cover no-repeat; /* Remplacez 'chemin_vers_votre_image.jpg' par le chemin réel de votre image */
+  background: url('A3.jpg.JPG') center/cover no-repeat;
 }
 
 .navbar {
@@ -13,7 +12,6 @@ body {
   text-align: right;
 }
 
-/* ... Autres styles de la navbar ... */
 
 .search-container {
   display: flex;
@@ -40,7 +38,7 @@ input[type="submit"] {
   cursor: pointer;
 }
 
-/* Nouveaux styles pour centrer et agrandir h1 */
+
 h1 {
   text-align: center;
   font-size: 2em;
