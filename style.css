@@ -16,5 +16,8 @@
   border-radius: 20px;
   margin-left: 10px;
 }
-
-/* ... Autres styles de la navbar ... */
+h1 {
+  text-align: center; /* Centrer le texte */
+  font-size: 1.5em;
+  margin-top: 50px;
+}
