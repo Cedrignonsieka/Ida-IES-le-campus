@@ -9,7 +9,7 @@ body {
   background-color: #333;
   overflow: hidden;
   display: flex;
-  justify-content: flex-end; 
+  justify-content: center; /* Aligner au centre horizontalement */
   align-items: center;
 }
 
@@ -26,6 +26,6 @@ body {
 
 h1 {
   text-align: center;
-  font-size: 2em;
+  font-size: 1.5em;
   margin-top: 50px;
 }
