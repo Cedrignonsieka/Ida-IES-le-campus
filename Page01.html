@@ -5,6 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion</title>
     <style>
+         body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      background-color: #333;
+      overflow: hidden;
+      text-align: right; /* Alignement à droite */
+    }
+
+    .navbar a {
+      display: inline-block;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 18px 15px;
+      text-decoration: none;
+      transition: background-color 0.2s;
+      border-radius: 20px;
+      margin-left: 10px; /* Espace entre les éléments du menu */
+    }
+
+    .navbar a:hover {
+      background-color: #ff8c00;
+      color: black;
+      border-radius: 20px;
+    }
+
+    .navbar .dropdown {
+      display: inline-block;
+    }
+
+    .navbar .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #333;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .navbar .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .navbar .dropdown-content a {
+      color: #f2f2f2;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
         body {
             font-family: Arial, sans-serif;
             background-image: url(A3.jpg.JPG);
