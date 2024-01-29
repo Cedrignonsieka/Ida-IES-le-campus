@@ -1,101 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
+    <!-- ... Autres balises meta ... -->
     <style>
-         body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-
-   
-
+        /* ... Autres styles ... */
         body {
-            font-family: Arial, sans-serif;
-            background-image: url(A3.jpg.JPG);
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background-image: url('A3.jpg.JPG');
+            /* ... Autres styles ... */
         }
 
-        .login-box {
-            width: 300px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        .no-js-message {
+            display: none;
         }
 
-        .login-box h2 {
-            color: #333;
-        }
-
-        .login-box input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .login-box button {
-            width: 100%;
-            padding: 10px;
-            background: #3498db;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .login-box button:hover {
-            background: #267bb5;
-        }
+        /* ... Autres styles ... */
     </style>
 </head>
 <body>
-  
-  <h1>LE PLUS FORT GARDE TOUJOURS SON CALME</h1>
-  <div class="search-container">
-    <form action="https://www.google.com/search" method="get">
-      <input type="text" name="q" placeholder="Rechercher...">
-      <input type="submit" value="Rechercher">
-    </form>
-  </div>
-<div class="login-box">
-    <h2>CONNEXION DANS L'ESPACE ADMINISTRATION</h2>
-    <form id="loginForm" onsubmit="return validateForm()">
-        <input type="text" id="username" placeholder="Nom d'utilisateur" required>
-        <input type="password" id="password" placeholder="Mot de passe" required>
-        <button type="submit">Se connecter</button>
-        <p><a href="#" id="forgotPassword">Mot de passe oublié ?</a></p>
-    </form>
-</div>
-<script>
-    function validateForm() {
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
-
-        if (username === "Lecampus" && password === "ida") {
-            window.location.href = "Pageprofile.html";
-            return false;
-        } else {
-            alert("Nom d'utilisateur ou mot de passe incorrect");
-            return false;
-        }
-    }
-
-    document.getElementById("forgotPassword").addEventListener("click", function() {
-        alert("Vous serez rediriger vers la page de récupération du mot de passe");
-    });
-</script>  
+    <h1>LE PLUS FORT GARDE TOUJOURS SON CALME</h1>
+    <div class="search-container">
+        <form action="https://www.google.com/search" method="get">
+            <input type="text" name="q" placeholder="Rechercher...">
+            <input type="submit" value="Rechercher">
+        </form>
+    </div>
+    <div class="login-box">
+        <h2>CONNEXION DANS L'ESPACE ADMINISTRATION</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+            <input type="password" id="password" placeholder="Mot de passe" required>
+            <button type="submit">Se connecter</button>
+            <p><a href="#" id="forgotPassword">Mot de passe oublié ?</a></p>
+            <div id="error-message" class="no-js-message"></div> <!-- Ajout de la div pour les messages d'erreur -->
+        </form>
+    </div>
+    <script>
+        // ... Le reste du script est inchangé
+    </script>
 </body>
 </html>
