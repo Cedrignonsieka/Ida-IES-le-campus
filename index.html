@@ -1,121 +1,146 @@
+
+ <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>www.ieslecampus.com</title>
-  <link rel="stylesheet" href="style.css"> 
-  <script src="cdg.js" defer></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    .navbar {
-      background-color: #333;
-      overflow: hidden;
-      text-align: right; /* Alignement à droite */
-    }
-
-    .navbar a {
-      display: inline-block;
-      color: #f2f2f2;
-      text-align: center;
-      padding: 18px 15px;
-      text-decoration: none;
-      transition: background-color 0.2s;
-      border-radius: 20px;
-      margin-left: 10px; /* Espace entre les éléments du menu */
-    }
-
-    .navbar a:hover {
-      background-color: #ff8c00;
-      color: black;
-      border-radius: 20px;
-    }
-
-    .navbar .dropdown {
-      display: inline-block;
-    }
-
-    .navbar .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #333;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-      z-index: 1;
-    }
-
-    .navbar .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    .navbar .dropdown-content a {
-      color: #f2f2f2;
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
-    }
-
-    .search-container {
-      display: flex;
-      align-items: center;
-      justify-content: center; /* Centrer horizontalement */
-      height: 20vh;
-      text-align: center;
-      margin-top: 20px; /* Espacement depuis le haut */
-    }
-
-    input[type="text"] {
-      padding: 12px;
-      width: 300px;
-      box-sizing: border-box;
-      border-radius: 20px; /* Réduction des bords */
-    }
-
-    input[type="submit"] {
-      padding: 12px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-  </style>
-  <script>
-    window.onload = function() {
-      alert("Ce site créé par le développeur TIEDE GNONSIEKA SEDRIC (étudiant à IES-LE CAMPUS DE YOPOUGON) est en cours de construction. Merci et bonne visite!");
-    };
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - [Nom de votre site]</title>
+     <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
-  <header>
-    <div class="navbar">
-      <div class="dropdown">
-        <a href="#">SERVICES</a>
-        <div class="dropdown-content">
-          <a href="#">ACTUALITES</a>
-          <a href="cour.html">COURS</a>
+    <!-- En-tête -->
+    <header>
+        <div class="container">
+            <div class="logo">[Logo]</div>
+            <nav>
+                <ul>
+                    <li><a href="#">Accueil</a></li>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+                <a href="#" class="cta">Demander un devis</a>
+            </nav>
         </div>
-      </div>
-      <div class="dropdown">
-        <a href="#">ESPACE MEMBRE</a>
-        <div class="dropdown-content">
-          <a href="Page3.html">CONNEXION</a>
-          <a href="Page4.html">INSCRIPTION</a>
+    </header>
+    
+    <!-- Bannière principale -->
+    <section class="hero">
+        <div class="container">
+            <h1>Bienvenue chez [Nom de votre site]</h1>
+            <p>Nous créons des solutions sur mesure pour vos besoins</p>
+            <a href="#" class="cta">En savoir plus</a>
         </div>
-      </div>
-      <a href="#">CONTACTS</a>
-    </div>
-  </header>
-  <h1>LE PLUS FORT GARDE TOUJOURS SON CALME</h1>
-  <div class="search-container">
-    <form action="https://www.google.com/search" method="get">
-      <input type="text" name="q" placeholder="Rechercher...">
-      <input type="submit" value="Rechercher">
-    </form>
-  </div>  
+    </section>
+    
+    <!-- Section À propos -->
+    <section class="about">
+        <div class="container">
+            <h2>À propos de nous</h2>
+            <p>Brève présentation de l'entreprise ou de l'individu</p>
+            <img src="about.jpg" alt="À propos de nous">
+        </div>
+    </section>
+    
+    <!-- Section Services -->
+    <section class="services">
+        <div class="container">
+            <h2>Nos Services</h2>
+            <div class="service">
+                <h3>Service 1</h3>
+                <p>Brève description</p>
+            </div>
+            <div class="service">
+                <h3>Service 2</h3>
+                <p>Brève description</p>
+            </div>
+            <div class="service">
+                <h3>Service 3</h3>
+                <p>Brève description</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section Témoignages -->
+    <section class="testimonials">
+        <div class="container">
+            <h2>Ce que disent nos clients</h2>
+            <div class="testimonial">
+                <p>"Avis client 1"</p>
+                <h3>Client 1</h3>
+            </div>
+            <div class="testimonial">
+                <p>"Avis client 2"</p>
+                <h3>Client 2</h3>
+            </div>
+            <div class="testimonial">
+                <p>"Avis client 3"</p>
+                <h3>Client 3</h3>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section Blog -->
+    <section class="blog">
+        <div class="container">
+            <h2>Derniers articles</h2>
+            <div class="blog-post">
+                <img src="blog1.jpg" alt="Article 1">
+                <h3>Titre de l'article 1</h3>
+                <p>Extrait de l'article 1...</p>
+            </div>
+            <div class="blog-post">
+                <img src="blog2.jpg" alt="Article 2">
+                <h3>Titre de l'article 2</h3>
+                <p>Extrait de l'article 2...</p>
+            </div>
+            <div class="blog-post">
+                <img src="blog3.jpg" alt="Article 3">
+                <h3>Titre de l'article 3</h3>
+                <p>Extrait de l'article 3...</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section Contact -->
+    <section class="contact">
+        <div class="container">
+            <h2>Contactez-nous</h2>
+            <form action="#">
+                <input type="text" placeholder="Nom">
+                <input type="email" placeholder="Email">
+                <textarea placeholder="Message"></textarea>
+                <button type="submit">Envoyer</button>
+            </form>
+            <div class="contact-info">
+                <p>Adresse: 123 Rue Exemple, Ville</p>
+                <p>Téléphone: (123) 456-7890</p>
+                <p>Email: contact@example.com</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pied de page -->
+    <footer>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li><a href="#">Accueil</a></li>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="social">
+                <a href="#">Facebook</a>
+                <a href="#">Twitter</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">Instagram</a>
+            </div>
+            <p>Mentions légales | Politique de confidentialité</p>
+        </div>
+    </footer>
 </body>
 </html>
-
