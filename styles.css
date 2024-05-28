@@ -23,15 +23,23 @@ header .logo {
     font-weight: bold;
 }
 
-.hero {
-    background: #f2f2f2;
-    color: #333;
-    text-align: center;
-    padding: 5em 0;
+.carousel {
+    position: relative;
+    overflow: hidden;
 }
 
-.hero h1 {
-    margin-bottom: 0.5em;
+.carousel .container {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.slide {
+    flex: 0 0 100%;
+}
+
+.slide img {
+    width: 100%;
+    height: auto;
 }
 
 .about,
