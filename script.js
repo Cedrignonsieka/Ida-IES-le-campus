@@ -1,104 +1,36 @@
-/* Styles de base */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+$(document).ready(function(){
+    let currentIndex = 0;
+    const slides = $('.slide');
+    const totalSlides = slides.length;
 
-/* Conteneur centralisé */
-.container {
-    width: 90%;
-    margin: 0 auto;
-    max-width: 1200px;
-}
+    function showSlide(index) {
+        slides.hide();
+        slides.eq(index).show();
+    }
 
-/* En-tête */
-header {
-    background: #f8f9fa;
-    padding: 20px 0;
-    border-bottom: 1px solid #ddd;
-}
+    $('#next').click(function() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        showSlide(currentIndex);
+    });
 
-.logo img {
-    max-height: 50px;
-}
+    $('#prev').click(function() {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        showSlide(currentIndex);
+    });
 
-/* Carrousel d'images */
-.carousel {
-    margin: 20px 0;
-    position: relative;
-    overflow: hidden;
-}
+    // Affiche la première image au démarrage
+    showSlide(currentIndex);
 
-.slide {
-    display: none;
-}
+    // Masquer les boutons par défaut
+    $('.carousel-button').hide();
 
-.slide img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Boutons de navigation du carrousel */
-.carousel-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    font-size: 24px;
-    z-index: 10;
-}
-
-#prev {
-    left: 10px;
-}
-
-#next {
-    right: 10px;
-}
-
-/* Sections générales */
-.about, .contact, footer {
-    padding: 20px 0;
-    text-align: center;
-}
-
-/* Boutons stylisés */
-.styled-button {
-    display: inline-block;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 10px;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-}
-
-.styled-button:hover {
-    background-color: #0056b3;
-}
-
-/* Section boutons */
-.buttons .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 50vh; /* Ajustez cette hauteur selon vos besoins */
-}
-
-/* Pied de page */
-footer {
-    background: #f8f9fa;
-    border-top: 1px solid #ddd;
-}
+    // Afficher les boutons lorsque la souris survole le carrousel
+    $('.carousel').hover(
+        function() {
+            $('.carousel-button').fadeIn();
+        },
+        function() {
+            $('.carousel-button').fadeOut();
+        }
+    );
+});
