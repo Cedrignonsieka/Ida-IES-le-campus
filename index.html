@@ -15,11 +15,20 @@
         </div>
     </header>
     
-    <!-- Bannière principale -->
-    <section class="hero">
+    <!-- Carrousel d'images -->
+    <section class="carousel">
         <div class="container">
-            <h1>Bienvenue sur [Nom de votre site]</h1>
-            <p>Un endroit pour [description de votre site]</p>
+            <div class="slide">
+                <img src="image1.jpg" alt="Image 1">
+            </div>
+            <div class="slide">
+                <img src="image2.jpg" alt="Image 2">
+            </div>
+            <div class="slide">
+                <img src="image3.jpg" alt="Image 3">
+            </div>
+            <button id="prev">Précédent</button>
+            <button id="next">Suivant</button>
         </div>
     </section>
     
@@ -56,5 +65,9 @@
             <!-- Liens des réseaux sociaux (optionnel) -->
         </div>
     </footer>
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
