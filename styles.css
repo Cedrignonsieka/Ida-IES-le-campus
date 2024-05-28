@@ -1,3 +1,4 @@
+/* Styles de base */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -5,12 +6,14 @@ body {
     box-sizing: border-box;
 }
 
+/* Conteneur centralisé */
 .container {
     width: 90%;
     margin: 0 auto;
     max-width: 1200px;
 }
 
+/* En-tête */
 header {
     background: #f8f9fa;
     padding: 20px 0;
@@ -21,6 +24,7 @@ header {
     max-height: 50px;
 }
 
+/* Carrousel d'images */
 .carousel {
     margin: 20px 0;
     position: relative;
@@ -37,6 +41,7 @@ header {
     display: block;
 }
 
+/* Boutons de navigation du carrousel */
 button#prev, button#next {
     position: absolute;
     top: 50%;
@@ -56,11 +61,13 @@ button#next {
     right: 10px;
 }
 
+/* Sections générales */
 .about, .contact, footer {
     padding: 20px 0;
     text-align: center;
 }
 
+/* Boutons stylisés */
 .styled-button {
     display: inline-block;
     background-color: #007bff;
@@ -79,6 +86,16 @@ button#next {
     background-color: #0056b3;
 }
 
+/* Section boutons */
+.buttons .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 50vh; /* Ajustez cette hauteur selon vos besoins */
+}
+
+/* Pied de page */
 footer {
     background: #f8f9fa;
     border-top: 1px solid #ddd;
