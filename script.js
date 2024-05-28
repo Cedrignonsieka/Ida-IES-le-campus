@@ -1,29 +1,23 @@
-// JavaScript (utilisant jQuery)
 $(document).ready(function(){
-    var currentIndex = 0;
-    var slides = $('.slide');
+    let currentIndex = 0;
+    const slides = $('.slide');
+    const totalSlides = slides.length;
 
     function showSlide(index) {
-        if (index < 0) {
-            index = slides.length - 1;
-        } else if (index >= slides.length) {
-            index = 0;
-        }
-
-        slides.css('transform', 'translateX(' + (-index * 100) + '%)');
-        currentIndex = index;
+        slides.hide();
+        slides.eq(index).show();
     }
 
-    $('#prev').click(function() {
-        showSlide(currentIndex - 1);
-    });
-
     $('#next').click(function() {
-        showSlide(currentIndex + 1);
+        currentIndex = (currentIndex + 1) % totalSlides;
+        showSlide(currentIndex);
     });
 
-    setInterval(function() {
-        showSlide(currentIndex + 1);
-    }, 3000); // Change slide every 3 seconds
-});
+    $('#prev').click(function() {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        showSlide(currentIndex);
+    });
 
+    // Affiche la première image au démarrage
+    showSlide(currentIndex);
+});
