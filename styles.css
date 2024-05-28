@@ -42,10 +42,15 @@ header {
 }
 
 /* Boutons de navigation du carrousel */
-button#prev, button#next {
+.carousel-buttons {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    left: 0;
+    right: 0;
+}
+
+button#prev, button#next {
     background: rgba(0, 0, 0, 0.5);
     color: white;
     border: none;
@@ -54,11 +59,11 @@ button#prev, button#next {
 }
 
 button#prev {
-    left: 10px;
+    float: left;
 }
 
 button#next {
-    right: 10px;
+    float: right;
 }
 
 /* Sections générales */
@@ -91,7 +96,7 @@ button#next {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    flex-direction: row; /* Modifié pour les boutons horizontaux */
     height: 50vh; /* Ajustez cette hauteur selon vos besoins */
 }
 
