@@ -15,9 +15,7 @@ header {
     background: #333;
     color: white;
     padding: 1em 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    text-align: center;
 }
 
 header .logo {
@@ -25,74 +23,28 @@ header .logo {
     font-weight: bold;
 }
 
-header nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
-
-header nav ul li {
-    margin: 0 1em;
-}
-
-header nav ul li a {
-    color: white;
-    text-decoration: none;
-}
-
-header .cta {
-    background: #ff6600;
-    color: white;
-    padding: 0.5em 1em;
-    text-decoration: none;
-    margin-left: 1em;
-}
-
 .hero {
-    background: url('hero.jpg') no-repeat center center;
-    background-size: cover;
-    color: white;
+    background: #f2f2f2;
+    color: #333;
     text-align: center;
     padding: 5em 0;
 }
 
-.hero .cta {
-    background: #ff6600;
-    color: white;
-    padding: 1em 2em;
-    text-decoration: none;
+.hero h1 {
+    margin-bottom: 0.5em;
 }
 
-section {
-    padding: 3em 0;
+.about,
+.contact {
+    background: #fff;
+    color: #333;
     text-align: center;
+    padding: 3em 0;
 }
 
-section h2 {
-    margin-bottom: 1em;
-}
-
-.about img {
-    width: 100%;
-    height: auto;
-}
-
-.services .service {
-    margin: 1em 0;
-}
-
-.testimonials .testimonial {
-    margin: 1em 0;
-}
-
-.blog .blog-post {
-    margin: 1em 0;
-}
-
-.blog .blog-post img {
-    width: 100%;
-    height: auto;
+.about h2,
+.contact h2 {
+    margin-bottom: 0.5em;
 }
 
 .contact form input,
@@ -103,7 +55,7 @@ section h2 {
 }
 
 .contact form button {
-    background: #ff6600;
+    background: #333;
     color: white;
     padding: 1em 2em;
     border: none;
@@ -115,70 +67,4 @@ footer {
     color: white;
     text-align: center;
     padding: 1em 0;
-}
-
-footer nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1em;
-}
-
-footer nav ul li {
-    margin: 0 1em;
-}
-
-footer nav ul li a {
-    color: white;
-    text-decoration: none;
-}
-
-footer .social a {
-    margin: 0 0.5em;
-    color: white;
-    text-decoration: none;
-}
-
-@media (max-width: 768px) {
-    .container {
-        width: 90%;
-    }
-
-    header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    header nav {
-        width: 100%;
-        margin-top: 1em;
-    }
-
-    header nav ul {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    header nav ul li {
-        margin: 0.5em 0;
-    }
-
-    .hero {
-        padding: 3em 0;
-    }
-
-    .contact form input,
-    .contact form textarea {
-        width: 100%;
-    }
-
-    footer nav ul {
-        flex-direction: column;
-    }
-
-    footer nav ul li {
-        margin: 0.5em 0;
-    }
 }
