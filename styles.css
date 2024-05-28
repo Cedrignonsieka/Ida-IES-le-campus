@@ -1,78 +1,85 @@
-/* styles.css */
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 .container {
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
+    max-width: 1200px;
 }
 
 header {
-    background: #333;
-    color: white;
-    padding: 1em 0;
-    text-align: center;
+    background: #f8f9fa;
+    padding: 20px 0;
+    border-bottom: 1px solid #ddd;
 }
 
-header .logo {
-    font-size: 1.5em;
-    font-weight: bold;
+.logo img {
+    max-height: 50px;
 }
 
 .carousel {
+    margin: 20px 0;
     position: relative;
     overflow: hidden;
 }
 
-.carousel .container {
-    display: flex;
-    transition: transform 0.5s ease;
-}
-
 .slide {
-    flex: 0 0 100%;
+    display: none;
 }
 
 .slide img {
     width: 100%;
     height: auto;
+    display: block;
 }
 
-.about,
-.contact {
-    background: #fff;
-    color: #333;
-    text-align: center;
-    padding: 3em 0;
-}
-
-.about h2,
-.contact h2 {
-    margin-bottom: 0.5em;
-}
-
-.contact form input,
-.contact form textarea {
-    width: 100%;
-    margin: 0.5em 0;
-    padding: 0.5em;
-}
-
-.contact form button {
-    background: #333;
+button#prev, button#next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
     color: white;
-    padding: 1em 2em;
     border: none;
+    padding: 10px;
     cursor: pointer;
 }
 
-footer {
-    background: #333;
-    color: white;
+button#prev {
+    left: 10px;
+}
+
+button#next {
+    right: 10px;
+}
+
+.about, .contact, footer {
+    padding: 20px 0;
     text-align: center;
-    padding: 1em 0;
+}
+
+.styled-button {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.styled-button:hover {
+    background-color: #0056b3;
+}
+
+footer {
+    background: #f8f9fa;
+    border-top: 1px solid #ddd;
 }
