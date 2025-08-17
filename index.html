@@ -109,6 +109,12 @@
       font-size: 14px;
       margin-bottom: 12px;
     }
+
+    .success {
+      color: green;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
   </style>
 </head>
 <body>
@@ -135,6 +141,7 @@
     <form id="postForm">
       <input type="text" id="author" placeholder="Votre nom" required />
       <textarea id="content" placeholder="Qu'avez-vous à partager ?" rows="3" required></textarea>
+      <div class="error" id="postErrorMsg"></div>
       <button type="submit">Publier</button>
     </form>
   </div>
@@ -184,45 +191,14 @@
 
     typeWriter();
 
-    // --------- Post dynamique ---------
-    const postForm = document.getElementById('postForm');
-    const feed = document.getElementById('feed');
 
-    postForm.addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      const author = document.getElementById('author').value.trim();
-      const content = document.getElementById('content').value.trim();
-
-      if (author === '' || content === '') {
-        alert("Veuillez remplir tous les champs.");
-        return;
-      }
-
-      const postDiv = document.createElement('div');
-      postDiv.classList.add('post');
-
-      const authorDiv = document.createElement('div');
-      authorDiv.classList.add('post-author');
-      authorDiv.textContent = author;
-
-      const contentDiv = document.createElement('div');
-      contentDiv.classList.add('post-content');
-      contentDiv.textContent = content;
-
-      postDiv.appendChild(authorDiv);
-      postDiv.appendChild(contentDiv);
-      feed.prepend(postDiv);
-
-      postForm.reset();
-    });
-
-    // --------- Connexion fictive ---------
+    // --------- Gestion Connexion ---------
     const loginForm = document.getElementById('loginForm');
     const errorMsg = document.getElementById('errorMsg');
 
-    loginForm.addEventListener('submit', function(event) {
+    loginForm.addEventListener('submit', async function(event) {
       event.preventDefault();
+      errorMsg.textContent = '';
 
       const email = loginForm.email.value.trim();
       const password = loginForm.password.value.trim();
@@ -237,10 +213,96 @@
         return;
       }
 
-      errorMsg.textContent = "";
-      alert(`Connexion réussie pour ${email} (simulation)`);
-      loginForm.reset();
+      try {
+        const response = await fetch('https://ieslecampus.onrender.com', { // Mets ton URL backend ici
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({email, password})
+        });
+        const data = await response.json();
+
+        if (data.success) {
+          alert(`Connexion réussie pour ${email}`);
+          loginForm.reset();
+          errorMsg.textContent = '';
+          // Tu peux ici faire d'autres actions : afficher profil, cacher formulaire, etc.
+        } else {
+          errorMsg.textContent = data.message || "Erreur lors de la connexion.";
+        }
+
+      } catch (err) {
+        errorMsg.textContent = "Erreur réseau ou serveur indisponible.";
+      }
     });
+
+
+    // --------- Gestion Post ---------
+    const postForm = document.getElementById('postForm');
+    const postErrorMsg = document.getElementById('postErrorMsg');
+    const feed = document.getElementById('feed');
+
+    async function loadPosts() {
+      try {
+        const response = await fetch('http://localhost:5000/posts'); // Mets ton endpoint posts GET ici
+        if (!response.ok) throw new Error("Erreur serveur");
+        const posts = await response.json();
+
+        feed.innerHTML = '';
+        posts.forEach(post => {
+          const postDiv = document.createElement('div');
+          postDiv.classList.add('post');
+
+          const authorDiv = document.createElement('div');
+          authorDiv.classList.add('post-author');
+          authorDiv.textContent = post.author;
+
+          const contentDiv = document.createElement('div');
+          contentDiv.classList.add('post-content');
+          contentDiv.textContent = post.content;
+
+          postDiv.appendChild(authorDiv);
+          postDiv.appendChild(contentDiv);
+          feed.appendChild(postDiv);
+        });
+      } catch (err) {
+        feed.innerHTML = '<p>Impossible de charger le fil d’actualité.</p>';
+      }
+    }
+
+    postForm.addEventListener('submit', async function(event) {
+      event.preventDefault();
+      postErrorMsg.textContent = '';
+
+      const author = document.getElementById('author').value.trim();
+      const content = document.getElementById('content').value.trim();
+
+      if (author === '' || content === '') {
+        postErrorMsg.textContent = "Veuillez remplir tous les champs.";
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:5000/posts', { // Mets ton endpoint posts POST ici
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({author, content})
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          postForm.reset();
+          await loadPosts();
+        } else {
+          postErrorMsg.textContent = data.message || "Erreur lors de la publication.";
+        }
+      } catch (err) {
+        postErrorMsg.textContent = "Erreur réseau ou serveur indisponible.";
+      }
+    });
+
+    // Charge les posts au démarrage
+    loadPosts();
   </script>
 </body>
 </html>
