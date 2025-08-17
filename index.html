@@ -152,6 +152,9 @@
   </div>
 
   <script>
+    // URL de ton backend Render — à modifier si besoin
+    const backendURL = 'https://ieslecampus.onrender.com';
+
     // --------- Animation multi-phrases ---------
     const titleElement = document.getElementById('animatedTitle');
     const phrases = [
@@ -176,7 +179,7 @@
 
       if (!isDeleting && charIndex === currentPhrase.length + 1) {
         isDeleting = true;
-        setTimeout(typeWriter, 1200); // Pause après l'écriture complète
+        setTimeout(typeWriter, 1200);
         return;
       }
 
@@ -190,7 +193,6 @@
     }
 
     typeWriter();
-
 
     // --------- Gestion Connexion ---------
     const loginForm = document.getElementById('loginForm');
@@ -214,18 +216,25 @@
       }
 
       try {
-        const response = await fetch('https://ieslecampus.onrender.com', { // Mets ton URL backend ici
+        const response = await fetch(`${backendURL}/login`, {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({email, password})
         });
+
+        if (!response.ok) {
+          const errData = await response.json();
+          errorMsg.textContent = errData.message || 'Erreur lors de la connexion.';
+          return;
+        }
+
         const data = await response.json();
 
         if (data.success) {
           alert(`Connexion réussie pour ${email}`);
           loginForm.reset();
           errorMsg.textContent = '';
-          // Tu peux ici faire d'autres actions : afficher profil, cacher formulaire, etc.
+          // Actions supplémentaires (afficher profil, cacher formulaire...) ici
         } else {
           errorMsg.textContent = data.message || "Erreur lors de la connexion.";
         }
@@ -235,7 +244,6 @@
       }
     });
 
-
     // --------- Gestion Post ---------
     const postForm = document.getElementById('postForm');
     const postErrorMsg = document.getElementById('postErrorMsg');
@@ -243,7 +251,7 @@
 
     async function loadPosts() {
       try {
-        const response = await fetch('http://localhost:5000/posts'); // Mets ton endpoint posts GET ici
+        const response = await fetch(`${backendURL}/posts`);
         if (!response.ok) throw new Error("Erreur serveur");
         const posts = await response.json();
 
@@ -282,11 +290,17 @@
       }
 
       try {
-        const response = await fetch('http://localhost:5000/posts', { // Mets ton endpoint posts POST ici
+        const response = await fetch(`${backendURL}/posts`, {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({author, content})
         });
+
+        if (!response.ok) {
+          const errData = await response.json();
+          postErrorMsg.textContent = errData.message || "Erreur lors de la publication.";
+          return;
+        }
 
         const data = await response.json();
 
