@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inscription - Réseau Social</title>
+  <style>
+    :root {
+      --primary-color: #4267B2;
+      --bg-color: #f0f2f5;
+      --input-bg: #fff;
+      --border-radius: 8px;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-color);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .form-container {
+      background-color: #fff;
+      padding: 50px 40px;
+      width: 100%;
+      max-width: 420px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.6s ease;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--primary-color);
+    }
+    .input-group {
+      position: relative;
+      margin-bottom: 25px;
+    }
+    .input-group input[type="text"],
+    .input-group input[type="email"],
+    .input-group input[type="password"] {
+      width: 100%;
+      padding: 14px 12px 14px 12px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      background: var(--input-bg);
+      outline: none;
+      transition: border 0.3s;
+    }
+    .input-group input[type="file"] {
+      width: 100%;
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      background: var(--input-bg);
+      cursor: pointer;
+    }
+    .input-group label {
+      position: absolute;
+      left: 12px;
+      top: 14px;
+      background-color: white;
+      padding: 0 5px;
+      color: #777;
+      font-size: 14px;
+      pointer-events: none;
+      transition: 0.2s ease all;
+    }
+    .input-group input[type="text"]:focus,
+    .input-group input[type="text"]:not(:placeholder-shown),
+    .input-group input[type="email"]:focus,
+    .input-group input[type="email"]:not(:placeholder-shown),
+    .input-group input[type="password"]:focus,
+    .input-group input[type="password"]:not(:placeholder-shown) {
+      border-color: var(--primary-color);
+    }
+    .input-group input[type="text"]:focus + label,
+    .input-group input[type="text"]:not(:placeholder-shown) + label,
+    .input-group input[type="email"]:focus + label,
+    .input-group input[type="email"]:not(:placeholder-shown) + label,
+    .input-group input[type="password"]:focus + label,
+    .input-group input[type="password"]:not(:placeholder-shown) + label {
+      top: -9px;
+      font-size: 12px;
+      color: var(--primary-color);
+    }
+    /* Label statique pour input file */
+    .input-group input[type="file"] + label {
+      position: static;
+      top: auto;
+      left: auto;
+      padding: 0;
+      color: #444;
+      font-size: 14px;
+      pointer-events: auto;
+      margin-bottom: 6px;
+      display: inline-block;
+      font-weight: 600;
+    }
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 15px;
+      min-height: 18px;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #365899;
+    }
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .login-link a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    #previewImage {
+      display: block;
+      margin: 0 auto 25px auto;
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      display: none;
+    }
+    @media (max-width: 500px) {
+      .form-container {
+        padding: 40px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Créer un compte</h2>
+
+    <form id="signupForm" autocomplete="off" novalidate>
+      <div class="input-group">
+        <input type="text" id="fullname" required placeholder=" " />
+        <label for="fullname">Nom complet</label>
+      </div>
+
+      <div class="input-group">
+        <input type="text" id="username" required placeholder=" " />
+        <label for="username">Nom d'utilisateur</label>
+      </div>
+
+      <div class="input-group">
+        <input type="email" id="email" required placeholder=" " />
+        <label for="email">Adresse email</label>
+      </div>
+
+      <div class="input-group">
+        <input type="password" id="password" required placeholder=" " />
+        <label for="password">Mot de passe</label>
+      </div>
+
+      <div class="input-group">
+        <input type="password" id="confirmPassword" required placeholder=" " />
+        <label for="confirmPassword">Confirmer le mot de passe</label>
+      </div>
+
+      <div class="input-group">
+        <input type="file" id="profileImage" accept="image/*" />
+        <label for="profileImage">Photo de profil</label>
+      </div>
+
+      <img id="previewImage" src="" alt="Aperçu de la photo de profil" />
+
+      <div class="error" id="errorMsg"></div>
+
+      <button type="submit">S’inscrire</button>
+    </form>
+
+    <div class="login-link">
+      Déjà inscrit ? <a href="index.html">Se connecter</a>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('signupForm');
+    const errorMsg = document.getElementById('errorMsg');
+    const imageInput = document.getElementById('profileImage');
+    const preview = document.getElementById('previewImage');
+
+    let base64Image = ''; // stockera l'image convertie
+
+    // Aperçu et conversion base64 de l'image
+    imageInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        if (!file.type.startsWith('image/')) {
+          errorMsg.textContent = "Veuillez choisir un fichier image valide.";
+          preview.style.display = 'none';
+          imageInput.value = "";
+          base64Image = '';
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          preview.setAttribute('src', e.target.result);
+          preview.style.display = 'block';
+          base64Image = e.target.result;  // sauvegarde base64 ici
+          errorMsg.textContent = "";
+        };
+        reader.readAsDataURL(file);
+      } else {
+        preview.setAttribute('src', '');
+        preview.style.display = 'none';
+        base64Image = '';
+      }
+    });
+
+    // Validation, sauvegarde et redirection
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const fullname = document.getElementById('fullname').value.trim();
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (!fullname || !username || !email || !password || !confirmPassword) {
+        errorMsg.textContent = "Tous les champs sont obligatoires.";
+        return;
+      }
+
+      if (!email.includes('@')) {
+        errorMsg.textContent = "Adresse email invalide.";
+        return;
+      }
+
+      if (password.length < 6) {
+        errorMsg.textContent = "Le mot de passe doit contenir au moins 6 caractères.";
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        errorMsg.textContent = "Les mots de passe ne correspondent pas.";
+        return;
+      }
+
+      if (!base64Image) {
+        errorMsg.textContent = "Veuillez choisir une photo de profil.";
+        return;
+      }
+
+      errorMsg.textContent = "";
+
+      // Création de l'objet utilisateur
+      const userProfile = {
+        fullname,
+        username,
+        email,
+        password,
+        profileImage: base64Image
+      };
+
+      // Sauvegarde dans localStorage (en JSON)
+      localStorage.setItem('userProfile', JSON.stringify(userProfile));
+
+      alert("Inscription réussie ! Ton profil est sauvegardé localement.");
+
+      form.reset();
+      preview.style.display = 'none';
+      base64Image = '';
+
+      // Redirection vers la page d'accueil ou profil
+      window.location.href = "index.html";
+    });
+  </script>
+
+</body>
+</html>
