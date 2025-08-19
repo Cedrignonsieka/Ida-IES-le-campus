@@ -16,7 +16,6 @@
       align-items: center;
     }
 
-    /* Header flottant */
     header {
       position: fixed;
       top: 0;
@@ -33,7 +32,6 @@
       z-index: 1000;
     }
 
-    /* Machine à écrire */
     .typewriter h1 {
       display: inline-block;
       font-size: 24px;
@@ -44,10 +42,9 @@
       min-height: 30px;
     }
 
-    /* Menu desktop centré à droite */
     .menu-container {
       display: flex;
-      justify-content: center; /* centre horizontalement */
+      justify-content: center;
       align-items: center;
       flex: 1;
     }
@@ -55,6 +52,7 @@
     .menu {
       display: flex;
       gap: 20px;
+      transition: all 0.5s ease;
     }
 
     .menu button {
@@ -65,7 +63,8 @@
       border-radius: 6px;
       cursor: pointer;
       font-size: 16px;
-      transition: background-color 0.3s, transform 0.2s;
+      transition: background-color 0.3s, transform 0.2s, opacity 0.5s;
+      opacity: 1;
     }
 
     .menu button:hover {
@@ -73,7 +72,6 @@
       transform: scale(1.05);
     }
 
-    /* Menu hamburger pour mobile */
     .menu-toggle {
       display: none;
       flex-direction: column;
@@ -89,20 +87,25 @@
       border-radius: 2px;
     }
 
+    /* Mobile */
     @media (max-width: 600px) {
       .menu {
-        display: none;
+        display: flex;
+        flex-direction: column;
         position: absolute;
         top: 50px;
         right: 20px;
-        flex-direction: column;
         background-color: rgba(66, 103, 178, 0.85);
         padding: 10px;
         border-radius: 8px;
+        opacity: 0;
+        pointer-events: none;
       }
 
       .menu.show {
-        display: flex;
+        opacity: 1;
+        pointer-events: auto;
+        animation: slideFadeIn 0.5s forwards;
       }
 
       .menu-toggle {
@@ -110,7 +113,11 @@
       }
     }
 
-    /* Containers */
+    @keyframes slideFadeIn {
+      0% { transform: translateY(-10px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
     .container {
       max-width: 600px;
       margin-top: 30px;
@@ -121,9 +128,7 @@
       width: 90%;
     }
 
-    h2 {
-      margin-top: 0;
-    }
+    h2 { margin-top: 0; }
 
     form {
       display: flex;
@@ -151,9 +156,7 @@
       transition: background-color 0.3s;
     }
 
-    button.submit-btn:hover {
-      background-color: #365899;
-    }
+    button.submit-btn:hover { background-color: #365899; }
 
     .signup-btn {
       margin-top: 10px;
@@ -177,18 +180,14 @@
       padding: 10px 0;
     }
 
-    .post:last-child {
-      border-bottom: none;
-    }
+    .post:last-child { border-bottom: none; }
 
     .post-author {
       font-weight: bold;
       color: #4267B2;
     }
 
-    .post-content {
-      margin: 6px 0 0 0;
-    }
+    .post-content { margin: 6px 0 0 0; }
 
     .error {
       color: red;
@@ -253,7 +252,7 @@
   <script>
     const backendURL = 'https://ieslecampus.onrender.com';
 
-    // Animation typewriter
+    // Typewriter animation
     const titleElement = document.getElementById('animatedTitle');
     const phrases = [
       "Mini Réseau Social",
@@ -262,10 +261,7 @@
       "Exprime-toi librement",
       "Bienvenue dans ta communauté"
     ];
-
-    let phraseIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
+    let phraseIndex = 0, charIndex = 0, isDeleting = false;
 
     function typeWriter() {
       const currentPhrase = phrases[phraseIndex];
@@ -286,18 +282,15 @@
         phraseIndex = (phraseIndex + 1) % phrases.length;
       }
 
-      const speed = isDeleting ? 50 : 100;
-      setTimeout(typeWriter, speed);
+      setTimeout(typeWriter, isDeleting ? 50 : 100);
     }
-
     typeWriter();
 
-    // Toggle menu mobile
     function toggleMenu() {
       document.getElementById('menu').classList.toggle('show');
     }
 
-    // Gestion Connexion
+    // Gestion connexion
     const loginForm = document.getElementById('loginForm');
     const errorMsg = document.getElementById('errorMsg');
 
@@ -327,16 +320,13 @@
         if (data.success) {
           alert(`Connexion réussie pour ${email}`);
           loginForm.reset();
-        } else {
-          errorMsg.textContent = data.message || "Erreur lors de la connexion.";
-        }
-
+        } else { errorMsg.textContent = data.message || "Erreur lors de la connexion."; }
       } catch (err) {
         errorMsg.textContent = "Erreur réseau ou serveur indisponible.";
       }
     });
 
-    // Gestion Post
+    // Gestion post
     const postForm = document.getElementById('postForm');
     const postErrorMsg = document.getElementById('postErrorMsg');
     const feed = document.getElementById('feed');
@@ -372,14 +362,9 @@
     postForm.addEventListener('submit', async function(event) {
       event.preventDefault();
       postErrorMsg.textContent = '';
-
       const author = document.getElementById('author').value.trim();
       const content = document.getElementById('content').value.trim();
-
-      if (author === '' || content === '') {
-        postErrorMsg.textContent = "Veuillez remplir tous les champs.";
-        return;
-      }
+      if (!author || !content) { postErrorMsg.textContent = "Veuillez remplir tous les champs."; return; }
 
       try {
         const response = await fetch(`${backendURL}/posts`, {
@@ -387,23 +372,11 @@
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({author, content})
         });
-
-        if (!response.ok) {
-          const errData = await response.json();
-          postErrorMsg.textContent = errData.message || "Erreur lors de la publication.";
-          return;
-        }
-
+        if (!response.ok) { const errData = await response.json(); postErrorMsg.textContent = errData.message || "Erreur lors de la publication."; return; }
         const data = await response.json();
-        if (data.success) {
-          postForm.reset();
-          await loadPosts();
-        } else {
-          postErrorMsg.textContent = data.message || "Erreur lors de la publication.";
-        }
-      } catch (err) {
-        postErrorMsg.textContent = "Erreur réseau ou serveur indisponible.";
-      }
+        if (data.success) { postForm.reset(); await loadPosts(); } 
+        else { postErrorMsg.textContent = data.message || "Erreur lors de la publication."; }
+      } catch (err) { postErrorMsg.textContent = "Erreur réseau ou serveur indisponible."; }
     });
 
     loadPosts();
