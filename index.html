@@ -6,37 +6,98 @@
   <title>Mini Réseau Social - Accueil</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Courier New', Courier, monospace; /* style machine à écrire */
       background: url("im.jpg") no-repeat center center fixed;
       background-size: cover;
       margin: 0;
       padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
 
+    /* Barre flottante */
     header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
       background-color: rgba(66, 103, 178, 0.9);
       color: white;
-      padding: 15px 20px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      z-index: 1000;
     }
 
     .typewriter h1 {
       display: inline-block;
-      font-size: 28px;
+      font-size: 24px;
       border-right: 2px solid white;
       white-space: nowrap;
       overflow: hidden;
-      min-height: 40px;
+      margin: 0;
+    }
+
+    /* Boutons du menu */
+    .menu {
+      display: flex;
+      gap: 15px;
+    }
+
+    .menu button {
+      background-color: #4267B2;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .menu button:hover {
+      background-color: #365899;
+    }
+
+    /* Menu mobile */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 3px;
+    }
+
+    .menu-toggle span {
+      height: 3px;
+      width: 25px;
+      background: white;
+      border-radius: 2px;
+    }
+
+    @media (max-width: 600px) {
+      .menu {
+        display: none;
+        position: absolute;
+        top: 50px;
+        right: 20px;
+        flex-direction: column;
+        background-color: rgba(66, 103, 178, 0.95);
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      .menu.show {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
     }
 
     .container {
       max-width: 600px;
-      margin-top: 30px;
+      margin: 120px auto 40px auto;
       background: rgba(255, 255, 255, 0.9);
       padding: 20px;
       border-radius: 8px;
@@ -44,15 +105,9 @@
       width: 90%;
     }
 
-    h2 {
-      margin-top: 0;
-    }
+    h2 { margin-top: 0; }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 20px;
-    }
+    form { display: flex; flex-direction: column; margin-bottom: 20px; }
 
     input, textarea {
       padding: 10px;
@@ -63,7 +118,7 @@
       resize: vertical;
     }
 
-    button {
+    button.submit-btn {
       padding: 10px;
       background-color: #4267B2;
       color: white;
@@ -74,7 +129,7 @@
       transition: background-color 0.3s;
     }
 
-    button:hover {
+    button.submit-btn:hover {
       background-color: #365899;
     }
 
@@ -92,30 +147,18 @@
       padding: 10px 0;
     }
 
-    .post:last-child {
-      border-bottom: none;
-    }
+    .post:last-child { border-bottom: none; }
 
     .post-author {
       font-weight: bold;
       color: #4267B2;
     }
 
-    .post-content {
-      margin: 6px 0 0 0;
-    }
+    .post-content { margin: 6px 0 0 0; }
 
-    .error {
-      color: red;
-      font-size: 14px;
-      margin-bottom: 12px;
-    }
+    .error { color: red; font-size: 14px; margin-bottom: 12px; }
 
-    .success {
-      color: green;
-      font-size: 14px;
-      margin-bottom: 12px;
-    }
+    .success { color: green; font-size: 14px; margin-bottom: 12px; }
   </style>
 </head>
 <body>
@@ -123,6 +166,18 @@
   <header>
     <div class="typewriter">
       <h1 id="animatedTitle"></h1>
+    </div>
+
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <div class="menu" id="menu">
+      <button onclick="location.href='#'">ACCUEIL</button>
+      <button onclick="location.href='#'">PROJET</button>
+      <button onclick="location.href='#'">ORGANISATION</button>
     </div>
   </header>
 
@@ -132,7 +187,7 @@
       <input type="email" id="email" placeholder="Email" required />
       <input type="password" id="password" placeholder="Mot de passe" required />
       <div class="error" id="errorMsg"></div>
-      <button type="submit">Se connecter</button>
+      <button type="submit" class="submit-btn">Se connecter</button>
     </form>
     <button class="signup-btn" onclick="window.location.href='inscription.html'">S’inscrire</button>
   </div>
@@ -143,7 +198,7 @@
       <input type="text" id="author" placeholder="Votre nom" required />
       <textarea id="content" placeholder="Qu'avez-vous à partager ?" rows="3" required></textarea>
       <div class="error" id="postErrorMsg"></div>
-      <button type="submit">Publier</button>
+      <button type="submit" class="submit-btn">Publier</button>
     </form>
   </div>
 
@@ -153,6 +208,11 @@
   </div>
 
   <script>
+    // Menu mobile
+    function toggleMenu() {
+      document.getElementById('menu').classList.toggle('show');
+    }
+
     const backendURL = 'https://ieslecampus.onrender.com';
 
     // --------- Animation multi-phrases ---------
