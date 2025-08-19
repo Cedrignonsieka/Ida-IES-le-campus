@@ -3,324 +3,421 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mini Réseau Social - Accueil</title>
+  <title>IES Le Campus</title>
   <style>
-    body {
-      font-family: 'Courier New', Courier, monospace; /* machine à écrire */
-      background: url("im.jpg") no-repeat center center fixed;
-      background-size: cover;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    :root{
+      --brand:#4267B2;
+      --brand-dark:#365899;
+      --cta:#42b72a;
+      --cta-dark:#36a420;
+      --header-h:64px;
     }
 
-    /* Header flottant */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background-color: rgba(66, 103, 178, 0.9);
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      z-index: 1000;
+    /* ===== Base & Background ===== */
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Arial, sans-serif;
+      color:#111;
+      background: #f0f2f5;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:url("im.jpg") no-repeat center center / cover;
+      z-index:-2;
+    }
+    /* voile pour lisibilité */
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.25);
+      z-index:-1;
     }
 
-    .typewriter-container {
-      flex-grow: 1;
-      overflow: hidden;
+    /* ===== Header (fixe, ne bouge pas) ===== */
+    header{
+      position:fixed;
+      top:0; left:0; right:0;
+      height:var(--header-h);
+      background: rgba(66,103,178,0.96);
+      backdrop-filter: blur(6px);
+      display:flex;
+      align-items:center;
+      justify-content:flex-end; /* le menu est à droite */
+      padding: 0 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.18);
+      z-index:1000;
     }
 
-    .typewriter h1 {
-      font-size: 22px;
-      border-right: 2px solid white;
-      white-space: nowrap;
-      overflow: hidden;
-      margin: 0;
+    /* Typewriter centré, indépendant (n'affecte pas la mise en page) */
+    .typewriter-wrap{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      width:min(90vw, 720px);
+      text-align:center;
+      pointer-events:none; /* pour ne pas bloquer les clics du menu */
+    }
+    .typewriter{
+      display:inline-block;
+      color:#fff;
+      font-weight:bold;
+      font-size: clamp(16px, 2.4vw, 22px);
+      white-space:nowrap;
+      overflow:hidden;
+      border-right: 2px solid rgba(255,255,255,.9);
+      padding-right:6px;
     }
 
-    /* Menu boutons */
-    .menu-container {
-      display: flex;
-      align-items: center;
-      gap: 15px;
+    /* ===== Menu desktop ===== */
+    .menu{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .btn{
+      border:none;
+      border-radius:8px;
+      padding:10px 16px;
+      background:#fff;
+      color:var(--brand);
+      font-weight:700;
+      cursor:pointer;
+      transition: transform .05s ease, background .25s ease, box-shadow .25s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,.12);
+    }
+    .btn:hover{ background:#e9eef8; }
+    .btn:active{ transform: translateY(1px); }
+    .btn-ghost{
+      background:transparent;
+      color:#fff;
+      box-shadow:none;
+      border:1px solid rgba(255,255,255,.35);
+    }
+    .btn-ghost:hover{
+      background: rgba(255,255,255,.12);
+    }
+    .btn-cta{
+      background: var(--cta);
+      color:#fff;
+      border:none;
+    }
+    .btn-cta:hover{ background: var(--cta-dark); }
+
+    /* Séparateur léger entre menu texte et CTA */
+    .divider{
+      width:1px; height:22px;
+      background:rgba(255,255,255,.35);
+      margin:0 6px;
     }
 
-    .menu-container button {
-      background-color: #42b72a;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 0 #2f8a1e, 0 6px 10px rgba(0,0,0,0.2);
+    /* ===== Burger (mobile) ===== */
+    .burger{
+      display:none; /* caché sur desktop */
+      font-size:26px;
+      line-height:1;
+      background:none;
+      border:none;
+      color:#fff;
+      cursor:pointer;
+      padding:8px 10px;
+      margin-left:8px;
     }
 
-    .menu-container button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 0 #2f8a1e, 0 8px 12px rgba(0,0,0,0.2);
+    /* ===== Dropdown mobile ===== */
+    .dropdown{
+      position:fixed;
+      right:12px;
+      top:calc(var(--header-h) + 8px);
+      width:min(88vw, 360px);
+      background: rgba(66,103,178,0.98);
+      border-radius:12px;
+      overflow:hidden;
+      max-height:0;
+      opacity:0;
+      transition:max-height .4s ease, opacity .35s ease;
+      box-shadow: 0 8px 24px rgba(0,0,0,.25);
+      z-index:1100;
+    }
+    .dropdown.show{
+      max-height:90vh;
+      opacity:1;
+    }
+    .dropdown .item{
+      display:block;
+      width:100%;
+      text-align:center;
+      padding:16px 14px;
+      background:none;
+      border:none;
+      color:#fff;
+      font-size:18px;
+      font-weight:700;
+      cursor:pointer;
+      border-bottom:1px solid rgba(255,255,255,.18);
+    }
+    .dropdown .item:last-child{ border-bottom:none; }
+    .dropdown .item:hover{
+      background: rgba(255,255,255,.10);
+    }
+    .dropdown .item.cta{
+      background: var(--cta);
+    }
+    .dropdown .item.cta:hover{
+      background: var(--cta-dark);
     }
 
-    /* Menu burger mobile */
-    .burger {
-      display: none;
-      font-size: 28px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      color: white;
+    /* ===== Page content ===== */
+    main{
+      padding: calc(var(--header-h) + 24px) 16px 40px; /* espace sous le header fixe */
+      max-width: 900px;
+      margin: 0 auto;
     }
-
-    .dropdown {
-      display: none;
-      position: absolute;
-      right: 20px;
-      top: 50px;
-      background-color: rgba(66,103,178,0.95);
-      border-radius: 8px;
-      overflow: hidden;
-      flex-direction: column;
+    .card{
+      background: rgba(255,255,255,.94);
+      border-radius:12px;
+      padding:20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.18);
+      margin-bottom:22px;
+      backdrop-filter: blur(3px);
     }
-
-    .dropdown button {
-      width: 100%;
-      padding: 15px;
-      font-size: 18px;
-      text-align: center;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      box-shadow: none;
+    h2{ margin:0 0 12px 0; }
+    form{ display:flex; flex-direction:column; gap:12px; }
+    input, textarea{
+      padding:12px 14px;
+      border:1px solid #d8dbe3;
+      border-radius:8px;
+      font-size:16px;
+      background:#fff;
     }
+    .err{ color:#e53935; font-size:14px; min-height:18px; }
+    .post{ padding:12px 0; border-bottom:1px solid #e6e8ef; }
+    .post:last-child{ border-bottom:none; }
+    .post .auteur{ font-weight:700; color:var(--brand); margin-bottom:4px; }
 
-    .dropdown button:last-child {
-      border-bottom: none;
+    /* ===== Responsive ===== */
+    @media (max-width: 900px){
+      .btn{ padding:10px 14px; }
     }
-
-    /* Conteneurs principaux */
-    .container {
-      max-width: 600px;
-      margin-top: 100px; /* espace sous le header flottant */
-      background: rgba(255, 255, 255, 0.9);
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      width: 90%;
+    @media (max-width: 780px){
+      .menu{ display:none; }     /* cache le menu desktop */
+      .burger{ display:block; }  /* montre le burger */
     }
-
-    h2 {
-      margin-top: 0;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 20px;
-    }
-
-    input, textarea {
-      padding: 10px;
-      margin: 6px 0 12px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
-      resize: vertical;
-    }
-
-    button.submit-btn {
-      padding: 10px;
-      background-color: #4267B2;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 0 #365899, 0 6px 10px rgba(0,0,0,0.2);
-    }
-
-    button.submit-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 0 #365899, 0 8px 12px rgba(0,0,0,0.2);
-    }
-
-    .error {
-      color: red;
-      font-size: 14px;
-      margin-bottom: 12px;
-    }
-
-    .success {
-      color: green;
-      font-size: 14px;
-      margin-bottom: 12px;
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      .menu-container {
-        display: none;
-      }
-      .burger {
-        display: block;
-      }
-      .dropdown {
-        top: 50px;
-        right: 10px;
-      }
-      .dropdown button {
-        font-size: 20px;
-        padding: 18px 10px;
-      }
+    /* Gros boutons sur mobile (dropdown) + zones de clic confortables */
+    @media (max-width: 480px){
+      .dropdown .item{ padding:18px 16px; font-size:19px; }
+      .btn{ font-size:15px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- ===== Header fixe ===== -->
   <header>
-    <div class="typewriter-container">
-      <h1 id="animatedTitle"></h1>
+    <!-- Typewriter centré, indépendant -->
+    <div class="typewriter-wrap">
+      <div class="typewriter" id="typewriter"></div>
     </div>
 
-    <div class="menu-container">
-      <button>ACCUEIL</button>
-      <button>PROJET</button>
-      <button>ORGANISATION</button>
-    </div>
+    <!-- Menu desktop à droite -->
+    <nav class="menu" aria-label="Navigation principale">
+      <button class="btn btn-ghost" onclick="scrollToId('accueil')">Accueil</button>
+      <button class="btn btn-ghost" onclick="scrollToId('projet')">Projet</button>
+      <button class="btn btn-ghost" onclick="scrollToId('organisation')">Organisation</button>
+      <span class="divider" aria-hidden="true"></span>
+      <button class="btn btn-cta" onclick="location.href='inscription.html'">S’inscrire</button>
+    </nav>
 
-    <button class="burger" onclick="toggleDropdown()">☰</button>
-    <div class="dropdown" id="dropdownMenu">
-      <button>ACCUEIL</button>
-      <button>PROJET</button>
-      <button>ORGANISATION</button>
+    <!-- Burger (mobile) -->
+    <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false" onclick="toggleDropdown(event)">⋮</button>
+
+    <!-- Dropdown mobile -->
+    <div id="dropdown" class="dropdown" role="menu" aria-hidden="true">
+      <button class="item" onclick="closeDropdown(); scrollToId('accueil')">Accueil</button>
+      <button class="item" onclick="closeDropdown(); scrollToId('projet')">Projet</button>
+      <button class="item" onclick="closeDropdown(); scrollToId('organisation')">Organisation</button>
+      <button class="item cta" onclick="closeDropdown(); location.href='inscription.html'">S’inscrire</button>
     </div>
   </header>
 
-  <div class="container">
-    <h2>Connexion</h2>
-    <form id="loginForm">
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Mot de passe" required />
-      <div class="error" id="errorMsg"></div>
-      <button type="submit" class="submit-btn">Se connecter</button>
-    </form>
-    <button class="menu-container" onclick="window.location.href='inscription.html'" style="background-color:#42b72a;">S’inscrire</button>
-  </div>
+  <!-- ===== Contenu ===== -->
+  <main>
+    <section id="accueil" class="card">
+      <h2>Connexion</h2>
+      <form id="loginForm">
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Mot de passe" required />
+        <div class="err" id="loginErr"></div>
+        <button type="submit" class="btn btn-cta" style="align-self:flex-start;">Se connecter</button>
+      </form>
+      <div style="margin-top:10px;">
+        <button class="btn" onclick="location.href='inscription.html'">S’inscrire</button>
+      </div>
+    </section>
 
-  <div class="container" style="margin-top: 20px;">
-    <h2>Publier un post</h2>
-    <form id="postForm">
-      <input type="text" id="author" placeholder="Votre nom" required />
-      <textarea id="content" placeholder="Qu'avez-vous à partager ?" rows="3" required></textarea>
-      <div class="error" id="postErrorMsg"></div>
-      <button type="submit" class="submit-btn">Publier</button>
-    </form>
-  </div>
+    <section id="projet" class="card">
+      <h2>Publier un post</h2>
+      <form id="postForm">
+        <input type="text" id="author" placeholder="Votre nom" required />
+        <textarea id="content" placeholder="Qu'avez-vous à partager ?" rows="3" required></textarea>
+        <div class="err" id="postErr"></div>
+        <button type="submit" class="btn btn-cta" style="align-self:flex-start;">Publier</button>
+      </form>
+    </section>
 
-  <div class="container" style="margin-top: 20px;">
-    <h2>Fil d’actualité</h2>
-    <div id="feed"></div>
-  </div>
+    <section id="organisation" class="card">
+      <h2>Fil d’actualité</h2>
+      <div id="feed"></div>
+    </section>
+  </main>
 
   <script>
+    // ===== Typewriter (boucle) =====
+    const phrases = [
+      "Bienvenue",
+      "Partage tes idées.",
+      "Systeme Ivoirien"
+    ];
+    const tw = document.getElementById('typewriter');
+    let p = 0, i = 0, del = false;
+
+    function stepType(){
+      const text = phrases[p];
+      if(!del){
+        tw.textContent = text.slice(0, i++);
+        if(i > text.length + 5){ del = true; }
+      }else{
+        tw.textContent = text.slice(0, i--);
+        if(i < 0){ del = false; p = (p+1) % phrases.length; }
+      }
+      setTimeout(stepType, del ? 50 : 90);
+    }
+    stepType();
+
+    // ===== Menu mobile =====
+    const dropdown = document.getElementById('dropdown');
+    const burgerBtn = document.querySelector('.burger');
+
+    function toggleDropdown(e){
+      e.stopPropagation();
+      const show = !dropdown.classList.contains('show');
+      dropdown.classList.toggle('show', show);
+      dropdown.setAttribute('aria-hidden', show ? 'false' : 'true');
+      burgerBtn.setAttribute('aria-expanded', show ? 'true' : 'false');
+    }
+    function closeDropdown(){
+      dropdown.classList.remove('show');
+      dropdown.setAttribute('aria-hidden', 'true');
+      burgerBtn.setAttribute('aria-expanded', 'false');
+    }
+    // ferme au clic extérieur
+    document.addEventListener('click', (e)=>{
+      if(!dropdown.contains(e.target) && !burgerBtn.contains(e.target)){
+        closeDropdown();
+      }
+    });
+    // ferme avec Échap
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape'){ closeDropdown(); }
+    });
+
+    // ===== Navigation interne douce =====
+    function scrollToId(id){
+      const el = document.getElementById(id);
+      if(!el) return;
+      const y = el.getBoundingClientRect().top + window.scrollY - (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) + 8);
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+
+    // ===== Backend calls =====
     const backendURL = 'https://ieslecampus.onrender.com';
 
-    // Typewriter animation
-    const titleElement = document.getElementById('animatedTitle');
-    const phrases = [
-      "Mini Réseau Social",
-      "Partage tes pensées",
-      "Connecte-toi avec tes amis",
-      "Exprime-toi librement",
-      "Bienvenue dans ta communauté"
-    ];
-    let phraseIndex = 0, charIndex = 0, isDeleting = false;
-
-    function typeWriter() {
-      const currentPhrase = phrases[phraseIndex];
-      const displayedText = isDeleting
-        ? currentPhrase.substring(0, charIndex--)
-        : currentPhrase.substring(0, charIndex++);
-      titleElement.textContent = displayedText;
-      if (!isDeleting && charIndex === currentPhrase.length + 1) { isDeleting = true; setTimeout(typeWriter,1200); return; }
-      if (isDeleting && charIndex === 0) { isDeleting=false; phraseIndex=(phraseIndex+1)%phrases.length; }
-      const speed = isDeleting ? 50 : 100;
-      setTimeout(typeWriter, speed);
-    }
-    typeWriter();
-
-    // Toggle dropdown
-    function toggleDropdown() {
-      const dropdown = document.getElementById('dropdownMenu');
-      dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
-    }
-
-    // Gestion Connexion
+    // Connexion
     const loginForm = document.getElementById('loginForm');
-    const errorMsg = document.getElementById('errorMsg');
-    loginForm.addEventListener('submit', async function(event){
-      event.preventDefault();
-      errorMsg.textContent = '';
-      const email = loginForm.email.value.trim();
-      const password = loginForm.password.value.trim();
-      if (!email.includes('@')) { errorMsg.textContent="Adresse email invalide."; return; }
-      if (password.length<6){ errorMsg.textContent="Le mot de passe doit contenir au moins 6 caractères."; return; }
+    const loginErr = document.getElementById('loginErr');
+    loginForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      loginErr.textContent = '';
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if(!email.includes('@')){ loginErr.textContent = "Adresse email invalide."; return; }
+      if(password.length < 6){ loginErr.textContent = "Le mot de passe doit contenir au moins 6 caractères."; return; }
+
       try{
-        const response = await fetch(`${backendURL}/login`,{
-          method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email,password})
+        const r = await fetch(`${backendURL}/login`, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ email, password })
         });
-        if(!response.ok){ const errData = await response.json(); errorMsg.textContent = errData.message || 'Erreur lors de la connexion.'; return; }
-        const data = await response.json();
-        if(data.success){ alert(`Connexion réussie pour ${email}`); loginForm.reset(); errorMsg.textContent=''; }
-        else { errorMsg.textContent=data.message || "Erreur lors de la connexion."; }
-      } catch(err){ errorMsg.textContent="Erreur réseau ou serveur indisponible."; }
+        const data = await r.json().catch(()=>({}));
+        if(!r.ok || !data.success){
+          loginErr.textContent = (data && data.message) ? data.message : "Erreur lors de la connexion.";
+          return;
+        }
+        alert(`Connexion réussie pour ${email}`);
+        loginForm.reset();
+      }catch(err){
+        loginErr.textContent = "Erreur réseau ou serveur indisponible.";
+      }
     });
 
-    // Gestion Post
+    // Posts
     const postForm = document.getElementById('postForm');
-    const postErrorMsg = document.getElementById('postErrorMsg');
+    const postErr = document.getElementById('postErr');
     const feed = document.getElementById('feed');
 
-    async function loadPosts() {
+    async function loadPosts(){
       try{
-        const response = await fetch(`${backendURL}/posts`);
-        if(!response.ok) throw new Error("Erreur serveur");
-        const posts = await response.json();
-        feed.innerHTML='';
+        const r = await fetch(`${backendURL}/posts`);
+        if(!r.ok) throw new Error("HTTP");
+        const posts = await r.json();
+        feed.innerHTML = '';
+        if(!Array.isArray(posts) || posts.length===0){
+          feed.innerHTML = '<p style="margin:0;opacity:.85;">Aucun post pour le moment.</p>';
+          return;
+        }
         posts.forEach(post=>{
-          const postDiv=document.createElement('div');
-          postDiv.classList.add('post');
-          const authorDiv=document.createElement('div');
-          authorDiv.classList.add('post-author'); authorDiv.textContent=post.author;
-          const contentDiv=document.createElement('div');
-          contentDiv.classList.add('post-content'); contentDiv.textContent=post.content;
-          postDiv.appendChild(authorDiv); postDiv.appendChild(contentDiv); feed.appendChild(postDiv);
+          const wrap = document.createElement('div');
+          wrap.className = 'post';
+          wrap.innerHTML = `<div class="auteur">${post.author || 'Anonyme'}</div>
+                            <div>${post.content || ''}</div>`;
+          feed.appendChild(wrap);
         });
-      } catch(err){ feed.innerHTML='<p>Impossible de charger le fil d’actualité.</p>'; }
+      }catch(err){
+        feed.innerHTML = '<p style="margin:0;color:#e53935;">Impossible de charger le fil d’actualité.</p>';
+      }
     }
 
-    postForm.addEventListener('submit', async function(event){
-      event.preventDefault(); postErrorMsg.textContent='';
-      const author=document.getElementById('author').value.trim();
-      const content=document.getElementById('content').value.trim();
-      if(author===''||content===''){ postErrorMsg.textContent="Veuillez remplir tous les champs."; return; }
+    postForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      postErr.textContent = '';
+      const author = document.getElementById('author').value.trim();
+      const content = document.getElementById('content').value.trim();
+      if(!author || !content){ postErr.textContent = "Veuillez remplir tous les champs."; return; }
+
       try{
-        const response=await fetch(`${backendURL}/posts`,{
-          method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({author,content})
+        const r = await fetch(`${backendURL}/posts`, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ author, content })
         });
-        if(!response.ok){ const errData=await response.json(); postErrorMsg.textContent=errData.message || "Erreur lors de la publication."; return; }
-        const data=await response.json();
-        if(data.success){ postForm.reset(); await loadPosts(); }
-        else{ postErrorMsg.textContent=data.message || "Erreur lors de la publication."; }
-      } catch(err){ postErrorMsg.textContent="Erreur réseau ou serveur indisponible."; }
+        const data = await r.json().catch(()=>({}));
+        if(!r.ok || !data.success){
+          postErr.textContent = (data && data.message) ? data.message : "Erreur lors de la publication.";
+          return;
+        }
+        postForm.reset();
+        loadPosts();
+      }catch(err){
+        postErr.textContent = "Erreur réseau ou serveur indisponible.";
+      }
     });
 
+    // Charger les posts au démarrage
     loadPosts();
   </script>
 </body>
