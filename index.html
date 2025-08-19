@@ -7,7 +7,8 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f0f2f5;
+      background: url("im.jpg") no-repeat center center fixed;
+      background-size: cover;
       margin: 0;
       padding: 0;
       display: flex;
@@ -16,7 +17,7 @@
     }
 
     header {
-      background-color: #4267B2;
+      background-color: rgba(66, 103, 178, 0.9);
       color: white;
       padding: 15px 20px;
       width: 100%;
@@ -36,10 +37,10 @@
     .container {
       max-width: 600px;
       margin-top: 30px;
-      background: white;
+      background: rgba(255, 255, 255, 0.9);
       padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       width: 90%;
     }
 
@@ -152,7 +153,6 @@
   </div>
 
   <script>
-    // URL de ton backend Render — à modifier si besoin
     const backendURL = 'https://ieslecampus.onrender.com';
 
     // --------- Animation multi-phrases ---------
@@ -234,7 +234,6 @@
           alert(`Connexion réussie pour ${email}`);
           loginForm.reset();
           errorMsg.textContent = '';
-          // Actions supplémentaires (afficher profil, cacher formulaire...) ici
         } else {
           errorMsg.textContent = data.message || "Erreur lors de la connexion.";
         }
@@ -315,8 +314,8 @@
       }
     });
 
-    // Charge les posts au démarrage
+    // Charger les posts au démarrage
     loadPosts();
   </script>
 </body>
-</html> 
+</html>
