@@ -1,88 +1,89 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.secret_key = "ton_secret_key"
+app.secret_key = "secret_key_123"  # à changer en production
 
-DATABASE = "database.db"
+DB_NAME = "database.db"
 
-# Création de la table si elle n'existe pas
+# Création de la table users si elle n'existe pas
 def init_db():
-    conn = sqlite3.connect(DATABASE)
-    c = conn.cursor()
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            fullname TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL,
-            dob TEXT NOT NULL,
-            phone TEXT NOT NULL,
-            address TEXT NOT NULL,
-            gender TEXT NOT NULL
-        )
-    ''')
-    conn.commit()
-    conn.close()
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                email TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL,
+                nom TEXT,
+                prenom TEXT,
+                date_naissance TEXT,
+                telephone TEXT
+            )
+        """)
+        conn.commit()
 
 init_db()
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route("/")
+def index():
+    if "user_id" in session:
+        return render_template("index.html")  # page après login
+    return redirect(url_for("login"))
+
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    if request.method == 'POST':
-        fullname = request.form['fullname']
-        email = request.form['email']
-        password = request.form['password']
-        confirm_password = request.form['confirm_password']
-        dob = request.form['dob']
-        phone = request.form['phone']
-        address = request.form['address']
-        gender = request.form['gender']
-
-        if password != confirm_password:
-            flash("Les mots de passe ne correspondent pas !")
-            return redirect(url_for('register'))
-
-        hashed_password = generate_password_hash(password)
+    if request.method == "POST":
+        email = request.form["email"]
+        password = generate_password_hash(request.form["password"])
+        nom = request.form.get("nom")
+        prenom = request.form.get("prenom")
+        date_naissance = request.form.get("date_naissance")
+        telephone = request.form.get("telephone")
 
         try:
-            conn = sqlite3.connect(DATABASE)
-            c = conn.cursor()
-            c.execute('''
-                INSERT INTO users (fullname, email, password, dob, phone, address, gender)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            ''', (fullname, email, hashed_password, dob, phone, address, gender))
-            conn.commit()
-            conn.close()
-            flash("Inscription réussie ! Vous pouvez maintenant vous connecter.")
-            return redirect(url_for('login'))
+            with sqlite3.connect(DB_NAME) as conn:
+                cursor = conn.cursor()
+                cursor.execute("""
+                    INSERT INTO users (email, password, nom, prenom, date_naissance, telephone)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                """, (email, password, nom, prenom, date_naissance, telephone))
+                conn.commit()
+                flash("Inscription réussie ! Vous pouvez maintenant vous connecter.")
+                return redirect(url_for("login"))
         except sqlite3.IntegrityError:
-            flash("Cet email est déjà utilisé.")
-            return redirect(url_for('register'))
+            flash("Email déjà utilisé !")
+            return redirect(url_for("register"))
 
-    return render_template('register.html')
+    return render_template("register.html")
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
 
-        conn = sqlite3.connect(DATABASE)
-        c = conn.cursor()
-        c.execute("SELECT password FROM users WHERE email = ?", (email,))
-        user = c.fetchone()
-        conn.close()
+        with sqlite3.connect(DB_NAME) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, password FROM users WHERE email = ?", (email,))
+            user = cursor.fetchone()
 
-        if user and check_password_hash(user[0], password):
-            flash("Connexion réussie !")
-            return redirect(url_for('register'))  # ou une page dashboard
-        else:
-            flash("Email ou mot de passe incorrect.")
-            return redirect(url_for('login'))
+            if user and check_password_hash(user[1], password):
+                session["user_id"] = user[0]
+                flash("Connexion réussie !")
+                return redirect(url_for("index"))
+            else:
+                flash("Email ou mot de passe incorrect !")
+                return redirect(url_for("login"))
 
-    return render_template('login.html')
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.pop("user_id", None)
+    flash("Vous êtes déconnecté.")
+    return redirect(url_for("login"))
 
 if __name__ == "__main__":
     app.run(debug=True)
