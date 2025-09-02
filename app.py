@@ -1,50 +1,48 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, g
 import sqlite3
 import os
 
 app = Flask(__name__)
+DATABASE = "database.db"
 
-DB_PATH = 'database.db'
-
-# Vérifie si la DB existe, sinon la crée
-def init_db():
-    if not os.path.exists(DB_PATH):
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
-        cursor.execute('''
-            CREATE TABLE utilisateurs (
+# Connexion à SQLite et création de la table si elle n'existe pas
+def get_db():
+    db = getattr(g, "_database", None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS utilisateurs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nom TEXT NOT NULL,
-                prenom TEXT NOT NULL
+                nom TEXT
             )
-        ''')
-        conn.commit()
-        conn.close()
-        print("Base de données créée avec succès !")
+        """)
+        db.commit()
+    return db
 
-# Appelle la fonction au démarrage
-init_db()
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, "_database", None)
+    if db is not None:
+        db.close()
 
-@app.route('/')
+# Page d'accueil : liste des utilisateurs
+@app.route("/")
 def index():
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM utilisateurs")
-    utilisateurs = cursor.fetchall()
-    conn.close()
+    cur = get_db().cursor()
+    cur.execute("SELECT id, nom FROM utilisateurs")
+    utilisateurs = cur.fetchall()
     return render_template("index.html", utilisateurs=utilisateurs)
 
-@app.route('/add', methods=['POST'])
-def add_utilisateur():
-    nom = request.form.get('nom')
-    prenom = request.form.get('prenom')
-    if nom and prenom:
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO utilisateurs (nom, prenom) VALUES (?, ?)", (nom, prenom))
-        conn.commit()
-        conn.close()
-    return redirect('/')
+# Ajouter un utilisateur
+@app.route("/add", methods=["POST"])
+def add_user():
+    nom = request.form.get("nom")
+    db = get_db()
+    db.execute("INSERT INTO utilisateurs (nom) VALUES (?)", (nom,))
+    db.commit()
+    return "<p>Utilisateur ajouté !</p><a href='/'>Retour</a>"
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Lancer l’application sur Render
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
