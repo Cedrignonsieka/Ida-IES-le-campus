@@ -1,21 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Mini site Flask</title>
-</head>
+<html>
+<head><title>Accueil</title></head>
 <body>
-  <h1>Liste des utilisateurs</h1>
-  <ul>
-    {% for user in utilisateurs %}
-      <li>{{ user[1] }}</li>
-    {% endfor %}
-  </ul>
-
-  <h2>Ajouter un utilisateur</h2>
-  <form action="/add" method="POST">
-    <input type="text" name="nom" placeholder="Nom" required>
-    <button type="submit">Ajouter</button>
-  </form>
+<h2>Bienvenue {{ email }} !</h2>
+<a href="{{ url_for('logout') }}">Déconnexion</a>
 </body>
 </html>
