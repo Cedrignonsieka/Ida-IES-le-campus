@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: ida-ies-le-campus
-    env: docker
-    dockerfilePath: Dockerfile
-    plan: free
-    branch: main
