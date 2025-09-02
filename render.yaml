@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: mon-site-flask
+    name: ida-ies-le-campus
     env: python
     buildCommand: ""
     startCommand: "gunicorn app:app"
