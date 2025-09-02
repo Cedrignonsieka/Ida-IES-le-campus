@@ -3,89 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <title>Inscription</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      background: linear-gradient(135deg, #36b9cc, #f6c23e);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
     }
-
     .container {
       background: #fff;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      width: 400px;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+      width: 420px;
       text-align: center;
-      max-height: 90vh;
-      overflow-y: auto;
     }
-
     h2 {
-      margin-bottom: 20px;
+      margin-bottom: 1rem;
       color: #333;
     }
-
-    .input-group {
-      position: relative;
-      margin: 12px 0;
-      text-align: left;
-    }
-
-    .input-group i {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #888;
-    }
-
-    .input-group input,
-    .input-group select {
-      width: 100%;
-      padding: 12px 12px 12px 40px;
-      border: 1px solid #ccc;
+    input, select {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
       border-radius: 8px;
       outline: none;
-      transition: 0.3s;
-    }
-
-    .input-group input:focus,
-    .input-group select:focus {
-      border-color: #2575fc;
-      box-shadow: 0 0 5px rgba(37, 117, 252, 0.5);
-    }
-
-    button {
-      background: #2575fc;
-      color: white;
-      padding: 12px;
-      width: 100%;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: 0.3s;
-      margin-top: 15px;
-    }
-
-    button:hover {
-      background: #1b5fd8;
-    }
-
-    a {
-      display: inline-block;
-      margin-top: 15px;
-      color: #2575fc;
-      text-decoration: none;
       font-size: 14px;
     }
-
+    input:focus, select:focus {
+      border-color: #36b9cc;
+      box-shadow: 0 0 5px rgba(54,185,204,0.5);
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #36b9cc;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #2c9faf;
+    }
+    a {
+      display: block;
+      margin-top: 1rem;
+      text-decoration: none;
+      color: #f6c23e;
+      font-weight: bold;
+    }
     a:hover {
       text-decoration: underline;
     }
@@ -93,68 +66,21 @@
 </head>
 <body>
   <div class="container">
-    <h2>Inscription</h2>
+    <h2>📝 Inscription</h2>
     <form method="POST">
-      <div class="input-group">
-        <i class="fa-solid fa-user"></i>
-        <input type="text" name="prenom" placeholder="Prénom" required>
-      </div>
-
-      <div class="input-group">
-        <i class="fa-solid fa-user"></i>
-        <input type="text" name="nom" placeholder="Nom" required>
-      </div>
-
-      <div class="input-group">
-        <i class="fa-solid fa-envelope"></i>
-        <input type="email" name="email" placeholder="Email" required>
-      </div>
-
-      <div class="input-group">
-        <i class="fa-solid fa-lock"></i>
-        <input type="password" name="password" placeholder="Mot de passe" required>
-      </div>
-
-      <div class="input-group">
-        <i class="fa-solid fa-lock"></i>
-        <input type="password" name="confirm_password" placeholder="Confirmer le mot de passe" required>
-      </div>
-
-      <div class="input-group">
-        <i class="fa-solid fa-calendar"></i>
-        <input type="date" name="date_naissance" required>
-      </div>
-
-      <div class="input-group">
-        <i class="fa-solid fa-globe"></i>
-        <select name="pays" required>
-          <option value="">-- Sélectionnez votre pays --</option>
-          <option value="CI">Côte d’Ivoire</option>
-          <option value="FR">France</option>
-          <option value="SN">Sénégal</option>
-          <option value="ML">Mali</option>
-          <option value="CM">Cameroun</option>
-          <option value="MA">Maroc</option>
-          <option value="US">États-Unis</option>
-          <option value="CA">Canada</option>
-        </select>
-      </div>
-
-      <div class="input-group">
-        <i class="fa-solid fa-venus-mars"></i>
-        <select name="genre" required>
-          <option value="">-- Genre --</option>
-          <option value="Homme">Homme</option>
-          <option value="Femme">Femme</option>
-          <option value="Autre">Autre</option>
-        </select>
-      </div>
-
-      <div class="input-group">
-        <i class="fa-solid fa-phone"></i>
-        <input type="tel" name="telephone" placeholder="Téléphone">
-      </div>
-
+      <input type="text" name="fullname" placeholder="Nom complet" required>
+      <input type="email" name="email" placeholder="Adresse email" required>
+      <input type="password" name="password" placeholder="Mot de passe" required>
+      <input type="password" name="confirm_password" placeholder="Confirmer le mot de passe" required>
+      <input type="date" name="dob" required>
+      <input type="tel" name="phone" placeholder="Numéro de téléphone" required>
+      <input type="text" name="address" placeholder="Adresse complète" required>
+      <select name="gender" required>
+        <option value="">-- Sélectionnez le genre --</option>
+        <option value="Homme">Homme</option>
+        <option value="Femme">Femme</option>
+        <option value="Autre">Autre</option>
+      </select>
       <button type="submit">S'inscrire</button>
     </form>
     <a href="/login">Déjà un compte ? Connectez-vous</a>
