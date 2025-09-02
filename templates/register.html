@@ -1,5 +1,13 @@
-<form method="post">
+<!DOCTYPE html>
+<html>
+<head><title>Register</title></head>
+<body>
+<h2>Inscription</h2>
+<form method="POST">
   Email: <input type="email" name="email" required><br>
   Mot de passe: <input type="password" name="password" required><br>
   <button type="submit">S'inscrire</button>
 </form>
+<a href="{{ url_for('login') }}">Se connecter</a>
+</body>
+</html>
