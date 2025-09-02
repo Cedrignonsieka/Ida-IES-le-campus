@@ -1,8 +1,7 @@
 services:
   - type: web
     name: ida-ies-le-campus
-    env: python
-    buildCommand: ""
-    startCommand: "gunicorn app:app"
+    env: docker
+    dockerfilePath: Dockerfile
     plan: free
     branch: main
