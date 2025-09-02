@@ -2,12 +2,12 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Inscription</title>
+  <title>Connexion</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      background: linear-gradient(135deg, #2575fc, #6a11cb);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -32,6 +32,7 @@
     .input-group {
       position: relative;
       margin: 15px 0;
+      text-align: left;
     }
 
     .input-group i {
@@ -52,8 +53,8 @@
     }
 
     .input-group input:focus {
-      border-color: #2575fc;
-      box-shadow: 0 0 5px rgba(37, 117, 252, 0.5);
+      border-color: #6a11cb;
+      box-shadow: 0 0 5px rgba(106, 17, 203, 0.5);
     }
 
     button {
@@ -84,23 +85,38 @@
     a:hover {
       text-decoration: underline;
     }
+
+    .forgot {
+      display: block;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .forgot:hover {
+      color: #2575fc;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Inscription</h2>
+    <h2>Connexion</h2>
     <form method="POST">
       <div class="input-group">
         <i class="fa-solid fa-envelope"></i>
         <input type="email" name="email" placeholder="Votre email" required>
       </div>
+
       <div class="input-group">
         <i class="fa-solid fa-lock"></i>
         <input type="password" name="password" placeholder="Votre mot de passe" required>
       </div>
-      <button type="submit">S'inscrire</button>
+
+      <button type="submit">Se connecter</button>
     </form>
-    <a href="/login">Déjà un compte ? Connectez-vous</a>
+
+    <a href="/register">Pas de compte ? Inscrivez-vous</a>
+    <a href="/forgot-password" class="forgot">Mot de passe oublié ?</a>
   </div>
 </body>
 </html>
