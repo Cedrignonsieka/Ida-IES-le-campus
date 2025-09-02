@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, g
 import sqlite3
+import os
 
 app = Flask(__name__)
 DATABASE = "database.db"
@@ -9,7 +10,6 @@ def get_db():
     db = getattr(g, "_database", None)
     if db is None:
         db = g._database = sqlite3.connect(DATABASE)
-        # Création automatique de la table utilisateurs
         db.execute("""
             CREATE TABLE IF NOT EXISTS utilisateurs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -19,20 +19,19 @@ def get_db():
         db.commit()
     return db
 
-# Fermer la connexion après chaque requête
 @app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, "_database", None)
     if db is not None:
         db.close()
 
-# Page d’accueil : liste des utilisateurs
+# Page d'accueil : liste des utilisateurs
 @app.route("/")
 def index():
     cur = get_db().cursor()
     cur.execute("SELECT id, nom FROM utilisateurs")
-    users = cur.fetchall()
-    return render_template("index.html", users=users)
+    utilisateurs = cur.fetchall()
+    return render_template("index.html", utilisateurs=utilisateurs)
 
 # Ajouter un utilisateur
 @app.route("/add", methods=["POST"])
@@ -43,5 +42,7 @@ def add_user():
     db.commit()
     return "<p>Utilisateur ajouté !</p><a href='/'>Retour</a>"
 
+# Lancer l’application sur Render
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
