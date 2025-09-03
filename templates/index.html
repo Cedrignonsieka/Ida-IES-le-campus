@@ -1,43 +1,58 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accueil</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(to right, #ff758c, #ff7eb3);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        color: #fff;
-        flex-direction: column;
-    }
-    h2 {
-        font-size: 32px;
-        margin-bottom: 20px;
-    }
-    a {
-        background-color: #fff;
-        color: #ff758c;
-        padding: 12px 25px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: bold;
-        transition: 0.3s;
-    }
-    a:hover {
-        background-color: #ff7eb3;
-        color: #fff;
-    }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accueil</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f8f9fa; }
+    header { background: #333; color: #fff; padding: 15px; text-align: center; }
+    nav a { color: #fff; margin: 0 10px; text-decoration: none; font-weight: bold; }
+    .carousel { display: flex; overflow-x: auto; gap: 20px; padding: 20px; scroll-snap-type: x mandatory; }
+    .status { min-width: 250px; max-width: 250px; background: #fff; padding: 15px; border-radius: 10px;
+              box-shadow: 0 2px 6px rgba(0,0,0,0.1); scroll-snap-align: center; flex-shrink: 0; }
+    .status h3 { margin: 0; font-size: 1.1em; color: #007bff; }
+    .status p { margin: 10px 0; font-size: 0.95em; }
+    .status small { color: #777; }
+    form { margin: 20px; text-align: center; }
+    textarea { width: 90%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; }
+    button { margin-top: 10px; padding: 10px 15px; border: none; border-radius: 8px; background: #007bff; color: #fff; cursor: pointer; }
+    button:hover { background: #0056b3; }
+  </style>
 </head>
 <body>
-<h2>Bienvenue !</h2>
-<p>Vous êtes connecté.</p>
-<a href="/logout">Déconnexion</a>
+  <header>
+    <nav>
+      <a href="/login">CONNEXION</a>
+      <a href="/register">INSCRIPTION</a>
+      <a href="/">PUBLICATIONS</a>
+      {% if session.user_id %}
+        <a href="/logout">SE DÉCONNECTER</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <h2 style="text-align:center; margin-top:20px;">📢 Publications</h2>
+  <div class="carousel">
+    {% for pub in publications %}
+    <div class="status">
+      <h3>{{ pub.user_name }}</h3>
+      <p>{{ pub.content }}</p>
+      <small>{{ pub.date }}</small>
+    </div>
+    {% else %}
+    <div class="status">
+      <p>Aucune publication pour le moment.</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if session.user_id %}
+  <form method="POST" action="/post">
+    <textarea name="content" placeholder="Écrire une publication..." required></textarea><br>
+    <input type="date" name="date" required><br>
+    <button type="submit">Publier</button>
+  </form>
+  {% endif %}
 </body>
 </html>
