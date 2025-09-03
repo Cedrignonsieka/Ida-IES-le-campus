@@ -1,86 +1,89 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
-from werkzeug.security import generate_password_hash, check_password_hash
+import os
 
 app = Flask(__name__)
-app.secret_key = "secret_key_123"  # à personnaliser
+app.secret_key = "supersecretkey"  # change ça pour plus de sécurité
 
-# -------------------------
-# Base de données
-# -------------------------
+
+# ---------------------------
+# Initialisation de la base
+# ---------------------------
 def init_db():
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
 
-    # Table utilisateurs
+    # Table des utilisateurs
     c.execute("""
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        birthdate TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL,
-        name TEXT,
-        birthdate TEXT
+        password TEXT NOT NULL
     )
     """)
 
-    # Table publications
+    # Table des publications
     c.execute("""
     CREATE TABLE IF NOT EXISTS publications (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
+        user_id INTEGER NOT NULL,
         content TEXT NOT NULL,
-        date TEXT NOT NULL,
-        FOREIGN KEY(user_id) REFERENCES users(id)
+        date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users (id)
     )
     """)
 
     conn.commit()
     conn.close()
 
-# -------------------------
-# Routes
-# -------------------------
-@app.route('/')
+
+init_db()
+
+
+# ---------------------------
+# Routes principales
+# ---------------------------
+@app.route("/")
 def index():
-    conn = sqlite3.connect("database.db")
-    c = conn.cursor()
-    c.execute("""
-        SELECT p.content, p.date, u.name 
-        FROM publications p 
-        JOIN users u ON p.user_id = u.id
-        ORDER BY p.id DESC
-    """)
-    publications = [{"content": row[0], "date": row[1], "user_name": row[2]} for row in c.fetchall()]
-    conn.close()
+    if "user_id" in session:
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
+        c.execute("""
+            SELECT publications.content, publications.date, users.name
+            FROM publications
+            JOIN users ON publications.user_id = users.id
+            ORDER BY publications.date DESC
+        """)
+        posts = c.fetchall()
+        conn.close()
+        return render_template("index.html", posts=posts, user=session["user_name"])
+    return redirect(url_for("login"))
 
-    return render_template("index.html", publications=publications)
 
-# Inscription
-@app.route('/register', methods=["GET", "POST"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        email = request.form["email"]
-        password = generate_password_hash(request.form["password"])
         name = request.form["name"]
         birthdate = request.form["birthdate"]
+        email = request.form["email"]
+        password = request.form["password"]
 
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         try:
-            c.execute("INSERT INTO users (email, password, name, birthdate) VALUES (?, ?, ?, ?)",
-                      (email, password, name, birthdate))
+            c.execute("INSERT INTO users (name, birthdate, email, password) VALUES (?, ?, ?, ?)",
+                      (name, birthdate, email, password))
             conn.commit()
         except sqlite3.IntegrityError:
-            return "⚠️ Cet email est déjà utilisé."
-        finally:
-            conn.close()
-
+            return "❌ Cet email est déjà utilisé !"
+        conn.close()
         return redirect(url_for("login"))
-
     return render_template("register.html")
 
-# Connexion
-@app.route('/login', methods=["GET", "POST"])
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         email = request.form["email"]
@@ -88,46 +91,40 @@ def login():
 
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
-        c.execute("SELECT id, password, name FROM users WHERE email=?", (email,))
+        c.execute("SELECT id, name FROM users WHERE email = ? AND password = ?", (email, password))
         user = c.fetchone()
         conn.close()
 
-        if user and check_password_hash(user[1], password):
+        if user:
             session["user_id"] = user[0]
-            session["user_name"] = user[2]
+            session["user_name"] = user[1]
             return redirect(url_for("index"))
         else:
-            return "⚠️ Email ou mot de passe incorrect."
-
+            return "❌ Email ou mot de passe incorrect"
     return render_template("login.html")
 
-# Déconnexion
-@app.route('/logout')
+
+@app.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("index"))
+    return redirect(url_for("login"))
 
-# Ajouter une publication
-@app.route('/post', methods=["POST"])
+
+@app.route("/post", methods=["POST"])
 def post():
-    if "user_id" not in session:
-        return redirect(url_for("login"))
-
-    content = request.form["content"]
-    date = request.form["date"]
-
-    conn = sqlite3.connect("database.db")
-    c = conn.cursor()
-    c.execute("INSERT INTO publications (user_id, content, date) VALUES (?, ?, ?)",
-              (session["user_id"], content, date))
-    conn.commit()
-    conn.close()
-
+    if "user_id" in session:
+        content = request.form["content"]
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
+        c.execute("INSERT INTO publications (user_id, content) VALUES (?, ?)", (session["user_id"], content))
+        conn.commit()
+        conn.close()
     return redirect(url_for("index"))
 
-# -------------------------
-# Lancer l'app
-# -------------------------
+
+# ---------------------------
+# Lancement local
+# ---------------------------
 if __name__ == "__main__":
-    init_db()
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
