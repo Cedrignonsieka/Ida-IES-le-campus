@@ -6,32 +6,38 @@
   <title>Accueil</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
       background: #f0f2f5;
+      color: #333;
     }
 
     /* Navbar */
     .navbar {
-      background: #333;
+      background: #2c3e50;
       color: #fff;
-      padding: 15px;
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
     .navbar h2 {
       margin: 0;
+      font-size: 22px;
     }
     .navbar a {
       color: white;
       text-decoration: none;
       margin-left: 15px;
-      font-weight: bold;
+      font-weight: 500;
+      transition: color 0.3s;
     }
     .navbar a:hover {
-      text-decoration: underline;
+      color: #1abc9c;
     }
 
     /* Zone publication */
@@ -39,50 +45,68 @@
       background: #fff;
       padding: 20px;
       margin: 20px;
-      border-radius: 8px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
     }
     .post-form textarea {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
+      padding: 12px;
+      border: 1px solid #ddd;
       border-radius: 8px;
       resize: none;
+      font-size: 14px;
     }
     .post-form button {
       margin-top: 10px;
-      background: #28a745;
+      background: #1abc9c;
       color: white;
-      padding: 10px 15px;
+      padding: 10px 18px;
       border: none;
       border-radius: 8px;
+      font-size: 14px;
       cursor: pointer;
+      transition: background 0.3s;
     }
     .post-form button:hover {
-      background: #218838;
+      background: #16a085;
     }
 
-    /* Publications style */
+    /* Publications container */
+    .posts-wrapper {
+      overflow: hidden;
+      position: relative;
+      margin: 20px;
+    }
     .posts-container {
       display: flex;
-      overflow-x: auto;
-      gap: 15px;
-      padding: 20px;
+      gap: 20px;
+      animation: scroll-left 25s linear infinite;
     }
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Chaque publication */
     .post {
       flex: 0 0 250px;
       background: white;
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-align: center;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: left;
+      transition: transform 0.3s;
+    }
+    .post:hover {
+      transform: scale(1.05);
     }
     .post h3 {
-      margin: 0 0 10px;
-      color: #333;
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: #2c3e50;
     }
     .post p {
-      margin: 0;
+      font-size: 14px;
       color: #555;
     }
     .post small {
@@ -92,27 +116,16 @@
       font-size: 12px;
     }
 
-    /* Scroll invisible mais défilement fluide */
-    .posts-container::-webkit-scrollbar {
-      display: none;
-    }
-    .posts-container {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
     /* Responsive */
     @media(max-width: 600px) {
-      .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
       .posts-container {
-        flex-direction: column;
-        overflow-x: hidden;
+        animation: none; /* pas d’auto-défilement sur mobile */
+        flex-wrap: wrap;
+        justify-content: center;
       }
       .post {
         width: 100%;
+        max-width: 300px;
       }
     }
   </style>
@@ -136,21 +149,31 @@
   {% if user %}
   <div class="post-form">
     <form action="/post" method="POST">
-      <textarea name="content" rows="3" placeholder="Écris quelque chose..." required></textarea>
+      <textarea name="content" rows="3" placeholder="Exprime-toi..." required></textarea>
       <button type="submit">Publier</button>
     </form>
   </div>
   {% endif %}
 
   <!-- Zone des publications -->
-  <div class="posts-container">
-    {% for content, date, author in posts %}
-    <div class="post">
-      <h3>{{ author }}</h3>
-      <p>{{ content }}</p>
-      <small>Publié le {{ date }}</small>
+  <div class="posts-wrapper">
+    <div class="posts-container">
+      {% for content, date, author in posts %}
+      <div class="post">
+        <h3>{{ author }}</h3>
+        <p>{{ content }}</p>
+        <small>Publié le {{ date }}</small>
+      </div>
+      {% endfor %}
+      <!-- Duplication pour effet défilement infini -->
+      {% for content, date, author in posts %}
+      <div class="post">
+        <h3>{{ author }}</h3>
+        <p>{{ content }}</p>
+        <small>Publié le {{ date }}</small>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
   </div>
 </body>
 </html>
