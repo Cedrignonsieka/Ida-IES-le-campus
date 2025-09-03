@@ -6,172 +6,117 @@
   <title>Accueil</title>
   <style>
     body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f0f2f5;
-      color: #333;
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
-    /* Navbar */
-    .navbar {
+    /* Barre de navigation */
+    nav {
       background: #2c3e50;
-      color: #fff;
-      padding: 15px 20px;
+      color: white;
+      padding: 1rem;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      justify-content: center;
+      gap: 2rem;
     }
-    .navbar h2 {
-      margin: 0;
-      font-size: 22px;
-    }
-    .navbar a {
+    nav a {
       color: white;
       text-decoration: none;
-      margin-left: 15px;
-      font-weight: 500;
-      transition: color 0.3s;
+      font-weight: bold;
+      transition: 0.3s;
     }
-    .navbar a:hover {
+    nav a:hover {
       color: #1abc9c;
     }
 
-    /* Zone publication */
-    .post-form {
-      background: #fff;
-      padding: 20px;
-      margin: 20px;
-      border-radius: 12px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    }
-    .post-form textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      resize: none;
-      font-size: 14px;
-    }
-    .post-form button {
-      margin-top: 10px;
-      background: #1abc9c;
-      color: white;
-      padding: 10px 18px;
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .post-form button:hover {
-      background: #16a085;
-    }
-
-    /* Publications container */
-    .posts-wrapper {
-      overflow: hidden;
-      position: relative;
-      margin: 20px;
-    }
-    .posts-container {
+    /* Conteneur principal */
+    .container {
+      flex: 1;
+      padding: 2rem;
       display: flex;
-      gap: 20px;
-      animation: scroll-left 25s linear infinite;
-    }
-    @keyframes scroll-left {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      flex-direction: column;
+      align-items: center;
     }
 
-    /* Chaque publication */
-    .post {
-      flex: 0 0 250px;
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: left;
-      transition: transform 0.3s;
-    }
-    .post:hover {
-      transform: scale(1.05);
-    }
-    .post h3 {
-      margin: 0 0 8px;
-      font-size: 18px;
+    h1 {
+      margin-bottom: 1rem;
       color: #2c3e50;
     }
-    .post p {
-      font-size: 14px;
-      color: #555;
+
+    /* Bloc publications */
+    .publications-wrapper {
+      display: flex;
+      overflow-x: auto;
+      gap: 1rem;
+      padding: 1rem;
+      scroll-snap-type: x mandatory;
+      width: 100%;
+      max-width: 900px;
     }
-    .post small {
-      display: block;
-      margin-top: 10px;
-      color: gray;
-      font-size: 12px;
+    .publication {
+      background: white;
+      border-radius: 10px;
+      padding: 1rem;
+      min-width: 250px;
+      max-width: 250px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .publication h3 {
+      margin: 0 0 0.5rem;
+      color: #34495e;
+    }
+    .publication p {
+      font-size: 0.9rem;
+      color: #555;
+      flex: 1;
+    }
+    .publication small {
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      color: #999;
+      text-align: right;
     }
 
     /* Responsive */
-    @media(max-width: 600px) {
-      .posts-container {
-        animation: none; /* pas d’auto-défilement sur mobile */
-        flex-wrap: wrap;
-        justify-content: center;
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+        gap: 0.5rem;
       }
-      .post {
-        width: 100%;
-        max-width: 300px;
+      .publications-wrapper {
+        justify-content: center;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <div class="navbar">
-    <h2>Mon Réseau</h2>
-    <div>
-      {% if user %}
-        <span>Bienvenue, {{ user }}</span>
-        <a href="/logout">Déconnexion</a>
-      {% else %}
-        <a href="/login">Connexion</a>
-        <a href="/register">Inscription</a>
-      {% endif %}
-    </div>
-  </div>
+  <!-- Barre de navigation -->
+  <nav>
+    <a href="/login">CONNEXION</a>
+    <a href="/register">INSCRIPTION</a>
+    <a href="/publish">PUBLICATION</a>
+  </nav>
 
-  <!-- Formulaire de publication -->
-  {% if user %}
-  <div class="post-form">
-    <form action="/post" method="POST">
-      <textarea name="content" rows="3" placeholder="Exprime-toi..." required></textarea>
-      <button type="submit">Publier</button>
-    </form>
-  </div>
-  {% endif %}
+  <!-- Contenu -->
+  <div class="container">
+    <h1>Bienvenue sur la plateforme</h1>
 
-  <!-- Zone des publications -->
-  <div class="posts-wrapper">
-    <div class="posts-container">
-      {% for content, date, author in posts %}
-      <div class="post">
-        <h3>{{ author }}</h3>
-        <p>{{ content }}</p>
-        <small>Publié le {{ date }}</small>
-      </div>
-      {% endfor %}
-      <!-- Duplication pour effet défilement infini -->
-      {% for content, date, author in posts %}
-      <div class="post">
-        <h3>{{ author }}</h3>
-        <p>{{ content }}</p>
-        <small>Publié le {{ date }}</small>
-      </div>
+    <!-- Bloc publications -->
+    <div class="publications-wrapper">
+      {% for pub in publications %}
+        <div class="publication">
+          <h3>{{ pub.titre }}</h3>
+          <p>{{ pub.contenu }}</p>
+          <small>Posté par {{ pub.auteur }} le {{ pub.date }}</small>
+        </div>
       {% endfor %}
     </div>
   </div>
