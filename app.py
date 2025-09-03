@@ -1,89 +1,133 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.secret_key = "secret_key_123"  # à changer en production
+app.secret_key = "secret_key_123"  # à personnaliser
 
-DB_NAME = "database.db"
-
-# Création de la table users si elle n'existe pas
+# -------------------------
+# Base de données
+# -------------------------
 def init_db():
-    with sqlite3.connect(DB_NAME) as conn:
-        cursor = conn.cursor()
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                email TEXT UNIQUE NOT NULL,
-                password TEXT NOT NULL,
-                nom TEXT,
-                prenom TEXT,
-                date_naissance TEXT,
-                telephone TEXT
-            )
-        """)
-        conn.commit()
+    conn = sqlite3.connect("database.db")
+    c = conn.cursor()
 
-init_db()
+    # Table utilisateurs
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        name TEXT,
+        birthdate TEXT
+    )
+    """)
 
-@app.route("/")
+    # Table publications
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS publications (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        content TEXT NOT NULL,
+        date TEXT NOT NULL,
+        FOREIGN KEY(user_id) REFERENCES users(id)
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+
+# -------------------------
+# Routes
+# -------------------------
+@app.route('/')
 def index():
-    if "user_id" in session:
-        return render_template("index.html")  # page après login
-    return redirect(url_for("login"))
+    conn = sqlite3.connect("database.db")
+    c = conn.cursor()
+    c.execute("""
+        SELECT p.content, p.date, u.name 
+        FROM publications p 
+        JOIN users u ON p.user_id = u.id
+        ORDER BY p.id DESC
+    """)
+    publications = [{"content": row[0], "date": row[1], "user_name": row[2]} for row in c.fetchall()]
+    conn.close()
 
-@app.route("/register", methods=["GET", "POST"])
+    return render_template("index.html", publications=publications)
+
+# Inscription
+@app.route('/register', methods=["GET", "POST"])
 def register():
     if request.method == "POST":
         email = request.form["email"]
         password = generate_password_hash(request.form["password"])
-        nom = request.form.get("nom")
-        prenom = request.form.get("prenom")
-        date_naissance = request.form.get("date_naissance")
-        telephone = request.form.get("telephone")
+        name = request.form["name"]
+        birthdate = request.form["birthdate"]
 
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
         try:
-            with sqlite3.connect(DB_NAME) as conn:
-                cursor = conn.cursor()
-                cursor.execute("""
-                    INSERT INTO users (email, password, nom, prenom, date_naissance, telephone)
-                    VALUES (?, ?, ?, ?, ?, ?)
-                """, (email, password, nom, prenom, date_naissance, telephone))
-                conn.commit()
-                flash("Inscription réussie ! Vous pouvez maintenant vous connecter.")
-                return redirect(url_for("login"))
+            c.execute("INSERT INTO users (email, password, name, birthdate) VALUES (?, ?, ?, ?)",
+                      (email, password, name, birthdate))
+            conn.commit()
         except sqlite3.IntegrityError:
-            flash("Email déjà utilisé !")
-            return redirect(url_for("register"))
+            return "⚠️ Cet email est déjà utilisé."
+        finally:
+            conn.close()
+
+        return redirect(url_for("login"))
 
     return render_template("register.html")
 
-@app.route("/login", methods=["GET", "POST"])
+# Connexion
+@app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
 
-        with sqlite3.connect(DB_NAME) as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT id, password FROM users WHERE email = ?", (email,))
-            user = cursor.fetchone()
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
+        c.execute("SELECT id, password, name FROM users WHERE email=?", (email,))
+        user = c.fetchone()
+        conn.close()
 
-            if user and check_password_hash(user[1], password):
-                session["user_id"] = user[0]
-                flash("Connexion réussie !")
-                return redirect(url_for("index"))
-            else:
-                flash("Email ou mot de passe incorrect !")
-                return redirect(url_for("login"))
+        if user and check_password_hash(user[1], password):
+            session["user_id"] = user[0]
+            session["user_name"] = user[2]
+            return redirect(url_for("index"))
+        else:
+            return "⚠️ Email ou mot de passe incorrect."
 
     return render_template("login.html")
 
-@app.route("/logout")
+# Déconnexion
+@app.route('/logout')
 def logout():
-    session.pop("user_id", None)
-    flash("Vous êtes déconnecté.")
-    return redirect(url_for("login"))
+    session.clear()
+    return redirect(url_for("index"))
 
+# Ajouter une publication
+@app.route('/post', methods=["POST"])
+def post():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    content = request.form["content"]
+    date = request.form["date"]
+
+    conn = sqlite3.connect("database.db")
+    c = conn.cursor()
+    c.execute("INSERT INTO publications (user_id, content, date) VALUES (?, ?, ?)",
+              (session["user_id"], content, date))
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for("index"))
+
+# -------------------------
+# Lancer l'app
+# -------------------------
 if __name__ == "__main__":
+    init_db()
     app.run(debug=True)
