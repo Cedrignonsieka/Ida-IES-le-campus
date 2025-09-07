@@ -6,7 +6,7 @@ import random
 
 app = FastAPI()
 
-# Route pour servir les fichiers statiques (CSS si besoin)
+# Pour servir les fichiers statiques (CSS)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Page d'accueil avec formulaire
@@ -16,10 +16,7 @@ def home():
     <html>
         <head>
             <title>Debo - Générateur de tirages</title>
-            <style>
-                body { font-family: Arial; text-align:center; margin-top:50px; }
-                input, button { font-size: 16px; padding: 8px; margin:5px; }
-            </style>
+            <link rel="stylesheet" href="/static/style.css">
         </head>
         <body>
             <h1>Bienvenue sur Debo 🎉</h1>
@@ -54,8 +51,9 @@ def generate(date_str: str = Form(...)):
     <html>
         <head>
             <title>Tirages pour {date_str}</title>
+            <link rel="stylesheet" href="/static/style.css">
         </head>
-        <body style='text-align:center; font-family:Arial; margin-top:50px;'>
+        <body>
             <h1>Tirages pour {date_str}</h1>
             {bloc_html}
             <a href="/">Retour</a>
