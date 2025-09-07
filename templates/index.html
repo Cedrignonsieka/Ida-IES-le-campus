@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tirage Loterie</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex flex-col items-center min-h-screen p-4">
+  <h1 class="text-3xl font-bold mb-4 text-center">Générateur de Tirage</h1>
+
+  <form method="post" class="bg-white p-6 rounded shadow-md w-full max-w-sm">
+    <label class="block mb-2 font-semibold">Entrez la date (YYYYMMDD) :</label>
+    <input type="text" name="date_input" class="border rounded w-full p-2 mb-4" required>
+    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full">Générer</button>
+  </form>
+
+  {% if error %}
+  <p class="text-red-500 mt-4">{{ error }}</p>
+  {% endif %}
+
+  {% if tirages %}
+  <div class="mt-6 w-full max-w-md">
+    {% for t in tirages %}
+    <div class="bg-white p-4 rounded shadow mb-4">
+      <p class="font-semibold">Numéros principaux : <span class="text-blue-600">{{ t.main | join(', ') }}</span></p>
+      <p class="font-semibold">Numéro complémentaire : <span class="text-red-600">{{ t.bonus }}</span></p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</body>
+</html>
