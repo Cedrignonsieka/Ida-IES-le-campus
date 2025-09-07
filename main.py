@@ -1,54 +1,27 @@
-from fastapi import FastAPI, Query
-import random
+from fastapi import FastAPI
 from datetime import datetime
+import random
 
-app = FastAPI(title="Loterie Adaptée", description="Générateur de tirages basé sur la date (speed)")
+app = FastAPI()
 
-def generate_lottery_draw(speed=None):
-    """
-    Génère un tirage adapté :
-    - 5 numéros principaux uniques (1-90)
-    - 1 numéro complémentaire (1-10)
-    - Dépendance du 'speed'
-    """
-    main_numbers = []
+# Route d'accueil
+@app.get("/")
+def home():
+    return {"message": "Bienvenue sur Debo 🎉, ton service est en ligne ✅"}
 
-    for i in range(5):
-        options = set()
-        # Option 1 : speed modulo 90
-        if speed is not None:
-            speed_num = ((speed - 1) % 90) + 1
-            if speed_num not in main_numbers:
-                options.add(speed_num)
-        # Option 2 et 3 : nombres aléatoires uniques
-        while len(options) < 3:
-            rand_num = random.randint(1, 90)
-            if rand_num not in main_numbers:
-                options.add(rand_num)
-        next_num = random.choice(list(options))
-        main_numbers.append(next_num)
-        speed = next_num
-
-    random.shuffle(main_numbers)
-    bonus_number = random.randint(1, 10)
-    return main_numbers, bonus_number
-
-@app.get("/generate")
-def generate(date: str = Query(..., description="Date au format YYYYMMDD pour le speed")):
-    """
-    Génère 3 tirages basés sur la date (speed).
-    Exemple : /generate?date=20250907
-    """
+# Route pour générer des nombres aléatoires à partir d'une date
+@app.get("/generate/{date_str}")
+def generate(date_str: str):
     try:
-        datetime.strptime(date, "%Y%m%d")
-        speed_initial = int(date)
+        # Vérifier que la date est bien au format YYYY-MM-DD
+        datetime.strptime(date_str, "%Y-%m-%d")
     except ValueError:
-        return {"error": "Format de date invalide. Utilisez YYYYMMDD."}
+        return {"error": "Format de date invalide. Utilise YYYY-MM-DD"}
 
-    # Seed pour déterminisme
-    random.seed(speed_initial)
-    results = []
+    # Générer 3 blocs de 5 nombres entre 1 et 90
+    blocs = []
     for _ in range(3):
-        mains, bonus = generate_lottery_draw(speed_initial)
-        results.append({"numéros_principaux": mains, "numéro_complémentaire": bonus})
-    return {"tirages": results}
+        bloc = random.sample(range(1, 91), 5)
+        blocs.append(bloc)
+
+    return {"date": date_str, "blocs": blocs}
