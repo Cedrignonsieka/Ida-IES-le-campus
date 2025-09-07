@@ -38,6 +38,9 @@ input[type="text"] {{ width: 100%; padding: 8px; margin-bottom: 10px; border-rad
 button {{ width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }}
 button:hover {{ background: #218838; }}
 .result {{ margin-top: 20px; }}
+.numbers {{ display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }}
+.number-circle {{ width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #007bff; color: white; font-weight: bold; }}
+.bonus {{ background: #dc3545 !important; }}
 </style>
 </head>
 <body>
@@ -68,8 +71,10 @@ async def home(date_input: str = Form(None)):
             tirages = []
             for i in range(3):
                 mains, bonus = generate_lottery_draw(speed_initial)
-                tirages.append(f"Tirage {i+1} : Numéros principaux = {mains}, Numéro complémentaire = {bonus}")
-            results_html = "<br>".join(tirages)
+                main_circles = " ".join(f'<div class="number-circle">{n}</div>' for n in mains)
+                bonus_circle = f'<div class="number-circle bonus">{bonus}</div>'
+                tirages.append(f"<div class='numbers'>{main_circles}{bonus_circle}</div>")
+            results_html = "".join(tirages)
         except ValueError:
             results_html = "Erreur : format de date invalide. Utilisez YYYYMMDD."
     return HTML_TEMPLATE.format(results=results_html)
