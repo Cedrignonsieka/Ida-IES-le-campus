@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Page d'accueil</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Barre volante */
+  .navbar {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #333;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+  }
+
+  .navbar button {
+    background-color: #555;
+    border: none;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  .navbar button:hover {
+    background-color: #777;
+  }
+
+  /* Sections */
+  section {
+    padding: 50px;
+    margin-top: 100px;
+  }
+
+  /* Cache pour la section Calculer */
+  #calculer-section {
+    display: none;
+  }
+
+  /* Styles pour l'insertion Excel */
+  #excel-container {
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Barre volante -->
+<div class="navbar">
+  <button onclick="showSection('accueil')">ACCUEILLE</button>
+  <button onclick="showSection('calculer')">CALCULER</button>
+</div>
+
+<!-- Page d'accueil -->
+<section id="accueil">
+  <h1>Bienvenue sur la page d'accueil</h1>
+  <p>Cliquez sur "CALCULER" pour insérer une feuille Excel.</p>
+</section>
+
+<!-- Section Calculer -->
+<section id="calculer-section">
+  <h2>Insérer une feuille Excel</h2>
+  <!-- Insertion de la feuille Excel, vous pouvez utiliser une iframe ou un plugin -->
+  <div id="excel-container">
+    <!-- Exemple avec Google Sheets ou un fichier Excel intégré -->
+    <!-- Ici, vous pouvez insérer une iframe ou un outil d'intégration -->
+    <iframe src="https://docs.google.com/spreadsheets/d/your_spreadsheet_id/edit?usp=sharing" 
+            width="100%" height="600"></iframe>
+  </div>
+</section>
+
+<script>
+  function showSection(section) {
+    // Cache toutes les sections
+    document.getElementById('accueil').style.display = 'none';
+    document.getElementById('calculer-section').style.display = 'none';
+
+    if (section === 'accueil') {
+      document.getElementById('accueil').style.display = 'block';
+    } else if (section === 'calculer') {
+      document.getElementById('calculer-section').style.display = 'block';
+    }
+  }
+</script>
+
+</body>
+</html>
