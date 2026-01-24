@@ -6,7 +6,6 @@
   <title>Placement</title>
 
   <style>
-    /* RESET SIMPLE */
     * {
       box-sizing: border-box;
     }
@@ -43,12 +42,10 @@
     p {
       font-size: clamp(1rem, 3.5vw, 1.5rem);
       margin-bottom: 40px;
-      overflow: hidden;
+      min-height: 1.6em;
       white-space: nowrap;
       border-right: 2px solid white;
-      width: 0;
-      animation: ecrireTexte 4s steps(40, end) forwards;
-      animation-delay: 3s;
+      padding-right: 5px;
     }
 
     .btn {
@@ -81,22 +78,59 @@
       from { width: 0; }
       to { width: 100%; border-right: none; }
     }
-
-    @keyframes ecrireTexte {
-      from { width: 0; }
-      to { width: 100%; border-right: none; }
-    }
   </style>
 </head>
 
 <body>
   <div class="container">
     <h1>Bienvenue</h1>
-    <p>Essayer le premier placement 😎</p>
+
+    <!-- TEXTE DYNAMIQUE -->
+    <p id="typewriter"></p>
 
     <a href="accueil.html" class="btn">ACCUEIL</a>
     <a href="souscrire.html" class="btn">SOUSCRIRE</a>
     <a href="verification.html" class="btn">VÉRIFIÉE</a>
   </div>
+
+  <!-- JAVASCRIPT TYPEWRITER -->
+  <script>
+    const phrases = [
+      "Essayer le premier placement 😎",
+      "Sécurisez votre avenir 💼",
+      "Investissez intelligemment 📈",
+      "Commencez dès aujourd’hui 🚀"
+    ];
+
+    const textElement = document.getElementById("typewriter");
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+
+    function typeEffect() {
+      const currentPhrase = phrases[phraseIndex];
+
+      if (!isDeleting) {
+        textElement.textContent = currentPhrase.slice(0, charIndex + 1);
+        charIndex++;
+
+        if (charIndex === currentPhrase.length) {
+          setTimeout(() => isDeleting = true, 1500);
+        }
+      } else {
+        textElement.textContent = currentPhrase.slice(0, charIndex - 1);
+        charIndex--;
+
+        if (charIndex === 0) {
+          isDeleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+        }
+      }
+
+      setTimeout(typeEffect, isDeleting ? 50 : 100);
+    }
+
+    typeEffect();
+  </script>
 </body>
 </html>
