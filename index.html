@@ -1,77 +1,102 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Placement</title>
+
   <style>
+    /* RESET SIMPLE */
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Courier New', Courier, monospace;
       margin: 0;
       padding: 0;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      background-color: #007bff;
+      background: linear-gradient(135deg, #0d6efd, #003f88);
       color: white;
     }
+
     .container {
       text-align: center;
-      padding: 10px;
       width: 90%;
+      max-width: 500px;
     }
+
     h1 {
-      font-size: 6vw;
+      font-size: clamp(2rem, 6vw, 3.5rem);
       font-weight: bold;
       margin-bottom: 20px;
       overflow: hidden;
       white-space: nowrap;
       border-right: 2px solid white;
-      animation: ecrire 5s steps(30, end) infinite;
+      width: 0;
+      animation: ecrireTitre 3s steps(10, end) forwards;
     }
+
     p {
-      font-size: 3vw;
+      font-size: clamp(1rem, 3.5vw, 1.5rem);
       margin-bottom: 40px;
       overflow: hidden;
       white-space: nowrap;
       border-right: 2px solid white;
-      animation: ecrire 5s steps(50, end) infinite;
-      animation-delay: 2.5s;
+      width: 0;
+      animation: ecrireTexte 4s steps(40, end) forwards;
+      animation-delay: 3s;
     }
+
     .btn {
       display: block;
-      margin: 10px auto;
-      padding: 15px 25px;
-      font-size: 4vw;
+      margin: 12px auto;
+      padding: 15px;
+      font-size: clamp(1rem, 4vw, 1.2rem);
       border: none;
       border-radius: 8px;
       background-color: #ffffff;
-      color: #007bff;
+      color: #0d6efd;
       cursor: pointer;
-      transition: background-color 0.3s;
-      width: 80%;
+      width: 100%;
+      text-decoration: none;
+      transition: all 0.3s ease;
     }
+
     .btn:hover {
       background-color: #0056b3;
       color: white;
+      transform: scale(1.03);
     }
-    @keyframes ecrire {
-      0% { width: 0; }
-      50% { width: 100%; border-right: 2px solid white; }
-      60% { border-right: none; }
-      100% { width: 0; border-right: none; }
+
+    .btn:focus {
+      outline: 3px solid #ffdd57;
+      outline-offset: 3px;
+    }
+
+    @keyframes ecrireTitre {
+      from { width: 0; }
+      to { width: 100%; border-right: none; }
+    }
+
+    @keyframes ecrireTexte {
+      from { width: 0; }
+      to { width: 100%; border-right: none; }
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h1>Bienvenue</h1>
-    <p>Essayer le premier placement😎</p>
-    <button class="btn">ACCUEIL</button>
-    <button class="btn">SOUSCRIRE</button>
-    <button class="btn">VÉRIFIÉE</button>
+    <p>Essayer le premier placement 😎</p>
+
+    <a href="accueil.html" class="btn">ACCUEIL</a>
+    <a href="souscrire.html" class="btn">SOUSCRIRE</a>
+    <a href="verification.html" class="btn">VÉRIFIÉE</a>
   </div>
 </body>
 </html>
