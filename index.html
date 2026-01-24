@@ -19,10 +19,11 @@
     }
     .container {
       text-align: center;
-      padding: 20px;
+      padding: 10px;
+      width: 90%;
     }
     h1 {
-      font-size: 36px;
+      font-size: 6vw;
       font-weight: bold;
       margin-bottom: 20px;
       overflow: hidden;
@@ -31,7 +32,7 @@
       animation: ecrire 5s steps(30, end) infinite;
     }
     p {
-      font-size: 18px;
+      font-size: 3vw;
       margin-bottom: 40px;
       overflow: hidden;
       white-space: nowrap;
@@ -40,47 +41,21 @@
       animation-delay: 2.5s;
     }
     .btn {
-      display: inline-block;
-      margin: 10px;
+      display: block;
+      margin: 10px auto;
       padding: 15px 25px;
-      font-size: 18px;
+      font-size: 4vw;
       border: none;
       border-radius: 8px;
       background-color: #ffffff;
       color: #007bff;
       cursor: pointer;
       transition: background-color 0.3s;
+      width: 80%;
     }
     .btn:hover {
       background-color: #0056b3;
       color: white;
-    }
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 24px;
-      }
-      p {
-        font-size: 16px;
-      }
-      .btn {
-        display: block;
-        margin: 10px auto;
-        width: 80%;
-        font-size: 16px;
-        padding: 12px;
-      }
-    }
-    @media (max-width: 400px) {
-      h1 {
-        font-size: 18px;
-      }
-      p {
-        font-size: 14px;
-      }
-      .btn {
-        font-size: 14px;
-        padding: 10px;
-      }
     }
     @keyframes ecrire {
       0% { width: 0; }
