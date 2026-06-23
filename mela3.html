@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Feed Boutons Texte</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+ .feed {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+  }
+
+ .feed::-webkit-scrollbar { display: none; }
+
+ .slide {
+    height: 100vh;
+    width: 100%;
+    scroll-snap-align: start;
+    position: relative;
+  }
+
+ .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+ .main-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+ .overlay {
+    position: absolute;
+    bottom: 80px;
+    left: 20px;
+    right: 120px;
+    color: white;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+ .overlay h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    text-shadow: 0 3px 10px #000;
+  }
+
+ .side-buttons {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 10;
+  }
+
+ .side-btn {
+    padding: 12px 18px;
+    border-radius: 25px;
+    border: 2px solid white;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    transition: 0.2s;
+    white-space: nowrap;
+  }
+
+ .side-btn:active {
+    transform: scale(0.9);
+    background: rgba(255,255,255,0.3);
+  }
+
+ .indicator {
+    position: fixed;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10;
+  }
+
+ .dot {
+    width: 6px;
+    height: 30px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
+  }
+
+ .dot.active {
+    background: white;
+    height: 50px;
+  }
+</style>
+</head>
+<body>
+
+<div class="feed" id="feed">
+  <div class="slide">
+    <img src="https://picsum.photos/400/800?random=10" alt="Produit 1">
+    <button class="main-btn" onclick="alert('Image 1 cliquée')"></button>
+    <div class="overlay">
+      <h2>Produit 1</h2>
+    </div>
+    <div class="side-buttons">
+      <button class="side-btn" onclick="alert('Vendre Produit 1')">Vendre</button>
+      <button class="side-btn" onclick="alert('Acheter Produit 1')">Acheter</button>
+      <button class="side-btn" onclick="alert('Accueil')">Accueil</button>
+    </div>
+  </div>
+
+  <div class="slide">
+    <img src="https://picsum.photos/400/800?random=20" alt="Produit 2">
+    <button class="main-btn" onclick="alert('Image 2 cliquée')"></button>
+    <div class="overlay">
+      <h2>Produit 2</h2>
+    </div>
+    <div class="side-buttons">
+      <button class="side-btn" onclick="alert('Vendre Produit 2')">Vendre</button>
+      <button class="side-btn" onclick="alert('Acheter Produit 2')">Acheter</button>
+      <button class="side-btn" onclick="alert('Accueil')">Accueil</button>
+    </div>
+  </div>
+
+  <div class="slide">
+    <img src="https://picsum.photos/400/800?random=30" alt="Produit 3">
+    <button class="main-btn" onclick="alert('Image 3 cliquée')"></button>
+    <div class="overlay">
+      <h2>Produit 3</h2>
+    </div>
+    <div class="side-buttons">
+      <button class="side-btn" onclick="alert('Vendre Produit 3')">Vendre</button>
+      <button class="side-btn" onclick="alert('Acheter Produit 3')">Acheter</button>
+      <button class="side-btn" onclick="alert('Accueil')">Accueil</button>
+    </div>
+  </div>
+</div>
+
+<div class="indicator">
+  <div class="dot active"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+</div>
+
+<script>
+const feed = document.getElementById('feed');
+const dots = document.querySelectorAll('.dot');
+
+feed.addEventListener('scroll', () => {
+  const index = Math.round(feed.scrollTop / window.innerHeight);
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === index);
+  });
+});
+</script>
+
+</body>
+</html>
