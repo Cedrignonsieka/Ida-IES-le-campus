@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nonchalance.sh</title>
+<style>
+  body {
+    background: #0a0a0a;
+    color: #00ff41;
+    font-family: 'Courier New', monospace;
+    padding: 40px 20px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+.terminal {
+    max-width: 700px;
+    width: 100%;
+    border: 1px solid #00ff41;
+    padding: 30px;
+    box-shadow: 0 0 30px rgba(0,255,65,0.2);
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #00ff41;
+    padding-bottom: 10px;
+  }
+
+.line {
+    margin: 15px 0;
+    opacity: 0;
+    animation: type 0.5s forwards;
+  }
+
+.cursor {
+    display: inline-block;
+    width: 10px;
+    height: 20px;
+    background: #00ff41;
+    animation: blink 1s infinite;
+  }
+
+  @keyframes type {
+    to { opacity: 1; }
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+.btn {
+    background: transparent;
+    border: 1px solid #00ff41;
+    color: #00ff41;
+    padding: 10px 25px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: 0.3s;
+  }
+
+.btn:hover {
+    background: #00ff41;
+    color: #0a0a0a;
+  }
+
+  span.command { color: #fff; }
+</style>
+</head>
+<body>
+<div class="terminal">
+  <h1>root@nonchalance:~$</h1>
+  <div id="output"></div>
+  <button class="btn" onclick="runCommand()">./lancer_zen.sh</button>
+  <div class="cursor"></div>
+</div>
+
+<script>
+const commands = [
+  'echo "Bienvenue dans le système Nonchalance OS"',
+  'echo "Chargement du module zen..."',
+  'echo "Statut: Aucun stress détecté ✓"',
+  'echo "Niveau de cool: 100%"',
+  'echo "Conseil du jour: Respire. Souris. Avance."',
+  'echo "Mode nonchalant: ACTIVÉ 😎"'
+];
+
+let i = 0;
+
+function runCommand() {
+  if(i >= commands.length) {
+    document.getElementById('output').innerHTML += '<div class="line"><span class="command">root@nonchalance:~$</span> _ Tout est chill déjà</div>';
+    return;
+  }
+
+  const line = document.createElement('div');
+  line.className = 'line';
+  line.innerHTML = `<span class="command">root@nonchalance:~$</span> ${commands[i]}`;
+  document.getElementById('output').appendChild(line);
+
+  // Simuler l'exécution
+  setTimeout(() => {
+    const result = document.createElement('div');
+    result.className = 'line';
+    result.style.color = '#888';
+    result.textContent = commands[i].replace('echo ', '').replace(/"/g, '');
+    document.getElementById('output').appendChild(result);
+  }, 400);
+
+  i++;
+  document.querySelector('.terminal').scrollTop = document.querySelector('.terminal').scrollHeight;
+}
+</script>
+</body>
+</html>
