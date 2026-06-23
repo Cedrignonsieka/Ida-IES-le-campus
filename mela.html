@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mela - Placement</title>
+  <title>Placement Pro</title>
 
   <style>
     * {
@@ -16,6 +16,7 @@
       font-family: 'Segoe UI', system-ui, sans-serif;
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       background: linear-gradient(135deg, #0d6efd 0%, #003f88 100%);
@@ -23,7 +24,7 @@
       padding: 20px;
     }
 
-   .container {
+ .container {
       text-align: center;
       width: 100%;
       max-width: 500px;
@@ -34,26 +35,12 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       animation: fadeIn 0.8s ease;
+      margin-bottom: 30px;
     }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
-    }
-
-   .logo {
-      width: 140px;
-      height: 140px;
-      margin: 0 auto 30px;
-      border-radius: 30px;
-      box-shadow: 0 10px 30px rgba(13, 110, 253, 0.4);
-      animation: logoPop 0.6s ease;
-      object-fit: cover;
-    }
-
-    @keyframes logoPop {
-      from { opacity: 0; transform: scale(0.8); }
-      to { opacity: 1; transform: scale(1); }
     }
 
     h1 {
@@ -75,7 +62,7 @@
       opacity: 0.9;
     }
 
-   .btn {
+ .btn {
       display: block;
       margin: 15px auto;
       padding: 18px 25px;
@@ -86,3 +73,139 @@
       background: white;
       color: #0d6efd;
       cursor: pointer;
+      width: 100%;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideUp 0.6s ease forwards;
+    }
+
+ .btn:nth-child(3) { animation-delay: 0.3s; }
+ .btn:nth-child(4) { animation-delay: 0.4s; }
+ .btn:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes slideUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+ .btn:hover {
+      background: #ffdd57;
+      color: #003f88;
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(255, 221, 87, 0.4);
+    }
+
+ .btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+ .btn:focus {
+      outline: 3px solid #ffdd57;
+      outline-offset: 3px;
+    }
+
+    @keyframes ecrireTitre {
+      from { width: 0; }
+      to { width: 9ch; border-right: none; }
+    }
+
+ .cursor {
+      border-right: 3px solid white;
+      animation: blink 0.7s infinite;
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    /* FOOTER */
+ .footer {
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0.8;
+      line-height: 1.8;
+      animation: fadeIn 1s ease 0.8s both;
+    }
+
+ .footer a {
+      color: #ffdd57;
+      text-decoration: none;
+      font-weight: 600;
+      margin: 0 5px;
+      transition: 0.3s;
+    }
+
+ .footer a:hover {
+      color: white;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Bienvenue</h1>
+
+    <p id="typewriter"></p>
+
+    <a href="mela2.html" class="btn">ACCUEIL</a>
+    <a href="mela3.html" class="btn">SOUSCRIRE</a>
+    <a href="mela.html" class="btn">VÉRIFIÉE</a>
+  </div>
+
+  <!-- FOOTER BAS DE PAGE -->
+  <footer class="footer">
+    Copyright 2026 Mela Service<br>
+    <a href="https://wa.me/" target="_blank">WhatsApp</a> |
+    <a href="https://tiktok.com/" target="_blank">TikTok</a>
+  </footer>
+
+  <script>
+    const phrases = [
+      "Essayer le premier placement 😎",
+      "Sécurisez votre avenir 💼",
+      "Investissez intelligemment 📈",
+      "Commencez dès aujourd’hui 🚀"
+    ];
+
+    const textElement = document.getElementById("typewriter");
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+
+    function typeEffect() {
+      const currentPhrase = phrases[phraseIndex];
+
+      if (!isDeleting) {
+        textElement.innerHTML = currentPhrase.slice(0, charIndex + 1) + '<span class="cursor"></span>';
+        charIndex++;
+
+        if (charIndex === currentPhrase.length) {
+          setTimeout(() => isDeleting = true, 2000);
+        }
+      } else {
+        textElement.innerHTML = currentPhrase.slice(0, charIndex - 1) + '<span class="cursor"></span>';
+        charIndex--;
+
+        if (charIndex === 0) {
+          isDeleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+        }
+      }
+
+      setTimeout(typeEffect, isDeleting? 40 : 80);
+    }
+
+    // Vibration au clic pour mobile
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(navigator.vibrate) navigator.vibrate(30);
+      });
+    });
+
+    typeEffect();
+  </script>
+</body>
+  </html>
