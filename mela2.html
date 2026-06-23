@@ -2,119 +2,169 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>nonchalance.sh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Feed Boutons</title>
 <style>
-  body {
-    background: #0a0a0a;
-    color: #00ff41;
-    font-family: 'Courier New', monospace;
-    padding: 40px 20px;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    font-family: 'Segoe UI', sans-serif;
   }
 
-.terminal {
-    max-width: 700px;
+ .feed {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+
+ .feed::-webkit-scrollbar { display: none; }
+
+ .slide {
+    height: 100vh;
     width: 100%;
-    border: 1px solid #00ff41;
-    padding: 30px;
-    box-shadow: 0 0 30px rgba(0,255,65,0.2);
+    scroll-snap-align: start;
+    position: relative;
   }
 
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #00ff41;
-    padding-bottom: 10px;
-  }
-
-.line {
-    margin: 15px 0;
-    opacity: 0;
-    animation: type 0.5s forwards;
-  }
-
-.cursor {
-    display: inline-block;
-    width: 10px;
-    height: 20px;
-    background: #00ff41;
-    animation: blink 1s infinite;
-  }
-
-  @keyframes type {
-    to { opacity: 1; }
-  }
-
-  @keyframes blink {
-    50% { opacity: 0; }
-  }
-
-.btn {
-    background: transparent;
-    border: 1px solid #00ff41;
-    color: #00ff41;
-    padding: 10px 25px;
-    margin-top: 20px;
+ .slide-btn {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 0;
+    background: none;
     cursor: pointer;
-    font-family: inherit;
+    position: relative;
+    display: block;
+  }
+
+ .slide-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+ .overlay {
+    position: absolute;
+    bottom: 80px;
+    left: 20px;
+    right: 20px;
+    color: white;
+    text-align: left;
+  }
+
+ .overlay h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+  }
+
+ .overlay p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+  }
+
+ .indicator {
+    position: fixed;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10;
+  }
+
+ .dot {
+    width: 6px;
+    height: 30px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
     transition: 0.3s;
   }
 
-.btn:hover {
-    background: #00ff41;
-    color: #0a0a0a;
+ .dot.active {
+    background: white;
+    height: 50px;
   }
-
-  span.command { color: #fff; }
 </style>
 </head>
 <body>
-<div class="terminal">
-  <h1>root@nonchalance:~$</h1>
-  <div id="output"></div>
-  <button class="btn" onclick="runCommand()">./lancer_zen.sh</button>
-  <div class="cursor"></div>
+
+<div class="feed" id="feed">
+  <div class="slide">
+    <button class="slide-btn" data-action="1">
+      <img src="https://picsum.photos/400/800?random=10" alt="Produit 1">
+      <div class="overlay">
+        <h2>Produit 1</h2>
+        <p>Appuie pour acheter</p>
+      </div>
+    </button>
+  </div>
+
+  <div class="slide">
+    <button class="slide-btn" data-action="2">
+      <img src="https://picsum.photos/400/800?random=20" alt="Produit 2">
+      <div class="overlay">
+        <h2>Produit 2</h2>
+        <p>Appuie pour voir détails</p>
+      </div>
+    </button>
+  </div>
+
+  <div class="slide">
+    <button class="slide-btn" data-action="3">
+      <img src="https://picsum.photos/400/800?random=30" alt="Produit 3">
+      <div class="overlay">
+        <h2>Produit 3</h2>
+        <p>Appuie pour commander</p>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="indicator">
+  <div class="dot active"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
 </div>
 
 <script>
-const commands = [
-  'echo "Bienvenue dans le système Nonchalance OS"',
-  'echo "Chargement du module zen..."',
-  'echo "Statut: Aucun stress détecté ✓"',
-  'echo "Niveau de cool: 100%"',
-  'echo "Conseil du jour: Respire. Souris. Avance."',
-  'echo "Mode nonchalant: ACTIVÉ 😎"'
-];
+const feed = document.getElementById('feed');
+const dots = document.querySelectorAll('.dot');
+const buttons = document.querySelectorAll('.slide-btn');
 
-let i = 0;
+// Gestion du clic sur l'image-bouton
+buttons.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    const action = btn.dataset.action;
+    
+    // Vibration mobile si dispo
+    if(navigator.vibrate) navigator.vibrate(50);
+    
+    // Ton action ici
+    if(action == 1) alert('Produit 1 sélectionné ✅');
+    if(action == 2) alert('Produit 2 sélectionné ✅'); 
+    if(action == 3) alert('Produit 3 sélectionné ✅');
+    
+    console.log('Action:', action);
+  });
+});
 
-function runCommand() {
-  if(i >= commands.length) {
-    document.getElementById('output').innerHTML += '<div class="line"><span class="command">root@nonchalance:~$</span> _ Tout est chill déjà</div>';
-    return;
-  }
-
-  const line = document.createElement('div');
-  line.className = 'line';
-  line.innerHTML = `<span class="command">root@nonchalance:~$</span> ${commands[i]}`;
-  document.getElementById('output').appendChild(line);
-
-  // Simuler l'exécution
-  setTimeout(() => {
-    const result = document.createElement('div');
-    result.className = 'line';
-    result.style.color = '#888';
-    result.textContent = commands[i].replace('echo ', '').replace(/"/g, '');
-    document.getElementById('output').appendChild(result);
-  }, 400);
-
-  i++;
-  document.querySelector('.terminal').scrollTop = document.querySelector('.terminal').scrollHeight;
-}
+// Mise à jour des dots quand on scroll
+feed.addEventListener('scroll', () => {
+  const slideHeight = window.innerHeight;
+  const index = Math.round(feed.scrollTop / slideHeight);
+  
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === index);
+  });
+});
 </script>
+
 </body>
 </html>
