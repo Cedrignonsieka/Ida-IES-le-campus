@@ -33,18 +33,20 @@ table {
 th {
     background: #ff6b00;
     padding: 15px;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 td {
     padding: 12px;
     border-bottom: 1px solid rgba(255,255,255,0.2);
+    font-size: 15px;
 }
 
 tr:hover {
     background: rgba(255,255,255,0.2);
 }
 
+/* Podium */
 tr:nth-child(1) td { background: gold; color: black; font-weight: bold; }
 tr:nth-child(2) td { background: silver; color: black; font-weight: bold; }
 tr:nth-child(3) td { background: #cd7f32; color: black; font-weight: bold; }
