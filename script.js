@@ -4,23 +4,31 @@ async function chargerClassement() {
     try {
         const response = await fetch(SHEET_URL);
         const data = await response.text();
-        const lignes = data.split('\n').slice(1); // enlève la ligne des titres
+        const lignes = data.split('\n').slice(1); // on enlève la ligne des titres
+
+        // On transforme en tableau et on trie par Points décroissant
+        const equipes = lignes
+           .map(ligne => ligne.split(','))
+           .filter(col => col[0] && col[0].trim()!== '') // enlever lignes vides
+           .sort((a, b) => Number(b[3]) - Number(a[3])); // Colonne D = Point
 
         const tableau = document.getElementById('classement-body');
         tableau.innerHTML = '';
 
-        lignes.forEach((ligne, index) => {
-            const colonnes = ligne.split(',');
-            if(colonnes[0] && colonnes[0]!== '') {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${colonnes[0]}</td>
-                    <td>${colonnes[1]}</td>
-                    <td><b>${colonnes[2]}</b></td>
-                `;
-                tableau.appendChild(tr);
-            }
+        equipes.forEach((colonnes, index) => {
+            const equipe = colonnes[0]; // Col A
+            const victoire = colonnes[1]; // Col B
+            const defaite = colonnes[2]; // Col C
+            const points = colonnes[3]; // Col D
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${equipe}</td>
+                <td>${victoire}V - ${defaite}D</td>
+                <td><b>${points}</b></td>
+            `;
+            tableau.appendChild(tr);
         });
     } catch (error) {
         console.log("Erreur chargement:", error);
