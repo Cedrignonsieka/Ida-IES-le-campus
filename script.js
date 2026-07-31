@@ -2,11 +2,11 @@
 const URL_CLASSEMENT = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQULxJOCxlp-vjeYfhXexfaKTBHl-aLBiq37_ROaPxB008hH1Rjr1Sp-Qr5rgOTBDo6jdTO7VPzZQTk/pub?gid=0&single=true&output=csv";
 const URL_MATCHS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQULxJOCxlp-vjeYfhXexfaKTBHl-aLBiq37_ROaPxB008hH1Rjr1Sp-Qr5rgOTBDo6jdTO7VPzZQTk/pub?gid=413650798&single=true&output=csv";
 
-// Fonction pour lire CSV
+// Fonction pour lire CSV proprement
 async function fetchCSV(url) {
     const res = await fetch(url);
     const data = await res.text();
-    const rows = data.split('\n').slice(1);
+    const rows = data.split('\n').slice(1).filter(r => r.trim() !== ''); // enleve titres + lignes vides
     return rows.map(r => r.split(','));
 }
 
@@ -29,9 +29,9 @@ async function chargerDonnees() {
         date: r[4], heure: r[5], statut: r[6], poule: r[7]
     }));
 
-    const live = matchs.find(m => m.statut === "EN COURS");
-    const aVenir = matchs.filter(m => m.statut === "À VENIR");
-    const termines = matchs.filter(m => m.statut === "TERMINÉ");
+    const live = matchs.find(m => m.statut && m.statut.trim() === "EN COURS");
+    const aVenir = matchs.filter(m => m.statut && m.statut.trim() === "À VENIR");
+    const termines = matchs.filter(m => m.statut && m.statut.trim() === "TERMINÉ");
 
     // Afficher Live format: Ziondrou 1 - 0 Zibo
     document.getElementById('live-match').innerHTML = live
@@ -39,13 +39,13 @@ async function chargerDonnees() {
         : 'Aucun match en cours';
 
     // Afficher listes
-    document.getElementById('matchs-a-venir').innerHTML = aVenir.map(m => 
+    document.getElementById('matchs-a-venir').innerHTML = aVenir.length > 0 ? aVenir.map(m => 
         `<div class="card">${m.e1} vs ${m.e2} - ${m.date} ${m.heure}</div>`
-    ).join('');
+    ).join('') : 'Aucun match à venir';
     
-    document.getElementById('matchs-termines').innerHTML = termines.map(m => 
+    document.getElementById('matchs-termines').innerHTML = termines.length > 0 ? termines.map(m => 
         `<div class="card">${m.e1} ${m.s1} - ${m.s2} ${m.e2}</div>`
-    ).join('');
+    ).join('') : 'Aucun match terminé';
 }
 
 // Lancer au démarrage + actualiser toutes les 10 secondes
