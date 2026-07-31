@@ -1,13 +1,12 @@
 const URL_CLASSEMENT = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQULxJOCxlp-vjeYfhXexfaKTBHl-aLBiq37_ROaPxB008hH1Rjr1Sp-Qr5rgOTBDo6jdTO7VPzZQTk/pub?gid=0&single=true&output=csv";
 const URL_MATCHS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQULxJOCxlp-vjeYfhXexfaKTBHl-aLBiq37_ROaPxB008hH1Rjr1Sp-Qr5rgOTBDo6jdTO7VPzZQTk/pub?gid=413650798&single=true&output=csv";
 
-// AJOUTE ICI LES LOGOS DE TES EQUIPES
 const LOGOS = {
     "Ziondrou": "https://i.imgur.com/8Km9tLL.png",
     "Fc Man": "https://i.imgur.com/8Km9tLL.png",
     "Kahi Fc": "https://i.imgur.com/8Km9tLL.png",
     "Guekpe": "https://i.imgur.com/8Km9tLL.png",
-    "default": "https://i.imgur.com/8Km9tLL.png"
+    "default": "https://i.imgur.com/8Km9tLL.png" // Mets ici le logo par défaut de ton tournoi
 };
 
 let ancienScore = {};
@@ -24,30 +23,35 @@ function getLogo(equipe) {
     return LOGOS[equipe] || LOGOS["default"];
 }
 
-// Calcule la minute en direct
+// Version sécurisée pour éviter NaN
 function calculerMinute(dateStr, heureStr) {
-    const [jour, mois, annee] = dateStr.split('/');
-    const [heure, minute] = heureStr.split(':');
-    const debutMatch = new Date(annee, mois - 1, jour, heure, minute);
-    const maintenant = new Date();
+    try {
+        const [jour, mois, annee] = dateStr.trim().split('/');
+        const [heure, minute] = heureStr.trim().split(':');
+        const debutMatch = new Date(annee, mois - 1, jour, heure, minute);
+        
+        if(isNaN(debutMatch)) return "00:00"; // si date invalide
 
-    const diffMs = maintenant - debutMatch;
-    const diffMinutes = Math.floor(diffMs / 1000 / 60);
+        const maintenant = new Date();
+        const diffMs = maintenant - debutMatch;
+        const diffMinutes = Math.floor(diffMs / 1000 / 60);
 
-    if(diffMinutes < 0) return "0'";
-    if(diffMinutes >= 45 && diffMinutes < 46) return "MT";
-    if(diffMinutes >= 90) return "FINI";
-    return `${diffMinutes}'`;
+        if(diffMinutes < 0) return "0'";
+        if(diffMinutes >= 45 && diffMinutes < 46) return "MT";
+        if(diffMinutes >= 90) return "90'";
+        return `${diffMinutes}'`;
+    } catch(e) {
+        return "00:00"; // si erreur
+    }
 }
 
-// Fait tourner le chrono chaque seconde
 function lancerChronoAuto(date, heure) {
     clearInterval(chronoInterval);
     chronoInterval = setInterval(() => {
         const minute = calculerMinute(date, heure);
         const chronoEl = document.getElementById('chrono');
         if(chronoEl) chronoEl.innerText = minute;
-        if(minute === "FINI") clearInterval(chronoInterval);
+        if(minute === "90'") clearInterval(chronoInterval);
     }, 1000);
 }
 
@@ -57,7 +61,6 @@ async function chargerDonnees() {
         fetchCSV(URL_MATCHS)
     ]);
 
-    // CLASSEMENT PAR POULE
     const poules = {};
     classementData.forEach(r => {
         if(!poules[r[0]]) poules[r[0]] = [];
@@ -75,7 +78,6 @@ async function chargerDonnees() {
     }
     document.getElementById('classement-par-poule').innerHTML = classementHTML;
 
-    // MATCHS - Format: Equipe1,Score1,Equipe2,Score2,Date,Heure,Statut,Poule
     const matchs = matchsData.map(r => ({
         e1: r[0], s1: r[1], e2: r[2], s2: r[3],
         date: r[4], heure: r[5], statut: r[6], poule: r[7]
@@ -85,7 +87,6 @@ async function chargerDonnees() {
     const aVenir = matchs.filter(m => m.statut && m.statut.trim() === "À VENIR");
     const termines = matchs.filter(m => m.statut && m.statut.trim() === "TERMINÉ");
 
-    // DETECTION BUT
     if(live) {
         const scoreKey = `${live.e1}-${live.e2}`;
         const nouveauScore = `${live.s1}-${live.s2}`;
@@ -99,9 +100,8 @@ async function chargerDonnees() {
         clearInterval(chronoInterval);
     }
 
-    // AFFICHAGE
     document.getElementById('live-match').innerHTML = live
-   ? `<div class="card live-card">
+  ? `<div class="card live-card">
             <div><span id="chrono">${calculerMinute(live.date, live.heure)}</span></div>
             <div><img class="logo" src="${getLogo(live.e1)}"> ${live.e1} ${live.s1} - ${live.s2} ${live.e2} <img class="logo" src="${getLogo(live.e2)}"></div>
             <small>Poule ${live.poule}</small>
