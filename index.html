@@ -11,30 +11,28 @@
         header { background: var(--vert); color: black; padding: 18px; text-align: center; font-weight: 700; font-size: 1.5em; }
         main { padding: 16px; max-width: 750px; margin: auto; }
         h2 { font-size: 1.2em; font-weight: 600; display: flex; align-items: center; gap: 10px; margin: 25px 0 12px; }
-      .dot { width: 10px; height: 10px; background: red; border-radius: 50%; animation: blink 1.2s infinite; }
+     .dot { width: 10px; height: 10px; background: red; border-radius: 50%; animation: blink 1.2s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
-      .match { background: var(--card); border-radius: 12px; padding: 14px; margin-bottom: 10px; border: 1px solid #222; }
-      .match-top { display: flex; align-items: center; justify-content: space-between; }
-      .team { display: flex; align-items: center; gap: 10px; flex: 1; font-weight: 600; }
-      .team-right { justify-content: flex-end; }
-      .logo { width: 32px; height: 32px; border-radius: 50%; background: #222; object-fit: cover; }
-      .score { font-weight: 700; font-size: 1.4em; color: var(--vert); min-width: 60px; text-align: center; }
-      .live-time { background: red; color: white; padding: 3px 10px; border-radius: 20px; font-weight: 700; font-size: 0.85em; }
-      .match-bottom { border-top: 1px solid #222; margin-top: 12px; padding-top: 10px; font-size: 0.85em; color: var(--gris); display: flex; justify-content: space-between; }
-      .poule { background: #222; color: var(--vert); font-weight: 600; padding: 3px 10px; border-radius: 20px; font-size: 0.8em; }
-      .vs { color: var(--gris); font-weight: 600; padding: 0 10px; }
-      .poule-title { color: var(--vert); font-weight: 600; margin: 20px 0 8px; }
+     .match { background: var(--card); border-radius: 12px; padding: 14px; margin-bottom: 10px; border: 1px solid #222; }
+     .match-top { display: flex; align-items: center; justify-content: space-between; }
+     .team { display: flex; align-items: center; gap: 10px; flex: 1; font-weight: 600; font-size: 0.95em; }
+     .team-right { justify-content: flex-end; }
+     .logo { width: 32px; height: 32px; border-radius: 50%; background: #222; object-fit: cover; }
+     .score { font-weight: 700; font-size: 1.4em; color: var(--vert); min-width: 60px; text-align: center; }
+     .live-time { background: red; color: white; padding: 3px 10px; border-radius: 20px; font-weight: 700; font-size: 0.85em; }
+     .match-bottom { border-top: 1px solid #222; margin-top: 12px; padding-top: 10px; font-size: 0.85em; color: var(--gris); display: flex; justify-content: space-between; }
+     .poule { background: #222; color: var(--vert); font-weight: 600; padding: 3px 10px; border-radius: 20px; font-size: 0.8em; }
+     .vs { color: var(--gris); font-weight: 600; padding: 0 10px; }
+     .poule-title { color: var(--vert); font-weight: 600; margin: 20px 0 8px; }
         table { width: 100%; background: var(--card); border-radius: 10px; overflow: hidden; font-size: 0.9em; }
         th, td { padding: 10px; text-align: center; }
         td:first-child { text-align: left; }
         td img { width: 22px; height: 22px; margin-right: 8px; }
-      .erreur { background: #330000; color: red; padding: 10px; border-radius: 8px; margin: 10px 0; font-size: 0.8em; }
     </style>
 </head>
 <body>
     <header>⚽ TOURNOI LIVE</header>
     <main>
-        <div id="debug"></div>
         <section id="live"><h2><span class="dot"></span> EN DIRECT</h2><div id="live-match">Chargement...</div></section>
         <section id="avenir"><h2>📅 À VENIR</h2><div id="matchs-a-venir">Chargement...</div></section>
         <section id="termines"><h2>✅ TERMINÉS</h2><div id="matchs-termines">Chargement...</div></section>
@@ -45,24 +43,13 @@
         const URL_CLASSEMENT = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQULxJOCxlp-vjeYfhXexfaKTBHl-aLBiq37_ROaPxB008hH1Rjr1Sp-Qr5rgOTBDo6jdTO7VPzZQTk/pub?gid=0&single=true&output=csv";
         const URL_MATCHS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQULxJOCxlp-vjeYfhXexfaKTBHl-aLBiq37_ROaPxB008hH1Rjr1Sp-Qr5rgOTBDo6jdTO7VPzZQTk/pub?gid=413650798&single=true&output=csv";
 
-        const LOGOS = { "E1": "https://i.imgur.com/8Km9tLL.png", "E2": "https://i.imgur.com/8Km9tLL.png", "default": "https://i.imgur.com/8Km9tLL.png" };
+        const LOGOS = { "E1": "https://i.imgur.com/8Km9tLL.png", "E2": "https://i.imgur.com/8Km9tLL.png", "Bangolo": "https://i.imgur.com/8Km9tLL.png", "Man": "https://i.imgur.com/8Km9tLL.png", "default": "https://i.imgur.com/8Km9tLL.png" };
         let chronoInterval = null;
 
-        function log(msg) { document.getElementById('debug').innerHTML += `<div class="erreur">${msg}</div>`; }
-
-        async function fetchCSV(url, nom) {
-            try {
-                log(`Chargement ${nom}...`);
-                const res = await fetch(url);
-                if(!res.ok) throw new Error(`Erreur ${res.status}`);
-                const data = await res.text();
-                const lignes = data.split('\n').slice(1).filter(r => r.trim()!== '');
-                log(`${nom}: ${lignes.length} lignes trouvées`);
-                return lignes.map(r => r.split(','));
-            } catch(e) {
-                log(`ERREUR ${nom}: ${e.message}`);
-                return [];
-            }
+        async function fetchCSV(url) {
+            const res = await fetch(url);
+            const data = await res.text();
+            return data.split('\n').slice(1).filter(r => r.trim()!== '').map(r => r.split(','));
         }
 
         function getLogo(equipe) { return LOGOS[equipe.trim()] || LOGOS["default"]; }
@@ -88,40 +75,42 @@
         }
 
         async function chargerDonnees() {
-            const [classementData, matchsData] = await Promise.all([fetchCSV(URL_CLASSEMENT, "Classement"), fetchCSV(URL_MATCHS, "Matchs")]);
+            const [classementData, matchsData] = await Promise.all([fetchCSV(URL_CLASSEMENT), fetchCSV(URL_MATCHS)]);
 
-            if(classementData.length > 0) {
-                const poules = {};
-                classementData.forEach(r => { if(r[0]){ if(!poules[r[0]]) poules[r[0]] = []; poules[r[0]].push(r); }});
-                let classementHTML = '';
-                for(const poule in poules) {
-                    classementHTML += `<div class="poule-title">POULE ${poule}</div><table><tr><th>Équipe</th><th>V</th><th>D</th><th>Pts</th></tr>`;
-                    classementHTML += poules[poule].map(r => `<tr><td><img src="${getLogo(r[1])}">${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('');
-                    classementHTML += `</table>`;
-                }
-                document.getElementById('classement-par-poule').innerHTML = classementHTML;
+            // CLASSEMENT
+            const poules = {};
+            classementData.forEach(r => { if(r[0] && r[1]){ if(!poules[r[0]]) poules[r[0]] = []; poules[r[0]].push(r); }});
+            let classementHTML = '';
+            for(const poule in poules) {
+                classementHTML += `<div class="poule-title">POULE ${poule}</div><table><tr><th>Équipe</th><th>V</th><th>D</th><th>Pts</th></tr>`;
+                classementHTML += poules[poule].map(r => `<tr><td><img src="${getLogo(r[1])}">${r[1]}</td><td>${r[2]||0}</td><td>${r[3]||0}</td><td>${r[4]||0}</td></tr>`).join('');
+                classementHTML += `</table>`;
             }
+            document.getElementById('classement-par-poule').innerHTML = classementHTML;
 
-            if(matchsData.length > 0) {
-                const matchs = matchsData.map(r => ({ e1: r[0], s1: r[1], e2: r[2], s2: r[3], date: r[4], heure: r[5], statut: r[6], poule: r[7] }));
-                const live = matchs.find(m => m.statut && m.statut.trim().toUpperCase() === "EN COURS");
-                const aVenir = matchs.filter(m => m.statut && m.statut.trim().toUpperCase() === "À VENIR");
-                const termines = matchs.filter(m => m.statut && m.statut.trim().toUpperCase() === "TERMINÉ");
+            // MATCHS - VERSION TOLÉRANTE
+            const matchs = matchsData.map(r => ({ 
+                e1: r[0]||'', s1: r[1]||'0', e2: r[2]||'', s2: r[3]||'0', 
+                date: r[4]||'', heure: r[5]||'', statut: (r[6]||'').toUpperCase().trim(), poule: r[7]||'' 
+            }));
 
-                if(live) lancerChrono(live.date, live.heure);
+            const live = matchs.find(m => m.statut.includes("COURS")); // "EN COURS"
+            const aVenir = matchs.filter(m => m.statut.includes("VENIR")); // "A VENIR" ou "À VENIR"
+            const termines = matchs.filter(m => m.statut.includes("TERM")); // "TERMINE" ou "TERMINÉ"
 
-                document.getElementById('live-match').innerHTML = live
-          ? `<div class="match"><div class="match-top"><div class="team"><img class="logo" src="${getLogo(live.e1)}"> ${live.e1}</div><div style="text-align:center"><div id="live-time" class="live-time">${calculerMinute(live.date, live.heure)}</div><div class="score">${live.s1} - ${live.s2}</div></div><div class="team team-right">${live.e2} <img class="logo" src="${getLogo(live.e2)}"></div></div></div>`
-                    : '<div class="match">Aucun match en cours</div>';
+            if(live) lancerChrono(live.date, live.heure);
 
-                document.getElementById('matchs-a-venir').innerHTML = aVenir.length > 0? aVenir.map(m =>
-                    `<div class="match"><div class="match-top"><div class="team"><img class="logo" src="${getLogo(m.e1)}"> ${m.e1}</div><div class="vs">VS</div><div class="team team-right">${m.e2} <img class="logo" src="${getLogo(m.e2)}"></div></div><div class="match-bottom"><span class="poule">POULE ${m.poule}</span><span>${m.date} • ${m.heure}</span></div></div>`
-                ).join('') : '<div class="match">Aucun match à venir</div>';
+            document.getElementById('live-match').innerHTML = live
+     ? `<div class="match"><div class="match-top"><div class="team"><img class="logo" src="${getLogo(live.e1)}"> ${live.e1}</div><div style="text-align:center"><div id="live-time" class="live-time">${calculerMinute(live.date, live.heure)}</div><div class="score">${live.s1} - ${live.s2}</div></div><div class="team team-right">${live.e2} <img class="logo" src="${getLogo(live.e2)}"></div></div></div>`
+                : '<div class="match">Aucun match en cours</div>';
 
-                document.getElementById('matchs-termines').innerHTML = termines.length > 0? termines.map(m =>
-                    `<div class="match"><div class="match-top"><div class="team"><img class="logo" src="${getLogo(m.e1)}"> ${m.e1}</div><div class="score">${m.s1} - ${m.s2}</div><div class="team team-right">${m.e2} <img class="logo" src="${getLogo(m.e2)}"></div></div></div>`
-                ).join('') : '<div class="match">Aucun match terminé</div>';
-            }
+            document.getElementById('matchs-a-venir').innerHTML = aVenir.length > 0? aVenir.map(m =>
+                `<div class="match"><div class="match-top"><div class="team"><img class="logo" src="${getLogo(m.e1)}"> ${m.e1}</div><div class="vs">VS</div><div class="team team-right">${m.e2} <img class="logo" src="${getLogo(m.e2)}"></div></div><div class="match-bottom"><span class="poule">POULE ${m.poule}</span><span>${m.date} • ${m.heure}</span></div></div>`
+            ).join('') : '<div class="match">Aucun match à venir</div>';
+
+            document.getElementById('matchs-termines').innerHTML = termines.length > 0? termines.map(m =>
+                `<div class="match"><div class="match-top"><div class="team"><img class="logo" src="${getLogo(m.e1)}"> ${m.e1}</div><div class="score">${m.s1} - ${m.s2}</div><div class="team team-right">${m.e2} <img class="logo" src="${getLogo(m.e2)}"></div></div></div>`
+            ).join('') : '<div class="match">Aucun match terminé</div>';
         }
 
         chargerDonnees();
