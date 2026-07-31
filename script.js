@@ -4,12 +4,11 @@ const URL_MATCHS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQULxJOCxlp-
 const LOGOS = {
     "E1": "https://i.imgur.com/8Km9tLL.png",
     "E2": "https://i.imgur.com/8Km9tLL.png",
-    "Bangolo": "https://i.imgur.com/8Km9tLL.png",
-    "Man": "https://i.imgur.com/8Km9tLL.png",
     "default": "https://i.imgur.com/8Km9tLL.png"
 };
 
 let ancienScore = {};
+let chronoInterval = null;
 
 async function fetchCSV(url) {
     const res = await fetch(url);
@@ -17,9 +16,7 @@ async function fetchCSV(url) {
     return data.split('\n').slice(1).filter(r => r.trim()!== '').map(r => r.split(','));
 }
 
-function getLogo(equipe) {
-    return LOGOS[equipe.trim()] || LOGOS["default"];
-}
+function getLogo(equipe) { return LOGOS[equipe.trim()] || LOGOS["default"]; }
 
 function calculerMinute(dateStr, heureStr) {
     try {
@@ -33,6 +30,16 @@ function calculerMinute(dateStr, heureStr) {
         if(diffMinutes >= 90) return "90'";
         return `${diffMinutes}'`;
     } catch(e) { return "LIVE"; }
+}
+
+function lancerChrono(date, heure) {
+    clearInterval(chronoInterval);
+    chronoInterval = setInterval(() => {
+        const minute = calculerMinute(date, heure);
+        const el = document.getElementById('live-time');
+        if(el) el.innerText = minute;
+        if(minute === "90'") clearInterval(chronoInterval);
+    }, 1000);
 }
 
 async function chargerDonnees() {
@@ -56,34 +63,44 @@ async function chargerDonnees() {
     const termines = matchs.filter(m => m.statut && m.statut.trim() === "TERMINÉ");
 
     if(live) {
-        const scoreKey = `${live.e1}-${live.e2}`;
-        const nouveauScore = `${live.s1}-${live.s2}`;
-        ancienScore[scoreKey] = nouveauScore;
-    }
+        lancerChrono(live.date, live.heure);
+    } else { clearInterval(chronoInterval); }
 
+    // EN DIRECT
     document.getElementById('live-match').innerHTML = live
 ? `<div class="match live">
-            <div class="team"><img class="logo" src="${getLogo(live.e1)}"> ${live.e1}</div>
-            <div><div class="time">${calculerMinute(live.date, live.heure)}</div><div class="score">${live.s1} - ${live.s2}</div></div>
-            <div class="team team-right">${live.e2} <img class="logo" src="${getLogo(live.e2)}"></div>
+            <div class="match-top">
+                <div class="team"><img class="logo" src="${getLogo(live.e1)}"> ${live.e1}</div>
+                <div><div id="live-time" class="live-time">${calculerMinute(live.date, live.heure)}</div><div class="score">${live.s1} - ${live.s2}</div></div>
+                <div class="team team-right">${live.e2} <img class="logo" src="${getLogo(live.e2)}"></div>
+            </div>
           </div>`
         : '<div class="match">Aucun match en cours</div>';
 
+    // À VENIR - NOUVEAU FORMAT AVEC FOOTER
     document.getElementById('matchs-a-venir').innerHTML = aVenir.length > 0? aVenir.map(m =>
         `<div class="match">
-            <div class="team"><img class="logo" src="${getLogo(m.e1)}"> ${m.e1}</div>
-            <div class="vs">vs</div>
-            <div class="team team-right">${m.e2} <img class="logo" src="${getLogo(m.e2)}"></div>
-            <div class="info"><div class="date">${m.date}</div><div class="time">${m.heure}</div></div>
+            <div class="match-top">
+                <div class="team"><img class="logo" src="${getLogo(m.e1)}"> ${m.e1}</div>
+                <div class="vs">vs</div>
+                <div class="team team-right">${m.e2} <img class="logo" src="${getLogo(m.e2)}"></div>
+            </div>
+            <div class="match-bottom">
+                <span class="poule">Poule ${m.poule}</span>
+                <span>${m.date} - ${m.heure}</span>
+            </div>
         </div>`
     ).join('') : '<div class="match">Aucun match à venir</div>';
 
+    // TERMINÉS
     document.getElementById('matchs-termines').innerHTML = termines.length > 0? termines.map(m =>
         `<div class="match">
-            <div class="team"><img class="logo" src="${getLogo(m.e1)}"> ${m.e1}</div>
-            <div class="score">${m.s1} - ${m.s2}</div>
-            <div class="team team-right">${m.e2} <img class="logo" src="${getLogo(m.e2)}"></div>
-        </div>`
+            <div class="match-top">
+                <div class="team"><img class="logo" src="${getLogo(m.e1)}"> ${m.e1}</div>
+                <div class="score">${m.s1} - ${m.s2}</div>
+                <div class="team team-right">${m.e2} <img class="logo" src="${getLogo(m.e2)}"></div>
+            </div>
+          </div>`
     ).join('') : '<div class="match">Aucun match terminé</div>';
 }
 
