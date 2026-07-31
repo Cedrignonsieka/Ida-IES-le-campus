@@ -4,7 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tournoi Foot - Live Score</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root { --vert: #00d26a; --fond: #0f0f0f; --card: #1a1a1a; --texte: #e0e0e0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--fond); color: var(--texte); margin: 0; }
+        header { background: var(--vert); color: black; padding: 15px; text-align: center; position: sticky; top: 0; }
+        header h1 { margin: 0; font-size: 1.4em; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        main { padding: 12px; max-width: 700px; margin: auto; }
+        h2 { font-size: 1.1em; color: var(--texte); display: flex; align-items: center; gap: 8px; margin: 20px 0 10px; }
+       .dot { width: 10px; height: 10px; background: red; border-radius: 50%; animation: blink 1.2s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+       .match { background: var(--card); border-radius: 10px; padding: 12px; margin-bottom: 8px; }
+       .match-top { display: flex; align-items: center; justify-content: space-between; }
+       .team { display: flex; align-items: center; gap: 8px; flex: 1; font-weight: 500; }
+       .team-right { justify-content: flex-end; }
+       .logo { width: 28px; height: 28px; border-radius: 50%; background: #333; object-fit: cover; flex-shrink: 0; }
+       .score { font-weight: bold; font-size: 1.3em; padding: 0 15px; color: var(--vert); min-width: 50px; text-align: center; }
+       .live.score { color: red; }
+       .live-time { background: red; color: white; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 0.9em; margin-bottom: 4px; }
+
+       .match-bottom { border-top: 1px solid #2a2a2a; margin-top: 10px; padding-top: 8px; font-size: 0.85em; color: #aaa; display: flex; justify-content: space-between; }
+       .poule { color: var(--vert); font-weight: 600; }
+       .vs { color: #666; font-size: 0.8em; padding: 0 10px; }
+
+       .poule-title { color: var(--vert); font-size: 0.9em; margin: 15px 0 5px; }
+        table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 8px; overflow: hidden; font-size: 0.9em; }
+        th, td { padding: 10px; text-align: center; }
+        th { background: #222; }
+        td:first-child { text-align: left; }
+        td img { width: 20px; height: 20px; margin-right: 6px; }
+        footer { text-align: center; padding: 20px; color: #555; font-size: 0.8em; }
+    </style>
 </head>
 <body>
     <header><h1>⚽ TOURNOI LIVE</h1></header>
@@ -15,6 +45,110 @@
         <section id="classement"><h2>🏆 CLASSEMENT</h2><div id="classement-par-poule"></div></section>
     </main>
     <footer><p>© 2026 Tournoi Foot Abidjan</p></footer>
-    <script src="script.js"></script>
+
+    <script>
+        const URL_CLASSEMENT = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQULxJOCxlp-vjeYfhXexfaKTBHl-aLBiq37_ROaPxB008hH1Rjr1Sp-Qr5rgOTBDo6jdTO7VPzZQTk/pub?gid=0&single=true&output=csv";
+        const URL_MATCHS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQULxJOCxlp-vjeYfhXexfaKTBHl-aLBiq37_ROaPxB008hH1Rjr1Sp-Qr5rgOTBDo6jdTO7VPzZQTk/pub?gid=413650798&single=true&output=csv";
+
+        const LOGOS = {
+            "E1": "https://i.imgur.com/8Km9tLL.png",
+            "E2": "https://i.imgur.com/8Km9tLL.png",
+            "default": "https://i.imgur.com/8Km9tLL.png"
+        };
+
+        let chronoInterval = null;
+
+        async function fetchCSV(url) {
+            const res = await fetch(url);
+            const data = await res.text();
+            return data.split('\n').slice(1).filter(r => r.trim()!== '').map(r => r.split(','));
+        }
+
+        function getLogo(equipe) { return LOGOS[equipe.trim()] || LOGOS["default"]; }
+
+        function calculerMinute(dateStr, heureStr) {
+            try {
+                let [jour, mois, annee] = dateStr.trim().split('/');
+                let [heure, minute] = heureStr.trim().split(':');
+                const debutMatch = new Date(Number(annee), Number(mois) - 1, Number(jour), Number(heure), Number(minute));
+                if(isNaN(debutMatch.getTime())) return "LIVE";
+                const diffMinutes = Math.floor((new Date() - debutMatch) / 1000 / 60);
+                if(diffMinutes < 0) return "0'";
+                if(diffMinutes >= 45 && diffMinutes <= 47) return "MT";
+                if(diffMinutes >= 90) return "90'";
+                return `${diffMinutes}'`;
+            } catch(e) { return "LIVE"; }
+        }
+
+        function lancerChrono(date, heure) {
+            clearInterval(chronoInterval);
+            chronoInterval = setInterval(() => {
+                const minute = calculerMinute(date, heure);
+                const el = document.getElementById('live-time');
+                if(el) el.innerText = minute;
+                if(minute === "90'") clearInterval(chronoInterval);
+            }, 1000);
+        }
+
+        async function chargerDonnees() {
+            const [classementData, matchsData] = await Promise.all([fetchCSV(URL_CLASSEMENT), fetchCSV(URL_MATCHS)]);
+
+            const poules = {};
+            classementData.forEach(r => { if(r[0]){ if(!poules[r[0]]) poules[r[0]] = []; poules[r[0]].push(r); }});
+
+            let classementHTML = '';
+            for(const poule in poules) {
+                classementHTML += `<div class="poule-title">POULE ${poule}</div><table><thead><tr><th>Équipe</th><th>V</th><th>D</th><th>Pts</th></tr></thead><tbody>`;
+                classementHTML += poules[poule].map(r => `<tr><td><img src="${getLogo(r[1])}">${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('');
+                classementHTML += `</tbody></table>`;
+            }
+            document.getElementById('classement-par-poule').innerHTML = classementHTML;
+
+            const matchs = matchsData.map(r => ({ e1: r[0], s1: r[1], e2: r[2], s2: r[3], date: r[4], heure: r[5], statut: r[6], poule: r[7] }));
+
+            const live = matchs.find(m => m.statut && m.statut.trim() === "EN COURS");
+            const aVenir = matchs.filter(m => m.statut && m.statut.trim() === "À VENIR");
+            const termines = matchs.filter(m => m.statut && m.statut.trim() === "TERMINÉ");
+
+            if(live) { lancerChrono(live.date, live.heure); } else { clearInterval(chronoInterval); }
+
+            document.getElementById('live-match').innerHTML = live
+       ? `<div class="match live">
+                    <div class="match-top">
+                        <div class="team"><img class="logo" src="${getLogo(live.e1)}"> ${live.e1}</div>
+                        <div style="text-align:center"><div id="live-time" class="live-time">${calculerMinute(live.date, live.heure)}</div><div class="score">${live.s1} - ${live.s2}</div></div>
+                        <div class="team team-right">${live.e2} <img class="logo" src="${getLogo(live.e2)}"></div>
+                    </div>
+                  </div>`
+                : '<div class="match">Aucun match en cours</div>';
+
+            document.getElementById('matchs-a-venir').innerHTML = aVenir.length > 0? aVenir.map(m =>
+                `<div class="match">
+                    <div class="match-top">
+                        <div class="team"><img class="logo" src="${getLogo(m.e1)}"> ${m.e1}</div>
+                        <div class="vs">vs</div>
+                        <div class="team team-right">${m.e2} <img class="logo" src="${getLogo(m.e2)}"></div>
+                    </div>
+                    <div class="match-bottom">
+                        <span class="poule">Poule ${m.poule}</span>
+                        <span>${m.date} - ${m.heure}</span>
+                    </div>
+                </div>`
+            ).join('') : '<div class="match">Aucun match à venir</div>';
+
+            document.getElementById('matchs-termines').innerHTML = termines.length > 0? termines.map(m =>
+                `<div class="match">
+                    <div class="match-top">
+                        <div class="team"><img class="logo" src="${getLogo(m.e1)}"> ${m.e1}</div>
+                        <div class="score">${m.s1} - ${m.s2}</div>
+                        <div class="team team-right">${m.e2} <img class="logo" src="${getLogo(m.e2)}"></div>
+                    </div>
+                  </div>`
+            ).join('') : '<div class="match">Aucun match terminé</div>';
+        }
+
+        chargerDonnees();
+        setInterval(chargerDonnees, 10000);
+    </script>
 </body>
 </html>
