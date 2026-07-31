@@ -3,43 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tournoi Foot - Live</title>
+    <title>Tournoi Foot - Live Score</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <h1>⚽ TOURNOI LIVE</h1>
+        <p>Suivez tous les matchs en temps réel</p>
     </header>
 
     <main>
         <section id="live">
-            <h2>EN DIRECT</h2>
+            <h2>🔴 EN DIRECT</h2>
             <div id="live-match">Chargement...</div>
         </section>
 
-        <section id="avenir">
-            <h2>À VENIR</h2>
-            <div id="matchs-a-venir">Chargement...</div>
-        </section>
+        <div class="grid-2">
+            <section id="avenir">
+                <h2>📅 À VENIR</h2>
+                <div id="matchs-a-venir">Chargement...</div>
+            </section>
 
-        <section id="termines">
-            <h2>TERMINÉS</h2>
-            <div id="matchs-termines">Chargement...</div>
-        </section>
+            <section id="termines">
+                <h2>✅ TERMINÉS</h2>
+                <div id="matchs-termines">Chargement...</div>
+            </section>
+        </div>
 
         <section id="classement">
-            <h2>CLASSEMENT</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Poule</th><th>Équipe</th><th>V</th><th>D</th><th>Pts</th>
-                    </tr>
-                </thead>
-                <tbody id="classement-body">
-                </tbody>
-            </table>
+            <h2>🏆 CLASSEMENT</h2>
+            <div id="classement-par-poule"></div>
         </section>
     </main>
+
+    <footer>
+        <p>© 2026 Tournoi Foot Abidjan | Mis à jour toutes les 10 secondes</p>
+        <p>Contact: +225 01 23 45 67 89</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
