@@ -3,28 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Classement Officiel</title>
+    <title>Tournoi Foot - Live</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>🏆 CLASSEMENT OFFICIEL 🏆</h1>
-        <p class="update">Mise à jour automatique toutes les 30 secondes</p>
+    <header>
+        <h1>⚽ TOURNOI LIVE</h1>
+    </header>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Rang</th>
-                    <th>Équipe</th>
-                    <th>Bilan</th>
-                    <th>Points</th>
-                </tr>
-            </thead>
-            <tbody id="classement-body">
-                <tr><td colspan="4">Chargement...</td></tr>
-            </tbody>
-        </table>
-    </div>
+    <main>
+        <section id="live">
+            <h2>EN DIRECT</h2>
+            <div id="live-match">Chargement...</div>
+        </section>
+
+        <section id="avenir">
+            <h2>À VENIR</h2>
+            <div id="matchs-a-venir">Chargement...</div>
+        </section>
+
+        <section id="termines">
+            <h2>TERMINÉS</h2>
+            <div id="matchs-termines">Chargement...</div>
+        </section>
+
+        <section id="classement">
+            <h2>CLASSEMENT</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Poule</th><th>Équipe</th><th>V</th><th>D</th><th>Pts</th>
+                    </tr>
+                </thead>
+                <tbody id="classement-body">
+                </tbody>
+            </table>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>
