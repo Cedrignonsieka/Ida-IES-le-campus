@@ -5,35 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tournoi Foot - Live Score</title>
     <style>
-        :root { --vert: #00d26a; --fond: #0f0f0f; --card: #1a1a1a; --texte: #e0e0e0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--fond); color: var(--texte); margin: 0; }
-        header { background: var(--vert); color: black; padding: 15px; text-align: center; position: sticky; top: 0; }
-        header h1 { margin: 0; font-size: 1.4em; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        main { padding: 12px; max-width: 700px; margin: auto; }
-        h2 { font-size: 1.1em; color: var(--texte); display: flex; align-items: center; gap: 8px; margin: 20px 0 10px; }
-       .dot { width: 10px; height: 10px; background: red; border-radius: 50%; animation: blink 1.2s infinite; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        :root { --vert: #00ff88; --vert-dark: #00cc6a; --fond: #050505; --card: #111; --card-hover: #1a1a1a; --texte: #ffffff; --gris: #888; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: var(--fond); color: var(--texte); }
+        
+        header { 
+            background: linear-gradient(90deg, var(--vert), var(--vert-dark)); 
+            color: black; 
+            padding: 18px; 
+            text-align: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0,255,136,0.2);
+        }
+        header h1 { font-size: 1.5em; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; }
+
+        main { padding: 16px; max-width: 750px; margin: auto; }
+        h2 { font-size: 1.2em; font-weight: 600; color: var(--texte); display: flex; align-items: center; gap: 10px; margin: 25px 0 12px; }
+       .dot { width: 10px; height: 10px; background: red; border-radius: 50%; animation: blink 1.2s infinite; box-shadow: 0 0 8px red; }
         @keyframes blink { 50% { opacity: 0; } }
 
-       .match { background: var(--card); border-radius: 10px; padding: 12px; margin-bottom: 8px; }
+       .match { 
+            background: var(--card); 
+            border-radius: 12px; 
+            padding: 14px; 
+            margin-bottom: 10px; 
+            transition: 0.2s;
+            border: 1px solid #222;
+        }
+       .match:hover { background: var(--card-hover); transform: translateY(-2px); }
+        
        .match-top { display: flex; align-items: center; justify-content: space-between; }
-       .team { display: flex; align-items: center; gap: 8px; flex: 1; font-weight: 500; }
+       .team { display: flex; align-items: center; gap: 10px; flex: 1; font-weight: 600; font-size: 0.95em; }
        .team-right { justify-content: flex-end; }
-       .logo { width: 28px; height: 28px; border-radius: 50%; background: #333; object-fit: cover; flex-shrink: 0; }
-       .score { font-weight: bold; font-size: 1.3em; padding: 0 15px; color: var(--vert); min-width: 50px; text-align: center; }
-       .live.score { color: red; }
-       .live-time { background: red; color: white; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 0.9em; margin-bottom: 4px; }
+       .logo { width: 32px; height: 32px; border-radius: 50%; background: #222; object-fit: cover; flex-shrink: 0; border: 2px solid #333; }
+       .score { font-weight: 700; font-size: 1.4em; padding: 0 15px; color: var(--vert); min-width: 60px; text-align: center; }
+       .live.score { color: red; text-shadow: 0 0 8px red; }
+        
+       .live-info { text-align: center; }
+       .live-time { 
+            background: red; 
+            color: white; 
+            padding: 3px 10px; 
+            border-radius: 20px; 
+            font-weight: 700; 
+            font-size: 0.85em; 
+            margin-bottom: 6px; 
+            display: inline-block;
+            box-shadow: 0 0 10px rgba(255,0,0,0.5);
+        }
 
-       .match-bottom { border-top: 1px solid #2a2a2a; margin-top: 10px; padding-top: 8px; font-size: 0.85em; color: #aaa; display: flex; justify-content: space-between; }
-       .poule { color: var(--vert); font-weight: 600; }
-       .vs { color: #666; font-size: 0.8em; padding: 0 10px; }
+       .match-bottom { 
+            border-top: 1px solid #222; 
+            margin-top: 12px; 
+            padding-top: 10px; 
+            font-size: 0.85em; 
+            color: var(--gris); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+        }
+       .poule { background: #222; color: var(--vert); font-weight: 600; padding: 3px 10px; border-radius: 20px; font-size: 0.8em; }
+       .vs { color: var(--gris); font-size: 0.8em; font-weight: 600; padding: 0 10px; }
 
-       .poule-title { color: var(--vert); font-size: 0.9em; margin: 15px 0 5px; }
-        table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 8px; overflow: hidden; font-size: 0.9em; }
-        th, td { padding: 10px; text-align: center; }
-        th { background: #222; }
-        td:first-child { text-align: left; }
-        td img { width: 20px; height: 20px; margin-right: 6px; }
-        footer { text-align: center; padding: 20px; color: #555; font-size: 0.8em; }
+       .poule-title { color: var(--vert); font-size: 1em; font-weight: 600; margin: 20px 0 8px; }
+        table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 10px; overflow: hidden; font-size: 0.9em; border: 1px solid #222; }
+        th { background: #1a1a1a; padding: 12px; text-align: center; font-weight: 600; }
+        td { padding: 10px; text-align: center; }
+        td:first-child { text-align: left; font-weight: 600; }
+        td img { width: 22px; height: 22px; margin-right: 8px; }
+        tr:nth-child(even) { background: #0a0a0a; }
+        footer { text-align: center; padding: 25px; color: var(--gris); font-size: 0.8em; }
     </style>
 </head>
 <body>
@@ -44,7 +88,7 @@
         <section id="termines"><h2>✅ TERMINÉS</h2><div id="matchs-termines">Chargement...</div></section>
         <section id="classement"><h2>🏆 CLASSEMENT</h2><div id="classement-par-poule"></div></section>
     </main>
-    <footer><p>© 2026 Tournoi Foot Abidjan</p></footer>
+    <footer><p>© 2026 Tournoi Foot Abidjan | MAJ auto toutes les 10s</p></footer>
 
     <script>
         const URL_CLASSEMENT = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQULxJOCxlp-vjeYfhXexfaKTBHl-aLBiq37_ROaPxB008hH1Rjr1Sp-Qr5rgOTBDo6jdTO7VPzZQTk/pub?gid=0&single=true&output=csv";
@@ -68,26 +112,35 @@
 
         function calculerMinute(dateStr, heureStr) {
             try {
+                // Force fuseau Abidjan GMT+0
                 let [jour, mois, annee] = dateStr.trim().split('/');
                 let [heure, minute] = heureStr.trim().split(':');
-                const debutMatch = new Date(Number(annee), Number(mois) - 1, Number(jour), Number(heure), Number(minute));
-                if(isNaN(debutMatch.getTime())) return "LIVE";
-                const diffMinutes = Math.floor((new Date() - debutMatch) / 1000 / 60);
+                const debutMatch = new Date(Date.UTC(Number(annee), Number(mois) - 1, Number(jour), Number(heure), Number(minute)));
+                const maintenant = new Date();
+                const diffMs = maintenant.getTime() - debutMatch.getTime();
+                const diffMinutes = Math.floor(diffMs / 1000 / 60);
+
                 if(diffMinutes < 0) return "0'";
                 if(diffMinutes >= 45 && diffMinutes <= 47) return "MT";
-                if(diffMinutes >= 90) return "90'";
+                if(diffMinutes >= 90) return "FT";
                 return `${diffMinutes}'`;
-            } catch(e) { return "LIVE"; }
+            } catch(e) { 
+                console.log("Erreur date:", e);
+                return "LIVE"; 
+            }
         }
 
         function lancerChrono(date, heure) {
             clearInterval(chronoInterval);
-            chronoInterval = setInterval(() => {
-                const minute = calculerMinute(date, heure);
-                const el = document.getElementById('live-time');
-                if(el) el.innerText = minute;
-                if(minute === "90'") clearInterval(chronoInterval);
-            }, 1000);
+            lancerChronoUpdate(date, heure); // 1er affichage direct
+            chronoInterval = setInterval(() => lancerChronoUpdate(date, heure), 1000);
+        }
+        
+        function lancerChronoUpdate(date, heure) {
+            const minute = calculerMinute(date, heure);
+            const el = document.getElementById('live-time');
+            if(el) el.innerText = minute;
+            if(minute === "FT") clearInterval(chronoInterval);
         }
 
         async function chargerDonnees() {
@@ -113,10 +166,10 @@
             if(live) { lancerChrono(live.date, live.heure); } else { clearInterval(chronoInterval); }
 
             document.getElementById('live-match').innerHTML = live
-       ? `<div class="match live">
+      ? `<div class="match live">
                     <div class="match-top">
                         <div class="team"><img class="logo" src="${getLogo(live.e1)}"> ${live.e1}</div>
-                        <div style="text-align:center"><div id="live-time" class="live-time">${calculerMinute(live.date, live.heure)}</div><div class="score">${live.s1} - ${live.s2}</div></div>
+                        <div class="live-info"><div id="live-time" class="live-time">${calculerMinute(live.date, live.heure)}</div><div class="score">${live.s1} - ${live.s2}</div></div>
                         <div class="team team-right">${live.e2} <img class="logo" src="${getLogo(live.e2)}"></div>
                     </div>
                   </div>`
@@ -126,12 +179,12 @@
                 `<div class="match">
                     <div class="match-top">
                         <div class="team"><img class="logo" src="${getLogo(m.e1)}"> ${m.e1}</div>
-                        <div class="vs">vs</div>
+                        <div class="vs">VS</div>
                         <div class="team team-right">${m.e2} <img class="logo" src="${getLogo(m.e2)}"></div>
                     </div>
                     <div class="match-bottom">
-                        <span class="poule">Poule ${m.poule}</span>
-                        <span>${m.date} - ${m.heure}</span>
+                        <span class="poule">POULE ${m.poule}</span>
+                        <span>${m.date} • ${m.heure}</span>
                     </div>
                 </div>`
             ).join('') : '<div class="match">Aucun match à venir</div>';
