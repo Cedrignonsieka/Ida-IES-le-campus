@@ -1,52 +1,53 @@
 body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    font-family: Arial, sans-serif;
+    background: #0a0a0a;
     color: white;
     margin: 0;
-    padding: 20px;
+    padding: 10px;
 }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
+header {
     text-align: center;
+    background: #1a1a1a;
+    padding: 15px;
+    border-bottom: 3px solid #00ff88;
 }
 
-h1 {
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+h1 { margin: 0; color: #00ff88; }
+h2 { color: #00ff88; border-bottom: 1px solid #333; padding-bottom: 5px; }
+
+section { margin: 20px 0; }
+
+.card {
+    background: #1a1a1a;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border-left: 4px solid #00ff88;
 }
 
-.update {
-    font-size: 12px;
-    opacity: 0.8;
+.live-card {
+    font-size: 1.4em;
+    font-weight: bold;
+    text-align: center;
+    border-left: 4px solid red;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { background: #1a1a1a; }
+    50% { background: #2a0000; }
+    100% { background: #1a1a1a; }
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-    overflow: hidden;
+    background: #1a1a1a;
 }
-
-th {
-    background: #ff6b00;
-    padding: 15px;
-    font-size: 16px;
+th, td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #333;
 }
-
-td {
-    padding: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-    font-size: 15px;
-}
-
-tr:hover {
-    background: rgba(255,255,255,0.2);
-}
-
-/* Podium */
-tr:nth-child(1) td { background: gold; color: black; font-weight: bold; }
-tr:nth-child(2) td { background: silver; color: black; font-weight: bold; }
-tr:nth-child(3) td { background: #cd7f32; color: black; font-weight: bold; }
+th { background: #00ff88; color: black; }
