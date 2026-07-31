@@ -1,31 +1,83 @@
-// TES LIENS GOOGLE SHEET
 const URL_CLASSEMENT = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQULxJOCxlp-vjeYfhXexfaKTBHl-aLBiq37_ROaPxB008hH1Rjr1Sp-Qr5rgOTBDo6jdTO7VPzZQTk/pub?gid=0&single=true&output=csv";
 const URL_MATCHS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQULxJOCxlp-vjeYfhXexfaKTBHl-aLBiq37_ROaPxB008hH1Rjr1Sp-Qr5rgOTBDo6jdTO7VPzZQTk/pub?gid=413650798&single=true&output=csv";
 
-// Fonction pour lire CSV proprement
+// AJOUTE ICI LES LOGOS DE TES EQUIPES
+const LOGOS = {
+    "Ziondrou": "https://i.imgur.com/8Km9tLL.png",
+    "Fc Man": "https://i.imgur.com/8Km9tLL.png",
+    "Kahi Fc": "https://i.imgur.com/8Km9tLL.png",
+    "Guekpe": "https://i.imgur.com/8Km9tLL.png",
+    "default": "https://i.imgur.com/8Km9tLL.png"
+};
+
+let ancienScore = {};
+let chronoInterval = null;
+
 async function fetchCSV(url) {
     const res = await fetch(url);
     const data = await res.text();
-    const rows = data.split('\n').slice(1).filter(r => r.trim() !== ''); // enleve titres + lignes vides
+    const rows = data.split('\n').slice(1).filter(r => r.trim()!== '');
     return rows.map(r => r.split(','));
 }
 
-// Charger tout
+function getLogo(equipe) {
+    return LOGOS[equipe] || LOGOS["default"];
+}
+
+// Calcule la minute en direct
+function calculerMinute(dateStr, heureStr) {
+    const [jour, mois, annee] = dateStr.split('/');
+    const [heure, minute] = heureStr.split(':');
+    const debutMatch = new Date(annee, mois - 1, jour, heure, minute);
+    const maintenant = new Date();
+
+    const diffMs = maintenant - debutMatch;
+    const diffMinutes = Math.floor(diffMs / 1000 / 60);
+
+    if(diffMinutes < 0) return "0'";
+    if(diffMinutes >= 45 && diffMinutes < 46) return "MT";
+    if(diffMinutes >= 90) return "FINI";
+    return `${diffMinutes}'`;
+}
+
+// Fait tourner le chrono chaque seconde
+function lancerChronoAuto(date, heure) {
+    clearInterval(chronoInterval);
+    chronoInterval = setInterval(() => {
+        const minute = calculerMinute(date, heure);
+        const chronoEl = document.getElementById('chrono');
+        if(chronoEl) chronoEl.innerText = minute;
+        if(minute === "FINI") clearInterval(chronoInterval);
+    }, 1000);
+}
+
 async function chargerDonnees() {
     const [classementData, matchsData] = await Promise.all([
         fetchCSV(URL_CLASSEMENT),
         fetchCSV(URL_MATCHS)
     ]);
 
-    // Classement
-    const classementHTML = classementData.map(r => 
-        `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`
-    ).join('');
-    document.getElementById('classement-body').innerHTML = classementHTML;
+    // CLASSEMENT PAR POULE
+    const poules = {};
+    classementData.forEach(r => {
+        if(!poules[r[0]]) poules[r[0]] = [];
+        poules[r[0]].push(r);
+    });
 
-    // Matchs
+    let classementHTML = '';
+    for(const poule in poules) {
+        classementHTML += `<h3 class="poule-title">POULE ${poule}</h3>`;
+        classementHTML += `<table><thead><tr><th>Équipe</th><th>V</th><th>D</th><th>Pts</th></tr></thead><tbody>`;
+        classementHTML += poules[poule].map(r =>
+            `<tr><td><img src="${getLogo(r[1])}">${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`
+        ).join('');
+        classementHTML += `</tbody></table>`;
+    }
+    document.getElementById('classement-par-poule').innerHTML = classementHTML;
+
+    // MATCHS - Format: Equipe1,Score1,Equipe2,Score2,Date,Heure,Statut,Poule
     const matchs = matchsData.map(r => ({
-        e1: r[0], s1: r[1], e2: r[2], s2: r[3], 
+        e1: r[0], s1: r[1], e2: r[2], s2: r[3],
         date: r[4], heure: r[5], statut: r[6], poule: r[7]
     }));
 
@@ -33,21 +85,37 @@ async function chargerDonnees() {
     const aVenir = matchs.filter(m => m.statut && m.statut.trim() === "À VENIR");
     const termines = matchs.filter(m => m.statut && m.statut.trim() === "TERMINÉ");
 
-    // Afficher Live format: Ziondrou 1 - 0 Zibo
+    // DETECTION BUT
+    if(live) {
+        const scoreKey = `${live.e1}-${live.e2}`;
+        const nouveauScore = `${live.s1}-${live.s2}`;
+        if(ancienScore[scoreKey] && ancienScore[scoreKey]!== nouveauScore) {
+            document.getElementById('live-match').classList.add('but-animation');
+            setTimeout(() => document.getElementById('live-match').classList.remove('but-animation'), 800);
+        }
+        ancienScore[scoreKey] = nouveauScore;
+        lancerChronoAuto(live.date, live.heure);
+    } else {
+        clearInterval(chronoInterval);
+    }
+
+    // AFFICHAGE
     document.getElementById('live-match').innerHTML = live
-       ? `<div class="card live-card">${live.e1} ${live.s1} - ${live.s2} ${live.e2}<br><small>Poule ${live.poule}</small></div>`
+   ? `<div class="card live-card">
+            <div><span id="chrono">${calculerMinute(live.date, live.heure)}</span></div>
+            <div><img class="logo" src="${getLogo(live.e1)}"> ${live.e1} ${live.s1} - ${live.s2} ${live.e2} <img class="logo" src="${getLogo(live.e2)}"></div>
+            <small>Poule ${live.poule}</small>
+          </div>`
         : 'Aucun match en cours';
 
-    // Afficher listes
-    document.getElementById('matchs-a-venir').innerHTML = aVenir.length > 0 ? aVenir.map(m => 
-        `<div class="card">${m.e1} vs ${m.e2} - ${m.date} ${m.heure}</div>`
+    document.getElementById('matchs-a-venir').innerHTML = aVenir.length > 0? aVenir.map(m =>
+        `<div class="card"><img class="logo" src="${getLogo(m.e1)}">${m.e1} vs ${m.e2} <img class="logo" src="${getLogo(m.e2)}"> - ${m.date} ${m.heure}</div>`
     ).join('') : 'Aucun match à venir';
-    
-    document.getElementById('matchs-termines').innerHTML = termines.length > 0 ? termines.map(m => 
-        `<div class="card">${m.e1} ${m.s1} - ${m.s2} ${m.e2}</div>`
+
+    document.getElementById('matchs-termines').innerHTML = termines.length > 0? termines.map(m =>
+        `<div class="card"><img class="logo" src="${getLogo(m.e1)}">${m.e1} ${m.s1} - ${m.s2} ${m.e2} <img class="logo" src="${getLogo(m.e2)}"></div>`
     ).join('') : 'Aucun match terminé';
 }
 
-// Lancer au démarrage + actualiser toutes les 10 secondes
 chargerDonnees();
 setInterval(chargerDonnees, 10000);
