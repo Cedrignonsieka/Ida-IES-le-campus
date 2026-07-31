@@ -8,26 +8,30 @@
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         :root { --vert: #00ff88; --fond: #050505; --card: #111; --texte: #ffffff; --gris: #888; }
         body { font-family: 'Poppins', sans-serif; background: var(--fond); color: var(--texte); margin:0; }
-        header { background: var(--vert); color: black; padding: 18px; text-align: center; font-weight: 700; font-size: 1.5em; }
+        header { background: linear-gradient(90deg, var(--vert), #00cc6a); color: black; padding: 18px; text-align: center; font-weight: 700; font-size: 1.5em; position: sticky; top:0; }
         main { padding: 16px; max-width: 750px; margin: auto; }
         h2 { font-size: 1.2em; font-weight: 600; display: flex; align-items: center; gap: 10px; margin: 25px 0 12px; }
-     .dot { width: 10px; height: 10px; background: red; border-radius: 50%; animation: blink 1.2s infinite; }
+      .dot { width: 10px; height: 10px; background: red; border-radius: 50%; animation: blink 1.2s infinite; box-shadow: 0 0 8px red; }
         @keyframes blink { 50% { opacity: 0; } }
-     .match { background: var(--card); border-radius: 12px; padding: 14px; margin-bottom: 10px; border: 1px solid #222; }
-     .match-top { display: flex; align-items: center; justify-content: space-between; }
-     .team { display: flex; align-items: center; gap: 10px; flex: 1; font-weight: 600; font-size: 0.95em; }
-     .team-right { justify-content: flex-end; }
-     .logo { width: 32px; height: 32px; border-radius: 50%; background: #222; object-fit: cover; }
-     .score { font-weight: 700; font-size: 1.4em; color: var(--vert); min-width: 60px; text-align: center; }
-     .live-time { background: red; color: white; padding: 3px 10px; border-radius: 20px; font-weight: 700; font-size: 0.85em; }
-     .match-bottom { border-top: 1px solid #222; margin-top: 12px; padding-top: 10px; font-size: 0.85em; color: var(--gris); display: flex; justify-content: space-between; }
-     .poule { background: #222; color: var(--vert); font-weight: 600; padding: 3px 10px; border-radius: 20px; font-size: 0.8em; }
-     .vs { color: var(--gris); font-weight: 600; padding: 0 10px; }
-     .poule-title { color: var(--vert); font-weight: 600; margin: 20px 0 8px; }
-        table { width: 100%; background: var(--card); border-radius: 10px; overflow: hidden; font-size: 0.9em; }
-        th, td { padding: 10px; text-align: center; }
-        td:first-child { text-align: left; }
+      .match { background: var(--card); border-radius: 12px; padding: 14px; margin-bottom: 10px; border: 1px solid #222; }
+      .match-top { display: flex; align-items: center; justify-content: space-between; }
+      .team { display: flex; align-items: center; gap: 10px; flex: 1; font-weight: 600; font-size: 0.95em; }
+      .team-right { justify-content: flex-end; }
+      .logo { width: 32px; height: 32px; border-radius: 50%; background: #222; object-fit: cover; border: 2px solid #333; }
+      .score { font-weight: 700; font-size: 1.4em; color: var(--vert); min-width: 60px; text-align: center; }
+      .live.score { color: red; text-shadow: 0 0 8px red; }
+      .live-info { text-align: center; }
+      .live-time { background: red; color: white; padding: 3px 10px; border-radius: 20px; font-weight: 700; font-size: 0.85em; margin-bottom: 6px; display: inline-block; }
+      .match-bottom { border-top: 1px solid #222; margin-top: 12px; padding-top: 10px; font-size: 0.85em; color: var(--gris); display: flex; justify-content: space-between; }
+      .poule { background: #222; color: var(--vert); font-weight: 600; padding: 3px 10px; border-radius: 20px; font-size: 0.8em; }
+      .vs { color: var(--gris); font-weight: 600; padding: 0 10px; }
+      .poule-title { color: var(--vert); font-weight: 600; margin: 20px 0 8px; font-size: 1em; }
+        table { width: 100%; background: var(--card); border-radius: 10px; overflow: hidden; font-size: 0.9em; border: 1px solid #222; }
+        th { background: #1a1a1a; padding: 12px; text-align: center; }
+        td { padding: 10px; text-align: center; }
+        td:first-child { text-align: left; font-weight: 600; }
         td img { width: 22px; height: 22px; margin-right: 8px; }
+        tr:nth-child(even) { background: #0a0a0a; }
     </style>
 </head>
 <body>
@@ -36,18 +40,22 @@
         <section id="live"><h2><span class="dot"></span> EN DIRECT</h2><div id="live-match">Chargement...</div></section>
         <section id="avenir"><h2>📅 À VENIR</h2><div id="matchs-a-venir">Chargement...</div></section>
         <section id="termines"><h2>✅ TERMINÉS</h2><div id="matchs-termines">Chargement...</div></section>
-        <section id="classement"><h2>🏆 CLASSEMENT</h2><div id="classement-par-poule"></div></section>
+        <section id="classement"><h2>🏆 CLASSEMENT</h2><div id="classement-par-poule">Chargement...</div></section>
     </main>
 
     <script>
+        // TES 2 LIENS SHEET
         const URL_CLASSEMENT = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQULxJOCxlp-vjeYfhXexfaKTBHl-aLBiq37_ROaPxB008hH1Rjr1Sp-Qr5rgOTBDo6jdTO7VPzZQTk/pub?gid=0&single=true&output=csv";
         const URL_MATCHS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQULxJOCxlp-vjeYfhXexfaKTBHl-aLBiq37_ROaPxB008hH1Rjr1Sp-Qr5rgOTBDo6jdTO7VPzZQTk/pub?gid=413650798&single=true&output=csv";
 
-        const LOGOS = { "E1": "https://i.imgur.com/8Km9tLL.png", "E2": "https://i.imgur.com/8Km9tLL.png", "Bangolo": "https://i.imgur.com/8Km9tLL.png", "Man": "https://i.imgur.com/8Km9tLL.png", "default": "https://i.imgur.com/8Km9tLL.png" };
+        // PROXY POUR FORCER LE CHARGEMENT
+        const PROXY = "https://api.allorigins.win/raw?url=";
+
+        const LOGOS = { "E1": "https://i.imgur.com/8Km9tLL.png", "E2": "https://i.imgur.com/8Km9tLL.png", "Bangolo": "https://i.imgur.com/8Km9tLL.png", "Man": "https://i.imgur.com/8Km9tLL.png", "Ziondrou": "https://i.imgur.com/8Km9tLL.png", "Kahi FC": "https://i.imgur.com/8Km9tLL.png", "default": "https://i.imgur.com/8Km9tLL.png" };
         let chronoInterval = null;
 
         async function fetchCSV(url) {
-            const res = await fetch(url);
+            const res = await fetch(PROXY + encodeURIComponent(url)); // <-- LA MAGIE EST ICI
             const data = await res.text();
             return data.split('\n').slice(1).filter(r => r.trim()!== '').map(r => r.split(','));
         }
@@ -88,20 +96,20 @@
             }
             document.getElementById('classement-par-poule').innerHTML = classementHTML;
 
-            // MATCHS - VERSION TOLÉRANTE
-            const matchs = matchsData.map(r => ({ 
-                e1: r[0]||'', s1: r[1]||'0', e2: r[2]||'', s2: r[3]||'0', 
-                date: r[4]||'', heure: r[5]||'', statut: (r[6]||'').toUpperCase().trim(), poule: r[7]||'' 
+            // MATCHS
+            const matchs = matchsData.map(r => ({
+                e1: r[0]||'', s1: r[1]||'0', e2: r[2]||'', s2: r[3]||'0',
+                date: r[4]||'', heure: r[5]||'', statut: (r[6]||'').toUpperCase().trim(), poule: r[7]||''
             }));
 
-            const live = matchs.find(m => m.statut.includes("COURS")); // "EN COURS"
-            const aVenir = matchs.filter(m => m.statut.includes("VENIR")); // "A VENIR" ou "À VENIR"
-            const termines = matchs.filter(m => m.statut.includes("TERM")); // "TERMINE" ou "TERMINÉ"
+            const live = matchs.find(m => m.statut.includes("COURS"));
+            const aVenir = matchs.filter(m => m.statut.includes("VENIR"));
+            const termines = matchs.filter(m => m.statut.includes("TERM"));
 
             if(live) lancerChrono(live.date, live.heure);
 
             document.getElementById('live-match').innerHTML = live
-     ? `<div class="match"><div class="match-top"><div class="team"><img class="logo" src="${getLogo(live.e1)}"> ${live.e1}</div><div style="text-align:center"><div id="live-time" class="live-time">${calculerMinute(live.date, live.heure)}</div><div class="score">${live.s1} - ${live.s2}</div></div><div class="team team-right">${live.e2} <img class="logo" src="${getLogo(live.e2)}"></div></div></div>`
+     ? `<div class="match"><div class="match-top"><div class="team"><img class="logo" src="${getLogo(live.e1)}"> ${live.e1}</div><div class="live-info"><div id="live-time" class="live-time">${calculerMinute(live.date, live.heure)}</div><div class="score live">${live.s1} - ${live.s2}</div></div><div class="team team-right">${live.e2} <img class="logo" src="${getLogo(live.e2)}"></div></div></div>`
                 : '<div class="match">Aucun match en cours</div>';
 
             document.getElementById('matchs-a-venir').innerHTML = aVenir.length > 0? aVenir.map(m =>
