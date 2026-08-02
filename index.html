@@ -3,32 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TOURNOI EN DIRECT</title>
+<title>TOURNOI FOOT 2025 - EN DIRECT</title>
 <style>
   :root{
     --vert: #00FF88;
+    --vert-dark: #00CC6A;
     --noir: #0A0A0A;
+    --noir-light: #1A1A1A;
     --blanc: #FFFFFF;
     --jaune: #FFD700;
   }
-  body{ background: var(--noir); color: var(--blanc); font-family: Arial; margin: 0; padding: 10px; }
-  h1{ color: var(--vert); text-align: center; text-shadow: 0 0 10px var(--vert); }
- .tabs{ display: flex; gap: 10px; margin-bottom: 15px; overflow-x: auto; }
- .tab{ background: #1A1A1A; color: var(--vert); padding: 10px; border-radius: 8px; flex:1; text-align:center; cursor:pointer; border: 1px solid var(--vert); }
- .tab.active{ background: var(--vert); color: var(--noir); }
- .card{ background: #1A1A1A; border: 1px solid var(--vert); border-radius: 12px; padding: 15px; margin-bottom: 10px; }
- .score{ font-size: 28px; text-align: center; font-weight: bold; }
- .live{ color: var(--jaune); animation: blink 1s infinite; }
-  @keyframes blink { 50% { opacity: 0.5; } }
- .poule{ color: var(--vert); font-weight: bold; margin-top: 15px; font-size: 18px; }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background: var(--noir); color: var(--blanc); font-family: 'Segoe UI', Arial; padding-bottom: 80px; }
+
+  /* HEADER PRO */
+  header{ background: linear-gradient(90deg, var(--noir) 0%, var(--noir-light) 50%, var(--noir) 100%); padding: 15px 10px; border-bottom: 2px solid var(--vert); text-align: center; }
+  header h1{ color: var(--vert); font-size: 22px; text-shadow: 0 0 15px var(--vert); }
+  header p{ color: #AAA; font-size: 12px; margin-top: 5px; }
+
+  /* TABS */
+.tabs{ display: flex; gap: 8px; margin: 15px 10px; overflow-x: auto; }
+.tab{ background: var(--noir-light); color: var(--vert); padding: 12px; border-radius: 8px; flex:1; text-align:center; cursor:pointer; border: 1px solid var(--vert); font-weight: bold; transition: 0.2s; }
+.tab.active{ background: var(--vert); color: var(--noir); box-shadow: 0 0 10px var(--vert); }
+
+  /* CARDS */
+.card{ background: var(--noir-light); border: 1px solid #333; border-left: 4px solid var(--vert); border-radius: 12px; padding: 15px; margin: 0 10px 12px 10px; }
+.score{ font-size: 30px; text-align: center; font-weight: bold; margin: 8px 0; }
+.score span{ color: var(--jaune); }
+.live{ color: var(--jaune); font-weight: bold; animation: blink 1s infinite; }
+  @keyframes blink { 50% { opacity: 0.4; } }
+.poule{ color: var(--vert); font-weight: bold; margin: 20px 10px 8px 10px; font-size: 18px; border-bottom: 2px solid var(--vert); padding-bottom: 5px; }
   table{ width: 100%; border-collapse: collapse; margin-top: 5px; }
-  th{ color: var(--vert); border-bottom: 1px solid var(--vert); padding: 8px; }
-  td{ padding: 8px; text-align: center; }
+  th{ color: var(--vert); border-bottom: 1px solid var(--vert); padding: 10px 4px; font-size: 13px; }
+  td{ padding: 10px 4px; text-align: center; font-size: 14px; }
+  tr:nth-child(even){ background: #151515; }
+
+  /* FOOTER PRO */
+  footer{ background: var(--noir-light); border-top: 2px solid var(--vert); padding: 20px 10px; text-align: center; position: fixed; bottom: 0; width: 100%; }
+  footer p{ color: #888; font-size: 12px; }
+  footer a{ color: var(--vert); text-decoration: none; font-weight: bold; }
 </style>
 </head>
 <body>
 
-<h1>🏆 TOURNOI EN DIRECT 🏆</h1>
+<header>
+  <h1>⚽ NOM DU TOURNOI 2025 ⚽</h1>
+  <p>Résultats et Classements en Temps Réel</p>
+</header>
 
 <div class="tabs">
   <div class="tab active" onclick="show('live', this)">EN DIRECT</div>
@@ -43,6 +64,11 @@
 <div id="fini" style="display:none"></div>
 <div id="class" style="display:none"></div>
 <div id="buteurs" style="display:none"></div>
+
+<footer>
+  <p>© 2025 NOM DU TOURNOI. Tous droits réservés.</p>
+  <p>Powered by <a href="#">Toi</a> | Mis à jour toutes les 10s</p>
+</footer>
 
 <script>
 const SHEET_LIVE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDuJ40FPFdxFcV_8xqNmhIcKHIFpGtyE_FrUZ1eQnBYlcOaowymxrYhY34rQofcuQ42IcN/pub?gid=0&single=true&output=csv";
@@ -76,36 +102,27 @@ function classement(){
 }
 
 function render(){
-  // EN DIRECT
-  let hl='';
-  L.forEach(m=>{ if(m['Score 1']!=='') hl+=`<div class="card"><div class="live">● ${m['Minute']}</div><div class="score">${m['Equipe 1']} ${m['Score 1']} - ${m['Score 2']} ${m['Equipe 2']}</div><div style="color:var(--jaune)">${m['Buteurs']}</div></div>`});
-  document.getElementById('live').innerHTML=hl||'<div class="card">Aucun match</div>';
+  let hl=''; L.forEach(m=>{ if(m['Score 1']!=='') hl+=`<div class="card"><div class="live">● EN DIRECT ${m['Minute']}</div><div class="score">${m['Equipe 1']} <span>${m['Score 1']}</span> - <span>${m['Score 2']}</span> ${m['Equipe 2']}</div><div style="color:var(--jaune)">Buts: ${m['Buteurs']}</div></div>`});
+  document.getElementById('live').innerHTML=hl||'<div class="card">Aucun match en cours</div>';
 
-  // A VENIR
-  let hn='';
-  N.forEach(m=> hn+=`<div class="card">${m['Date']} ${m['Heure']} | Poule ${m['Poule']}<br><b>${m['Equipe 1']} vs ${m['Equipe 2']}</b></div>`);
+  let hn=''; N.forEach(m=> hn+=`<div class="card">${m['Date']} ${m['Heure']} | Poule ${m['Poule']}<br><b>${m['Equipe 1']} vs ${m['Equipe 2']}</b></div>`);
   document.getElementById('next').innerHTML=hn;
 
-  // TERMINÉ
-  let hf='';
-  F.reverse().forEach(m=> hf+=`<div class="card">${m['Date']} ${m['Heure']} | Poule ${m['Poule']}<br><div class="score">${m['Equipe 1']} ${m['Score 1']} - ${m['Score 2']} ${m['Equipe 2']}</div><div style="color:var(--jaune)">${m['Buteurs']}</div></div>`);
-  document.getElementById('fini').innerHTML=hf||'<div class="card">Aucun match</div>';
+  let hf=''; F.reverse().forEach(m=> hf+=`<div class="card">${m['Date']} ${m['Heure']} | Poule ${m['Poule']}<br><div class="score">${m['Equipe 1']} <span>${m['Score 1']}</span> - <span>${m['Score 2']}</span> ${m['Equipe 2']}</div><div style="color:var(--jaune)">Buts: ${m['Buteurs']}</div></div>`);
+  document.getElementById('fini').innerHTML=hf||'<div class="card">Aucun match terminé</div>';
 
-  // CLASSEMENT
   let tc=classement(), poules={};
   Object.values(tc).forEach(x=>{ if(!poules[x.p]) poules[x.p]=[]; poules[x.p].push(x); });
   let hc='';
   for(let p in poules){
     poules[p].sort((a,b)=>b.pts-a.pts);
     hc+=`<div class="poule">POULE ${p}</div><table><tr><th>Rang</th><th>Equipe</th><th>Pts</th></tr>`;
-    poules[p].forEach((x,i)=> hc+=`<tr><td>${i+1}</td><td>${x.e}</td><td>${x.pts}</td></tr>`);
+    poules[p].forEach((x,i)=> hc+=`<tr><td>${i+1}</td><td>${x.e}</td><td><b>${x.pts}</b></td></tr>`);
     hc+='</table>';
   }
   document.getElementById('class').innerHTML=hc;
 
-  // BUTEURS
-  let tb={};
-  [...F,...L].forEach(m=>{ let b=buts(m['Buteurs']); for(let n in b) tb[n]=(tb[n]||0)+b[n]; });
+  let tb={}; [...F,...L].forEach(m=>{ let b=buts(m['Buteurs']); for(let n in b) tb[n]=(tb[n]||0)+b[n]; });
   let top=Object.entries(tb).sort((a,b)=>b[1]-a[1]).slice(0,10);
   let hbu='';
   top.forEach((x,i)=> hbu+=`<div class="card">${i+1}. ${x[0]} - <b style="color:var(--jaune)">${x[1]} buts</b></div>`);
