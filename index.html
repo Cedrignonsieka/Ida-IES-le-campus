@@ -3,58 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TOURNOI FOOT 2025 - EN DIRECT</title>
+<title>TOURNOI - LIVE</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@400;700&display=swap');
+
   :root{
     --vert: #00FF88;
-    --vert-dark: #00CC6A;
-    --noir: #0A0A0A;
-    --noir-light: #1A1A1A;
+    --noir: #050505;
+    --gris: #121212;
     --blanc: #FFFFFF;
     --jaune: #FFD700;
+    --rouge: #FF0033;
   }
   *{ margin:0; padding:0; box-sizing:border-box; }
-  body{ background: var(--noir); color: var(--blanc); font-family: 'Segoe UI', Arial; padding-bottom: 80px; }
+  body{ background: var(--noir); color: var(--blanc); font-family: 'Roboto', sans-serif; padding-bottom: 90px; }
 
-  /* HEADER PRO */
-  header{ background: linear-gradient(90deg, var(--noir) 0%, var(--noir-light) 50%, var(--noir) 100%); padding: 15px 10px; border-bottom: 2px solid var(--vert); text-align: center; }
-  header h1{ color: var(--vert); font-size: 22px; text-shadow: 0 0 15px var(--vert); }
-  header p{ color: #AAA; font-size: 12px; margin-top: 5px; }
+  /* HEADER STADE */
+  header{ background: linear-gradient(180deg, #000 0%, var(--gris) 100%); padding: 15px 10px; border-bottom: 3px solid var(--vert); text-align: center; position: sticky; top:0; z-index:10; }
+  header h1{ font-family: 'Anton', sans-serif; color: var(--vert); font-size: 26px; letter-spacing: 2px; text-shadow: 0 0 20px var(--vert); }
+  header.live-bar{ color: var(--rouge); font-weight: bold; font-size: 12px; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-  /* TABS */
-.tabs{ display: flex; gap: 8px; margin: 15px 10px; overflow-x: auto; }
-.tab{ background: var(--noir-light); color: var(--vert); padding: 12px; border-radius: 8px; flex:1; text-align:center; cursor:pointer; border: 1px solid var(--vert); font-weight: bold; transition: 0.2s; }
-.tab.active{ background: var(--vert); color: var(--noir); box-shadow: 0 0 10px var(--vert); }
+  /* TABS STYLE TV */
+.tabs{ display: flex; gap: 0; margin: 0; background: var(--gris); position: sticky; top: 65px; z-index:9; }
+.tab{ background: transparent; color: #AAA; padding: 14px 5px; flex:1; text-align:center; cursor:pointer; font-weight: 700; font-size: 12px; border-bottom: 3px solid transparent; transition: 0.2s; }
+.tab.active{ color: var(--vert); border-bottom: 3px solid var(--vert); background: #1A1A1A; }
 
-  /* CARDS */
-.card{ background: var(--noir-light); border: 1px solid #333; border-left: 4px solid var(--vert); border-radius: 12px; padding: 15px; margin: 0 10px 12px 10px; }
-.score{ font-size: 30px; text-align: center; font-weight: bold; margin: 8px 0; }
-.score span{ color: var(--jaune); }
-.live{ color: var(--jaune); font-weight: bold; animation: blink 1s infinite; }
-  @keyframes blink { 50% { opacity: 0.4; } }
-.poule{ color: var(--vert); font-weight: bold; margin: 20px 10px 8px 10px; font-size: 18px; border-bottom: 2px solid var(--vert); padding-bottom: 5px; }
-  table{ width: 100%; border-collapse: collapse; margin-top: 5px; }
-  th{ color: var(--vert); border-bottom: 1px solid var(--vert); padding: 10px 4px; font-size: 13px; }
-  td{ padding: 10px 4px; text-align: center; font-size: 14px; }
-  tr:nth-child(even){ background: #151515; }
+  /* CARDS STYLE SCOREBOARD */
+.card{ background: var(--gris); border-radius: 0; padding: 15px 10px; margin-bottom: 2px; border-left: 5px solid var(--vert); }
+.card-live{ border-left: 5px solid var(--rouge); background: #1A0000; }
+.score-box{ display:flex; justify-content:space-between; align-items:center; font-family: 'Anton', sans-serif; font-size: 24px; }
+.team{ flex:1; }
+.vs{ color: var(--vert); padding: 0 10px; }
+.goals{ font-size: 12px; color: #CCC; margin-top: 8px; }
+.minute{ background: var(--rouge); color: white; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+
+  /* CLASSEMENT TABLEAU PRO */
+.poule{ font-family: 'Anton', sans-serif; color: var(--vert); margin: 15px 10px 5px 10px; font-size: 18px; letter-spacing: 1px; }
+  table{ width: 100%; background: var(--gris); }
+  th{ background: #000; color: var(--vert); padding: 12px 4px; font-size: 12px; text-align: left; }
+  td{ padding: 12px 4px; border-bottom: 1px solid #222; }
+  td:first-child{ text-align:center; width: 50px; font-weight: bold; }
+  tr:hover{ background: #1A1A1A; }
 
   /* FOOTER PRO */
-  footer{ background: var(--noir-light); border-top: 2px solid var(--vert); padding: 20px 10px; text-align: center; position: fixed; bottom: 0; width: 100%; }
-  footer p{ color: #888; font-size: 12px; }
-  footer a{ color: var(--vert); text-decoration: none; font-weight: bold; }
+  footer{ background: #000; border-top: 3px solid var(--vert); padding: 15px 10px; text-align: center; position: fixed; bottom: 0; width: 100%; }
+  footer p{ color: #666; font-size: 11px; }
+  footer span{ color: var(--vert); }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>⚽ NOM DU TOURNOI 2025 ⚽</h1>
-  <p>Résultats et Classements en Temps Réel</p>
+  <h1>NOM DU TOURNOI</h1>
+  <div class="live-bar">● EN DIRECT</div>
 </header>
 
 <div class="tabs">
-  <div class="tab active" onclick="show('live', this)">EN DIRECT</div>
-  <div class="tab" onclick="show('next', this)">À VENIR</div>
-  <div class="tab" onclick="show('fini', this)">TERMINÉ</div>
+  <div class="tab active" onclick="show('live', this)">LIVE</div>
+  <div class="tab" onclick="show('next', this)">PROGRAMME</div>
+  <div class="tab" onclick="show('fini', this)">RÉSULTATS</div>
   <div class="tab" onclick="show('class', this)">CLASSEMENT</div>
   <div class="tab" onclick="show('buteurs', this)">BUTEURS</div>
 </div>
@@ -66,8 +74,7 @@
 <div id="buteurs" style="display:none"></div>
 
 <footer>
-  <p>© 2025 NOM DU TOURNOI. Tous droits réservés.</p>
-  <p>Powered by <a href="#">Toi</a> | Mis à jour toutes les 10s</p>
+  <p>© 2025 <span>NOM DU TOURNOI</span> | Mise à jour auto toutes les 10 secondes</p>
 </footer>
 
 <script>
@@ -84,11 +91,7 @@ function show(id, el){
   el.classList.add('active');
 }
 
-function csv(csv){
-  let l=csv.split('\n'), h=l[0].split(',').map(x=>x.trim());
-  return l.slice(1).map(x=>{let v=x.split(','); let o={}; h.forEach((k,i)=>o[k]=v[i]?v[i].trim():''); return o;}).filter(x=>x['Equipe 1']);
-}
-
+function csv(csv){ let l=csv.split('\n'), h=l[0].split(',').map(x=>x.trim()); return l.slice(1).map(x=>{let v=x.split(','); let o={}; h.forEach((k,i)=>o[k]=v[i]?v[i].trim():''); return o;}).filter(x=>x['Equipe 1']); }
 function buts(t){ let b={}; if(!t) return b; t.split(',').forEach(x=>{let n=x.split(' ')[0]; if(n) b[n]=(b[n]||0)+1}); return b; }
 
 function classement(){
@@ -102,22 +105,22 @@ function classement(){
 }
 
 function render(){
-  let hl=''; L.forEach(m=>{ if(m['Score 1']!=='') hl+=`<div class="card"><div class="live">● EN DIRECT ${m['Minute']}</div><div class="score">${m['Equipe 1']} <span>${m['Score 1']}</span> - <span>${m['Score 2']}</span> ${m['Equipe 2']}</div><div style="color:var(--jaune)">Buts: ${m['Buteurs']}</div></div>`});
+  let hl=''; L.forEach(m=>{ if(m['Score 1']!=='') hl+=`<div class="card card-live"><div class="minute">● ${m['Minute']}</div><div class="score-box"><div class="team">${m['Equipe 1']}</div><div class="vs">${m['Score 1']} - ${m['Score 2']}</div><div class="team" style="text-align:right">${m['Equipe 2']}</div></div><div class="goals">⚽ ${m['Buteurs']}</div></div>`});
   document.getElementById('live').innerHTML=hl||'<div class="card">Aucun match en cours</div>';
 
-  let hn=''; N.forEach(m=> hn+=`<div class="card">${m['Date']} ${m['Heure']} | Poule ${m['Poule']}<br><b>${m['Equipe 1']} vs ${m['Equipe 2']}</b></div>`);
+  let hn=''; N.forEach(m=> hn+=`<div class="card"><b>${m['Date']} - ${m['Heure']}</b> | Poule ${m['Poule']}<br>${m['Equipe 1']} <span style="color:var(--vert)">VS</span> ${m['Equipe 2']}</div>`);
   document.getElementById('next').innerHTML=hn;
 
-  let hf=''; F.reverse().forEach(m=> hf+=`<div class="card">${m['Date']} ${m['Heure']} | Poule ${m['Poule']}<br><div class="score">${m['Equipe 1']} <span>${m['Score 1']}</span> - <span>${m['Score 2']}</span> ${m['Equipe 2']}</div><div style="color:var(--jaune)">Buts: ${m['Buteurs']}</div></div>`);
-  document.getElementById('fini').innerHTML=hf||'<div class="card">Aucun match terminé</div>';
+  let hf=''; F.reverse().forEach(m=> hf+=`<div class="card"><b>${m['Date']} ${m['Heure']}</b> | Poule ${m['Poule']}<div class="score-box"><div class="team">${m['Equipe 1']}</div><div class="vs">${m['Score 1']} - ${m['Score 2']}</div><div class="team" style="text-align:right">${m['Equipe 2']}</div></div><div class="goals">⚽ ${m['Buteurs']}</div></div>`);
+  document.getElementById('fini').innerHTML=hf||'<div class="card">Aucun résultat</div>';
 
   let tc=classement(), poules={};
   Object.values(tc).forEach(x=>{ if(!poules[x.p]) poules[x.p]=[]; poules[x.p].push(x); });
   let hc='';
   for(let p in poules){
     poules[p].sort((a,b)=>b.pts-a.pts);
-    hc+=`<div class="poule">POULE ${p}</div><table><tr><th>Rang</th><th>Equipe</th><th>Pts</th></tr>`;
-    poules[p].forEach((x,i)=> hc+=`<tr><td>${i+1}</td><td>${x.e}</td><td><b>${x.pts}</b></td></tr>`);
+    hc+=`<div class="poule">GROUPE ${p}</div><table><tr><th>#</th><th>CLUB</th><th style="text-align:center">PTS</th></tr>`;
+    poules[p].forEach((x,i)=> hc+=`<tr><td>${i+1}</td><td>${x.e}</td><td style="text-align:center"><b>${x.pts}</b></td></tr>`);
     hc+='</table>';
   }
   document.getElementById('class').innerHTML=hc;
@@ -125,7 +128,7 @@ function render(){
   let tb={}; [...F,...L].forEach(m=>{ let b=buts(m['Buteurs']); for(let n in b) tb[n]=(tb[n]||0)+b[n]; });
   let top=Object.entries(tb).sort((a,b)=>b[1]-a[1]).slice(0,10);
   let hbu='';
-  top.forEach((x,i)=> hbu+=`<div class="card">${i+1}. ${x[0]} - <b style="color:var(--jaune)">${x[1]} buts</b></div>`);
+  top.forEach((x,i)=> hbu+=`<div class="card"><b>${i+1}. ${x[0]}</b> <span style="float:right; color:var(--jaune); font-weight:bold">${x[1]} BUTS</span></div>`);
   document.getElementById('buteurs').innerHTML=hbu||'<div class="card">Aucun but</div>';
 }
 
