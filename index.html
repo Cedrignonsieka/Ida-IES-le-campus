@@ -5,30 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TOURNOI LIVE</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
-  :root{ --vert: #00FF88; --vert-glow: 0 0 20px rgba(0,255,136,0.5); --noir: #0A0A0A; --glass: rgba(26,26,26,0.6); --blanc: #FFFFFF; --jaune: #FFD700; }
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+  :root{ --vert: #00FF88; --noir: #0A0A0A; --glass: rgba(20,20,20,0.7); --blanc: #FFFFFF; --jaune: #FFD700; --gris: #888; }
   *{ margin:0; padding:0; box-sizing:border-box; }
-  body{ background: linear-gradient(135deg, #0A0A0A 0%, #1A1A1A 100%); color: var(--blanc); font-family: 'Poppins', sans-serif; min-height: 100vh; padding-bottom: 90px; }
-  header{ text-align: center; padding: 25px 10px; }
-  header h1{ font-size: 28px; font-weight: 800; background: linear-gradient(90deg, var(--vert), #FFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: var(--vert-glow); }
- .tabs{ display: flex; gap: 10px; padding: 0 15px 15px 15px; overflow-x: auto; }
- .tab{ background: var(--glass); backdrop-filter: blur(10px); color: var(--vert); padding: 12px; border-radius: 15px; flex:1; text-align:center; cursor:pointer; border: 1px solid rgba(0,255,136,0.3); font-weight: 600; transition: 0.3s; }
- .tab.active{ background: var(--vert); color: var(--noir); box-shadow: var(--vert-glow); transform: scale(1.05); }
- .card{ background: var(--glass); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 18px; margin: 0 15px 15px 15px; }
- .card-live{ border: 1px solid var(--vert); animation: glow 2s infinite; }
-  @keyframes glow { 0%,100%{ box-shadow: 0 0 15px rgba(0,255,136,0.3)} 50%{ box-shadow: 0 0 25px rgba(0,255,136,0.6)} }
- .top-info{ display:flex; justify-content:space-between; font-size: 11px; color: #AAA; margin-bottom: 10px; }
- .score-main{ display:flex; justify-content:space-between; align-items:center; font-size: 26px; font-weight: 800; }
+  body{ background: var(--noir); color: var(--blanc); font-family: 'Poppins', sans-serif; min-height: 100vh; padding-bottom: 70px; }
+
+  header{ text-align: center; padding: 20px 10px; }
+  header h1{ font-size: 24px; font-weight: 700; color: var(--vert); letter-spacing: 1px; }
+
+ .tabs{ display: flex; gap: 8px; padding: 0 12px 12px 12px; overflow-x: auto; }
+ .tab{ background: var(--glass); color: var(--vert); padding: 10px 16px; border-radius: 12px; flex:1; text-align:center; cursor:pointer; border: 1px solid rgba(0,255,136,0.2); font-weight: 600; font-size: 14px; transition: 0.2s; }
+ .tab.active{ background: var(--vert); color: var(--noir); }
+
+ .card{ background: var(--glass); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 16px; margin: 0 12px 12px 12px; }
+ .card-live{ border: 1px solid var(--vert); }
+
+ .top-info{ display:flex; justify-content:space-between; font-size: 11px; color: var(--gris); margin-bottom: 8px; }
+ .score-main{ display:flex; justify-content:space-between; align-items:center; font-size: 22px; font-weight: 700; }
  .team-name{ flex:1; }
- .score-num{ color: var(--jaune); padding: 0 15px; font-size: 32px; }
- .chrono{ background: linear-gradient(90deg, #FF0033, #FF6B00); color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 800; text-align: center; margin-top: 10px; }
- .goals{ font-size: 13px; color: #CCC; margin-top: 10px; }
- .poule{ font-weight: 800; color: var(--vert); margin: 20px 15px 10px 15px; font-size: 18px; }
-  table{ width: 100%; background: var(--glass); backdrop-filter: blur(10px); border-radius: 15px; overflow: hidden; }
-  th{ background: rgba(0,255,136,0.1); color: var(--vert); padding: 14px 8px; font-size: 12px; }
-  td{ padding: 14px 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-  footer{ background: var(--glass); backdrop-filter: blur(15px); border-top: 1px solid rgba(0,255,136,0.3); padding: 20px 10px; text-align: center; position: fixed; bottom: 0; width: 100%; }
-  footer p{ color: #888; font-size: 11px; }
+ .score-num{ color: var(--jaune); padding: 0 12px; font-size: 28px; }
+ .chrono{ background: #FF2D2D; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; text-align: center; margin-top: 8px; width: fit-content; }
+ .goals{ font-size: 12px; color: #BBB; margin-top: 8px; }
+ .goals span{ margin-right: 8px; }
+
+ .poule{ font-weight: 700; color: var(--vert); margin: 16px 12px 8px 12px; font-size: 16px; }
+  table{ width: 100%; background: var(--glass); border-radius: 12px; overflow: hidden; font-size: 14px; }
+  th{ background: rgba(0,255,136,0.08); color: var(--vert); padding: 12px 8px; font-weight: 600; }
+  td{ padding: 12px 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+  footer{ background: var(--glass); border-top: 1px solid rgba(0,255,136,0.1); padding: 15px 10px; text-align: center; position: fixed; bottom: 0; width: 100%; }
+  footer p{ color: var(--gris); font-size: 10px; }
 </style>
 </head>
 <body>
@@ -57,6 +63,7 @@ const SHEET_NEXT = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDu
 const SHEET_FINI = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDuJ40FPFdxFcV_8xqNmhIcKHIFpGtyE_FrUZ1eQnBYlcOaowymxrYhY34rQofcuQ42IcN/pub?gid=1202405658&single=true&output=csv";
 
 let L=[],N=[],F=[];
+let isFirstLoad = true;
 
 function show(id, el){
   document.querySelectorAll('#live,#next,#fini,#class,#buteurs').forEach(d=>d.style.display='none');
@@ -65,25 +72,32 @@ function show(id, el){
   el.classList.add('active');
 }
 
-// CORRECTION ICI : on enleve les espaces des en-tetes
-function csv(csv){ 
-  let l=csv.split('\n'), 
-  h=l[0].split(',').map(x=>x.trim()); //.trim() enleve les espaces
+function csv(csv){
+  let l=csv.split('\n'),
+  h=l[0].split(',').map(x=>x.trim());
   return l.slice(1).map(x=>{
-    let v=x.split(','); 
-    let o={}; 
-    h.forEach((k,i)=>o[k]=v[i]?v[i].trim():''); 
+    let v=x.split(',');
+    let o={};
+    h.forEach((k,i)=>o[k]=v[i]?v[i].trim():'');
     return o;
-  }).filter(x=>x['Equipe 1']); 
+  }).filter(x=>x['Equipe 1']);
 }
 
-function buts(t){ let b={}; if(!t) return b; t.split(',').forEach(x=>{let n=x.split(' ')[0]; if(n) b[n]=(b[n]||0)+1}); return b; }
+function buts(t){
+  let b={};
+  if(!t) return b;
+  t.split(',').forEach(x=>{
+    let parts = x.trim().split(' ');
+    let n = parts[0];
+    if(n) b[n]=(b[n]||0)+1
+  });
+  return b;
+}
 
 function getChrono(heureDebut){
-  if(!heureDebut || heureDebut === "") return "0'";
+  if(!heureDebut) return "0'";
   const [h,m,s=0] = heureDebut.split(':').map(Number);
-  const debut = new Date();
-  debut.setHours(h,m,s,0);
+  const debut = new Date(); debut.setHours(h,m,s,0);
   const now = new Date();
   let diff = Math.floor((now - debut) / 1000 / 60);
   if(diff < 0) diff = 0;
@@ -101,26 +115,28 @@ function classement(){
   return t;
 }
 
-function render(){
-  let hl=''; L.forEach(m=>{
-    if(m['Score 1']!==''){
-      let minute = getChrono(m['HeureDebut']); // Maintenant ça va marcher
-      hl+=`<div class="card card-live">
-        <div class="top-info"><span>Poule ${m['Poule']}</span><span>● LIVE</span></div>
-        <div class="score-main"><div class="team-name">${m['Equipe 1']}</div><div class="score-num">${m['Score 1']} - ${m['Score 2']}</div><div class="team-name" style="text-align:right">${m['Equipe 2']}</div></div>
-        <div class="chrono">${minute}</div>
-        <div class="goals">⚽ ${m['Buteurs']}</div>
-      </div>`;
-    }
+function buildAll(){
+  // LIVE
+  let hl=''; L.filter(m=>m['Score 1']!=='').forEach(m=>{
+    let minute = getChrono(m['HeureDebut']);
+    hl+=`<div class="card card-live">
+      <div class="top-info"><span>Poule ${m['Poule']}</span><span>● LIVE</span></div>
+      <div class="score-main"><div class="team-name">${m['Equipe 1']}</div><div class="score-num">${m['Score 1']} - ${m['Score 2']}</div><div class="team-name" style="text-align:right">${m['Equipe 2']}</div></div>
+      <div class="chrono" data-heure="${m['HeureDebut']}">${minute}</div>
+      <div class="goals">⚽ ${m['Buteurs']}</div>
+    </div>`;
   });
   document.getElementById('live').innerHTML=hl||'<div class="card">Aucun match en cours</div>';
 
-  let hn=''; N.forEach(m=> hn+=`<div class="card"><div class="top-info">${m['Date']} - ${m['Heure']}</div><b>${m['Equipe 1']}</b> <span style="color:var(--vert)">VS</span> <b>${m['Equipe 2']}</b><div style="font-size:12px; color:#AAA">Poule ${m['Poule']}</div></div>`);
-  document.getElementById('next').innerHTML=hn;
+  // PROGRAMME
+  let hn=''; N.forEach(m=> hn+=`<div class="card"><div class="top-info">${m['Date']} - ${m['Heure']}</div><b>${m['Equipe 1']}</b> <span style="color:var(--vert)">VS</span> <b>${m['Equipe 2']}</b><div style="font-size:12px; color:var(--gris)">Poule ${m['Poule']}</div></div>`);
+  document.getElementById('next').innerHTML=hn||'<div class="card">Aucun match programmé</div>';
 
-  let hf=''; F.reverse().forEach(m=> hf+=`<div class="card"><div class="top-info">${m['Date']} ${m['Heure']} | Poule ${m['Poule']}</div><div class="score-main"><div class="team-name">${m['Equipe 1']}</div><div class="score-num">${m['Score 1']} - ${m['Score 2']}</div><div class="team-name" style="text-align:right">${m['Equipe 2']}</div></div><div class="goals">⚽ ${m['Buteurs']}</div></div>`);
+  // RESULTATS
+  let hf=''; [...F].reverse().forEach(m=> hf+=`<div class="card"><div class="top-info">${m['Date']} ${m['Heure']} | Poule ${m['Poule']}</div><div class="score-main"><div class="team-name">${m['Equipe 1']}</div><div class="score-num">${m['Score 1']} - ${m['Score 2']}</div><div class="team-name" style="text-align:right">${m['Equipe 2']}</div></div><div class="goals">⚽ ${m['Buteurs']}</div></div>`);
   document.getElementById('fini').innerHTML=hf||'<div class="card">Aucun résultat</div>';
 
+  // CLASSEMENT
   let tc=classement(), poules={};
   Object.values(tc).forEach(x=>{ if(!poules[x.p]) poules[x.p]=[]; poules[x.p].push(x); });
   let hc='';
@@ -130,17 +146,42 @@ function render(){
     poules[p].forEach((x,i)=> hc+=`<tr><td>${i+1}</td><td>${x.e}</td><td><b>${x.pts}</b></td></tr>`);
     hc+='</table>';
   }
-  document.getElementById('class').innerHTML=hc;
+  document.getElementById('class').innerHTML=hc||'<div class="card">Pas encore de classement</div>';
 
+  // BUTEURS
   let tb={}; [...F,...L].forEach(m=>{ let b=buts(m['Buteurs']); for(let n in b) tb[n]=(tb[n]||0)+b[n]; });
   let top=Object.entries(tb).sort((a,b)=>b[1]-a[1]).slice(0,10);
   let hbu='';
-  top.forEach((x,i)=> hbu+=`<div class="card"><b>${i+1}. ${x[0]}</b> <span style="float:right; color:var(--jaune); font-weight:800">${x[1]} BUTS</span></div>`);
-  document.getElementById('buteurs').innerHTML=hbu||'<div class="card">Aucun but</div>';
+  top.forEach((x,i)=> hbu+=`<div class="card"><b>${i+1}. ${x[0]}</b> <span style="float:right; color:var(--jaune); font-weight:700">${x[1]} BUTS</span></div>`);
+  document.getElementById('buteurs').innerHTML=hbu||'<div class="card">Aucun but marqué</div>';
 }
 
-Promise.all([fetch(SHEET_LIVE).then(r=>r.text()),fetch(SHEET_NEXT).then(r=>r.text()),fetch(SHEET_FINI).then(r=>r.text())])
-.then(([l,n,f])=>{ L=csv(l); N=csv(n); F=csv(f); render(); setInterval(render,1000); });
+function updateChronoOnly(){
+  document.querySelectorAll('.chrono').forEach(el=>{
+    let heure = el.getAttribute('data-heure');
+    el.innerText = getChrono(heure);
+  });
+}
+
+function loadData(){
+  Promise.all([fetch(SHEET_LIVE).then(r=>r.text()),fetch(SHEET_NEXT).then(r=>r.text()),fetch(SHEET_FINI).then(r=>r.text())])
+ .then(([l,n,f])=>{
+    L=csv(l); N=csv(n); F=csv(f);
+    if(isFirstLoad){
+      buildAll();
+      isFirstLoad = false;
+    }
+  });
+}
+
+// 1. Chargement initial
+loadData();
+
+// 2. Le chrono tourne toutes les secondes
+setInterval(updateChronoOnly, 1000);
+
+// 3. Les données se rechargent toutes les 30 secondes sans bouger l'écran
+setInterval(loadData, 30000);
 </script>
 </body>
 </html>
