@@ -1,128 +1,160 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tournoi Foot - Live Score</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-        :root { --vert: #00ff88; --fond: #050505; --card: #111; --texte: #ffffff; --gris: #888; }
-        body { font-family: 'Poppins', sans-serif; background: var(--fond); color: var(--texte); margin:0; }
-        header { background: linear-gradient(90deg, var(--vert), #00cc6a); color: black; padding: 18px; text-align: center; font-weight: 700; font-size: 1.5em; position: sticky; top:0; }
-        main { padding: 16px; max-width: 750px; margin: auto; }
-        h2 { font-size: 1.2em; font-weight: 600; display: flex; align-items: center; gap: 10px; margin: 25px 0 12px; }
-      .dot { width: 10px; height: 10px; background: red; border-radius: 50%; animation: blink 1.2s infinite; box-shadow: 0 0 8px red; }
-        @keyframes blink { 50% { opacity: 0; } }
-      .match { background: var(--card); border-radius: 12px; padding: 14px; margin-bottom: 10px; border: 1px solid #222; }
-      .match-top { display: flex; align-items: center; justify-content: space-between; }
-      .team { display: flex; align-items: center; gap: 10px; flex: 1; font-weight: 600; font-size: 0.95em; }
-      .team-right { justify-content: flex-end; }
-      .logo { width: 32px; height: 32px; border-radius: 50%; background: #222; object-fit: cover; border: 2px solid #333; }
-      .score { font-weight: 700; font-size: 1.4em; color: var(--vert); min-width: 60px; text-align: center; }
-      .live.score { color: red; text-shadow: 0 0 8px red; }
-      .live-info { text-align: center; }
-      .live-time { background: red; color: white; padding: 3px 10px; border-radius: 20px; font-weight: 700; font-size: 0.85em; margin-bottom: 6px; display: inline-block; }
-      .match-bottom { border-top: 1px solid #222; margin-top: 12px; padding-top: 10px; font-size: 0.85em; color: var(--gris); display: flex; justify-content: space-between; }
-      .poule { background: #222; color: var(--vert); font-weight: 600; padding: 3px 10px; border-radius: 20px; font-size: 0.8em; }
-      .vs { color: var(--gris); font-weight: 600; padding: 0 10px; }
-      .poule-title { color: var(--vert); font-weight: 600; margin: 20px 0 8px; font-size: 1em; }
-        table { width: 100%; background: var(--card); border-radius: 10px; overflow: hidden; font-size: 0.9em; border: 1px solid #222; }
-        th { background: #1a1a1a; padding: 12px; text-align: center; }
-        td { padding: 10px; text-align: center; }
-        td:first-child { text-align: left; font-weight: 600; }
-        td img { width: 22px; height: 22px; margin-right: 8px; }
-        tr:nth-child(even) { background: #0a0a0a; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOURNOI EN DIRECT</title>
+<style>
+  :root{
+    --vert: #00FF88;
+    --noir: #0A0A0A;
+    --blanc: #FFFFFF;
+    --jaune: #FFD700;
+    --orange: #FF6B00;
+  }
+  body{ background: var(--noir); color: var(--blanc); font-family: 'Segoe UI', Arial; margin: 0; padding: 10px; }
+  h1{ color: var(--vert); text-align: center; text-shadow: 0 0 15px var(--vert); }
+ .tabs{ display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; }
+ .tab{ background: #1A1A1A; color: var(--vert); padding: 12px; border-radius: 10px; flex:1; text-align:center; cursor:pointer; border: 1px solid var(--vert); font-weight: bold; white-space: nowrap; }
+ .tab.active{ background: var(--vert); color: var(--noir); }
+ .card{ background: #1A1A1A; border: 1px solid #333; border-left: 4px solid var(--vert); border-radius: 12px; padding: 15px; margin-bottom: 12px; }
+ .score{ font-size: 32px; text-align: center; font-weight: bold; margin: 8px 0; }
+ .score span{ color: var(--orange); }
+ .live{ color: var(--jaune); font-weight: bold; animation: blink 1s infinite; }
+  @keyframes blink { 50% { opacity: 0.4; } }
+ .poule-title{ color: var(--vert); font-size: 18px; margin-top: 20px; margin-bottom: 8px; border-bottom: 2px solid var(--vert); }
+  table{ width: 100%; border-collapse: collapse; font-size: 14px; }
+  th{ color: var(--vert); border-bottom: 2px solid var(--vert); padding: 10px 4px; }
+  td{ padding: 10px 4px; text-align: center; }
+  tr:nth-child(even){ background: #151515; }
+ .buteur{ display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #222; }
+ .buteur span{ color: var(--orange); font-weight: bold; }
+</style>
 </head>
 <body>
-    <header>⚽ TOURNOI LIVE</header>
-    <main>
-        <section id="live"><h2><span class="dot"></span> EN DIRECT</h2><div id="live-match">Chargement...</div></section>
-        <section id="avenir"><h2>📅 À VENIR</h2><div id="matchs-a-venir">Chargement...</div></section>
-        <section id="termines"><h2>✅ TERMINÉS</h2><div id="matchs-termines">Chargement...</div></section>
-        <section id="classement"><h2>🏆 CLASSEMENT</h2><div id="classement-par-poule">Chargement...</div></section>
-    </main>
 
-    <script>
-        // TES 2 LIENS SHEET
-        const URL_CLASSEMENT = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQULxJOCxlp-vjeYfhXexfaKTBHl-aLBiq37_ROaPxB008hH1Rjr1Sp-Qr5rgOTBDo6jdTO7VPzZQTk/pub?gid=0&single=true&output=csv";
-        const URL_MATCHS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQULxJOCxlp-vjeYfhXexfaKTBHl-aLBiq37_ROaPxB008hH1Rjr1Sp-Qr5rgOTBDo6jdTO7VPzZQTk/pub?gid=413650798&single=true&output=csv";
+<h1>⚽ TOURNOI EN DIRECT ⚽</h1>
 
-        // PROXY POUR FORCER LE CHARGEMENT
-        const PROXY = "https://api.allorigins.win/raw?url=";
+<div class="tabs">
+  <div class="tab active" onclick="showTab('live', this)">EN DIRECT</div>
+  <div class="tab" onclick="showTab('next', this)">À VENIR</div>
+  <div class="tab" onclick="showTab('class', this)">CLASSEMENT</div>
+  <div class="tab" onclick="showTab('buteurs', this)">BUTEURS</div>
+</div>
 
-        const LOGOS = { "E1": "https://i.imgur.com/8Km9tLL.png", "E2": "https://i.imgur.com/8Km9tLL.png", "Bangolo": "https://i.imgur.com/8Km9tLL.png", "Man": "https://i.imgur.com/8Km9tLL.png", "Ziondrou": "https://i.imgur.com/8Km9tLL.png", "Kahi FC": "https://i.imgur.com/8Km9tLL.png", "default": "https://i.imgur.com/8Km9tLL.png" };
-        let chronoInterval = null;
+<div id="live">Chargement...</div>
+<div id="next" style="display:none"></div>
+<div id="class" style="display:none"></div>
+<div id="buteurs" style="display:none"></div>
 
-        async function fetchCSV(url) {
-            const res = await fetch(PROXY + encodeURIComponent(url)); // <-- LA MAGIE EST ICI
-            const data = await res.text();
-            return data.split('\n').slice(1).filter(r => r.trim()!== '').map(r => r.split(','));
-        }
+<script>
+// COLLE TES 3 LIENS ICI
+const SHEET_LIVE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDuJ40FPFdxFcV_8xqNmhIcKHIFpGtyE_FrUZ1eQnBYlcOaowymxrYhY34rQofcuQ42IcN/pub?gid=0&single=true&output=csv";
+const SHEET_NEXT = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDuJ40FPFdxFcV_8xqNmhIcKHIFpGtyE_FrUZ1eQnBYlcOaowymxrYhY34rQofcuQ42IcN/pub?gid=1457749805&single=true&output=csv";
+const SHEET_FINI = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDuJ40FPFdxFcV_8xqNmhIcKHIFpGtyE_FrUZ1eQnBYlcOaowymxrYhY34rQofcuQ42IcN/pub?gid=1202405658&single=true&output=csv";
 
-        function getLogo(equipe) { return LOGOS[equipe.trim()] || LOGOS["default"]; }
+let dataLive = [], dataNext = [], dataFini = [];
 
-        function calculerMinute(dateStr, heureStr) {
-            try {
-                let [jour, mois, annee] = dateStr.trim().split('/');
-                let [heure, minute] = heureStr.trim().split(':');
-                const debutMatch = new Date(Date.UTC(Number(annee), Number(mois) - 1, Number(jour), Number(heure), Number(minute)));
-                const diffMinutes = Math.floor((new Date() - debutMatch) / 1000 / 60);
-                if(diffMinutes < 0) return "0'";
-                if(diffMinutes >= 45 && diffMinutes <= 47) return "MT";
-                if(diffMinutes >= 90) return "FT";
-                return `${diffMinutes}'`;
-            } catch(e) { return "LIVE"; }
-        }
+function showTab(id, el){
+  document.querySelectorAll('#live,#next,#class,#buteurs').forEach(d=>d.style.display='none');
+  document.getElementById(id).style.display='block';
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
 
-        function lancerChrono(date, heure) {
-            clearInterval(chronoInterval);
-            const update = () => { const el = document.getElementById('live-time'); if(el) el.innerText = calculerMinute(date, heure); }
-            update();
-            chronoInterval = setInterval(update, 1000);
-        }
+function csvToJson(csv){
+  const lines = csv.split('\n');
+  const headers = lines[0].split(',').map(h=>h.trim());
+  return lines.slice(1).map(line => {
+    const values = line.split(',');
+    let obj = {};
+    headers.forEach((h,i)=> obj[h] = values[i]? values[i].trim() : '');
+    return obj;
+  }).filter(r=>r['Equipe 1']); // enleve lignes vides
+}
 
-        async function chargerDonnees() {
-            const [classementData, matchsData] = await Promise.all([fetchCSV(URL_CLASSEMENT), fetchCSV(URL_MATCHS)]);
+function compterButs(texte){
+  if(!texte) return {};
+  let buts = {};
+  texte.split(',').forEach(b=>{
+    let nom = b.split(' ')[0]; // prend le nom avant la minute
+    if(nom) buts[nom] = (buts[nom] || 0) + 1;
+  });
+  return buts;
+}
 
-            // CLASSEMENT
-            const poules = {};
-            classementData.forEach(r => { if(r[0] && r[1]){ if(!poules[r[0]]) poules[r[0]] = []; poules[r[0]].push(r); }});
-            let classementHTML = '';
-            for(const poule in poules) {
-                classementHTML += `<div class="poule-title">POULE ${poule}</div><table><tr><th>Équipe</th><th>V</th><th>D</th><th>Pts</th></tr>`;
-                classementHTML += poules[poule].map(r => `<tr><td><img src="${getLogo(r[1])}">${r[1]}</td><td>${r[2]||0}</td><td>${r[3]||0}</td><td>${r[4]||0}</td></tr>`).join('');
-                classementHTML += `</table>`;
-            }
-            document.getElementById('classement-par-poule').innerHTML = classementHTML;
+function calculerClassement(){
+  let teams = {};
+  [...dataFini,...dataLive].forEach(m=>{
+    if(!m['Score 1'] || m['Score 1']=='') return;
+    let e1=m['Equipe 1'], e2=m['Equipe 2'], s1=+m['Score 1'], s2=+m['Score 2'], poule=m['Poule'];
+    [e1,e2].forEach(e=>{ if(!teams[e]) teams[e]={equipe:e, pts:0, poule:poule}; });
+    if(s1>s2) teams[e1].pts += 3;
+    else if(s2>s1) teams[e2].pts += 3;
+    else { teams[e1].pts += 1; teams[e2].pts += 1; }
+  });
+  return teams;
+}
 
-            // MATCHS
-            const matchs = matchsData.map(r => ({
-                e1: r[0]||'', s1: r[1]||'0', e2: r[2]||'', s2: r[3]||'0',
-                date: r[4]||'', heure: r[5]||'', statut: (r[6]||'').toUpperCase().trim(), poule: r[7]||''
-            }));
+function afficher(){
+  // 1. EN DIRECT
+  let htmlLive = '';
+  dataLive.forEach(m=>{
+    if(m['Score 1']!==''){
+      htmlLive += `<div class="card"><div class="live">● EN DIRECT ${m['Minute']}</div>
+      <div class="score">${m['Equipe 1']} <span>${m['Score 1']}</span> - <span>${m['Score 2']}</span> ${m['Equipe 2']}</div>
+      <div style="color:var(--jaune)">Buts: ${m['Buteurs']}</div></div>`;
+    }
+  });
+  document.getElementById('live').innerHTML = htmlLive || '<div class="card">Aucun match en cours</div>';
 
-            const live = matchs.find(m => m.statut.includes("COURS"));
-            const aVenir = matchs.filter(m => m.statut.includes("VENIR"));
-            const termines = matchs.filter(m => m.statut.includes("TERM"));
+  // 2. A VENIR
+  let htmlNext = '';
+  dataNext.forEach(m=>{
+    htmlNext += `<div class="card">${m['Date']} ${m['Heure']} | Poule ${m['Poule']} <br><b>${m['Equipe 1']} vs ${m['Equipe 2']}</b></div>`;
+  });
+  document.getElementById('next').innerHTML = htmlNext;
 
-            if(live) lancerChrono(live.date, live.heure);
+  // 3. CLASSEMENT
+  let teams = calculerClassement();
+  let poules = {};
+  Object.values(teams).forEach(t=>{
+    if(!poules[t.poule]) poules[t.poule]=[];
+    poules[t.poule].push(t);
+  });
+  let htmlClass = '';
+  for(let p in poules){
+    poules[p].sort((a,b)=>b.pts-a.pts);
+    htmlClass += `<div class="poule-title">POULE ${p}</div><table><tr><th>Rang</th><th>Equipe</th><th>Pts</th></tr>`;
+    poules[p].forEach((t,i)=>{ htmlClass += `<tr><td>${i+1}</td><td>${t.equipe}</td><td><b>${t.pts}</b></td></tr>` });
+    htmlClass += '</table>';
+  }
+  document.getElementById('class').innerHTML = htmlClass;
 
-            document.getElementById('live-match').innerHTML = live
-     ? `<div class="match"><div class="match-top"><div class="team"><img class="logo" src="${getLogo(live.e1)}"> ${live.e1}</div><div class="live-info"><div id="live-time" class="live-time">${calculerMinute(live.date, live.heure)}</div><div class="score live">${live.s1} - ${live.s2}</div></div><div class="team team-right">${live.e2} <img class="logo" src="${getLogo(live.e2)}"></div></div></div>`
-                : '<div class="match">Aucun match en cours</div>';
+  // 4. BUTEURS
+  let buts = {};
+  [...dataFini,...dataLive].forEach(m=>{
+    let b = compterButs(m['Buteurs']);
+    for(let n in b){ buts[n]=(buts[n]||0)+b[n]; }
+  });
+  let topButeurs = Object.entries(buts).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  let htmlBut = '';
+  topButeurs.forEach((b,i)=>{ htmlBut += `<div class="buteur">${i+1}. ${b[0]} <span>${b[1]} buts</span></div>` });
+  document.getElementById('buteurs').innerHTML = htmlBut || '<div class="card">Aucun but pour le moment</div>';
+}
 
-            document.getElementById('matchs-a-venir').innerHTML = aVenir.length > 0? aVenir.map(m =>
-                `<div class="match"><div class="match-top"><div class="team"><img class="logo" src="${getLogo(m.e1)}"> ${m.e1}</div><div class="vs">VS</div><div class="team team-right">${m.e2} <img class="logo" src="${getLogo(m.e2)}"></div></div><div class="match-bottom"><span class="poule">POULE ${m.poule}</span><span>${m.date} • ${m.heure}</span></div></div>`
-            ).join('') : '<div class="match">Aucun match à venir</div>';
-
-            document.getElementById('matchs-termines').innerHTML = termines.length > 0? termines.map(m =>
-                `<div class="match"><div class="match-top"><div class="team"><img class="logo" src="${getLogo(m.e1)}"> ${m.e1}</div><div class="score">${m.s1} - ${m.s2}</div><div class="team team-right">${m.e2} <img class="logo" src="${getLogo(m.e2)}"></div></div></div>`
-            ).join('') : '<div class="match">Aucun match terminé</div>';
-        }
-
-        chargerDonnees();
-        setInterval(chargerDonnees, 10000);
-    </script>
+// Charger les données
+Promise.all([
+  fetch(SHEET_LIVE).then(r=>r.text()),
+  fetch(SHEET_NEXT).then(r=>r.text()),
+  fetch(SHEET_FINI).then(r=>r.text())
+]).then(([l,n,f])=>{
+  dataLive = csvToJson(l);
+  dataNext = csvToJson(n);
+  dataFini = csvToJson(f);
+  afficher();
+  setInterval(afficher, 10000); // refresh toutes les 10s
+});
+</script>
 </body>
 </html>
