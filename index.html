@@ -7,10 +7,10 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
   :root{
-    --vert: #00C853; /* VERT PLUS FONCÉ POUR CLAIR */
+    --vert: #00C853;
     --vert-clair: rgba(0,200,83,0.1);
     --blanc: #FFFFFF;
-    --fond: #F5F7FA; /* FOND GRIS TRÈS CLAIR */
+    --fond: #F5F7FA;
     --card: #FFFFFF;
     --noir: #1A1A1A;
     --jaune: #FFB300;
@@ -19,78 +19,40 @@
     --ombre: 0 4px 12px rgba(0,0,0,0.06);
   }
   *{ margin:0; padding:0; box-sizing:border-box; }
-  body{
-    background: var(--fond);
-    color: var(--noir);
-    font-family: 'Poppins', sans-serif;
-    min-height: 100vh;
-    padding-bottom: 70px;
-  }
+  body{ background: var(--fond); color: var(--noir); font-family: 'Poppins', sans-serif; min-height: 100vh; padding-bottom: 70px; }
 
   header{ text-align: center; padding: 25px 10px; background: var(--card); box-shadow: var(--ombre); }
-  header h1{ font-size: 28px; font-weight: 800; color: var(--vert); letter-spacing: 1px; }
+  header h1{ font-size: 28px; font-weight: 800; color: var(--vert); }
 
 .tabs{ display: flex; gap: 10px; padding: 15px; overflow-x: auto; background: var(--card); margin-bottom: 10px; box-shadow: var(--ombre); }
-.tab{
-  background: var(--fond);
-  color: var(--gris);
-  padding: 12px 18px;
-  border-radius: 12px;
-  flex:1;
-  text-align:center;
-  cursor:pointer;
-  border: 1px solid #E0E0E0;
-  font-weight: 700;
-  font-size: 14px;
-  transition: 0.3s;
-}
-.tab.active{
-  background: var(--vert);
-  color: var(--blanc);
-  border-color: var(--vert);
-  box-shadow: 0 4px 10px rgba(0,200,83,0.2);
-}
+.tab{ background: var(--fond); color: var(--gris); padding: 12px 18px; border-radius: 12px; flex:1; text-align:center; cursor:pointer; border: 1px solid #E0E0E0; font-weight: 700; font-size: 14px; transition: 0.3s; }
+.tab.active{ background: var(--vert); color: var(--blanc); border-color: var(--vert); }
 
-.card{
-  background: var(--card);
-  border: 1px solid #E0E0E0;
-  border-radius: 16px;
-  padding: 18px;
-  margin: 0 15px 15px 15px;
-  box-shadow: var(--ombre);
-  transition: 0.3s;
-}
-.card:hover{ transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+.card{ background: var(--card); border: 1px solid #E0E0E0; border-radius: 16px; padding: 18px; margin: 0 15px 15px 15px; box-shadow: var(--ombre); }
 .card-live{ border: 2px solid var(--vert); }
 
- /* STYLE ACTUALITE */
 .grid-actu{ display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:15px; padding: 0 15px; }
-.card-actu{
-  background: var(--card);
-  border: 1px solid #E0E0E0;
-  border-radius: 16px;
-  overflow:hidden;
-  box-shadow: var(--ombre);
-  transition: 0.3s;
-}
-.card-actu:hover{ transform: translateY(-5px); }
+.card-actu{ background: var(--card); border: 1px solid #E0E0E0; border-radius: 16px; overflow:hidden; box-shadow: var(--ombre); }
 .card-actu img{ width:100%; height:200px; object-fit:cover; background:#eee }
-.card-actu p{ padding:15px; font-size: 15px; font-weight: 600; line-height: 1.5; color: var(--noir); }
+.card-actu p{ padding:15px; font-size: 15px; font-weight: 600; }
+
+.buts-wrap{ display:flex; justify-content:space-between; gap:12px; margin-top:12px; }
+.buts-col{ width: 49%; }
+.buts-col h4{ font-size:13px; font-weight:700; color:var(--vert); margin-bottom:8px; padding-bottom:4px; border-bottom:2px solid var(--vert-clair); }
+.but-line{ display:flex; justify-content:space-between; background:var(--vert-clair); padding:6px 10px; border-radius:8px; margin-bottom:5px; font-size:13px; }
+.but-line.nom{ font-weight:600; }
+.but-line.min{ color:var(--vert); font-weight:800; }
 
 .top-info{ display:flex; justify-content:space-between; font-size: 12px; color: var(--gris); margin-bottom: 10px; font-weight: 600; }
 .score-main{ display:flex; justify-content:space-between; align-items:center; font-size: 24px; font-weight: 800; }
 .team-name{ flex:1; }
 .score-num{ color: var(--vert); padding: 0 15px; font-size: 32px; }
-.chrono{ background: var(--rouge); color: white; padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: 800; text-align: center; margin-top: 10px; width: fit-content; }
-.goals{ font-size: 13px; color: var(--gris); margin-top: 12px; }
-.goals span{ margin-right: 10px; background: var(--vert-clair); color: var(--vert); padding: 4px 10px; border-radius: 8px; font-weight: 600; }
+.chrono{ background: var(--rouge); color: white; padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: 800; width: fit-content; margin-top:8px; }
 
 .poule{ font-weight: 800; color: var(--vert); margin: 20px 15px 10px 15px; font-size: 18px; }
   table{ width: 100%; background: var(--card); border-radius: 14px; overflow: hidden; font-size: 15px; box-shadow: var(--ombre); }
   th{ background: var(--vert-clair); color: var(--vert); padding: 14px 10px; font-weight: 700; }
   td{ padding: 14px 10px; border-bottom: 1px solid #F0F0F0; }
-  tr:hover td{ background: var(--fond); }
-
   footer{ background: var(--card); border-top: 1px solid #E0E0E0; padding: 15px 10px; text-align: center; position: fixed; bottom: 0; width: 100%; }
   footer p{ color: var(--gris); font-size: 11px; }
 </style>
@@ -118,8 +80,9 @@
 <footer><p>© 2025 TOURNOI PREMIUM | Actualisation auto</p></footer>
 
 <script>
+// TES 5 LIENS
 const SHEET_ACCUEIL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDuJ40FPFdxFcV_8xqNmhIcKHIFpGtyE_FrUZ1eQnBYlcOaowymxrYhY34rQofcuQ42IcN/pub?gid=383038295&single=true&output=csv";
-const SHEET_BUTS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDuJ40FPFdxFcV_8xqNmhIcKHIFpGtyE_FrUZ1eQnBYlcOaowymxrYhY34rQofcuQ42IcN/pub?gid=54148263&single=true&output=csv";
+const SHEET_BUTS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDuJ40FPFdxFcV_8xqNmhIcKHIFpGtyE_FrUZ1eQnBYlcOaowymxrYhY34rQofcuQ42IcN/pub?gid=54148263&single=true&output=csv"; // TON LIEN FEUILLE 4
 const SHEET_LIVE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDuJ40FPFdxFcV_8xqNmhIcKHIFpGtyE_FrUZ1eQnBYlcOaowymxrYhY34rQofcuQ42IcN/pub?gid=0&single=true&output=csv";
 const SHEET_NEXT = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDuJ40FPFdxFcV_8xqNmhIcKHIFpGtyE_FrUZ1eQnBYlcOaowymxrYhY34rQofcuQ42IcN/pub?gid=1457749805&single=true&output=csv";
 const SHEET_FINI = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDuJ40FPFdxFcV_8xqNmhIcKHIFpGtyE_FrUZ1eQnBYlcOaowymxrYhY34rQofcuQ42IcN/pub?gid=1202405658&single=true&output=csv";
@@ -142,18 +105,7 @@ function csv(csv){
     let o={};
     h.forEach((k,i)=>o[k]=v[i]?v[i].trim():'');
     return o;
-  }).filter(x=>Object.keys(x).length > 0);
-}
-
-function buts(t){
-  let b={};
-  if(!t) return b;
-  t.split(',').forEach(x=>{
-    let parts = x.trim().split(' ');
-    let n = parts[0];
-    if(n) b[n]=(b[n]||0)+1
-  });
-  return b;
+  }).filter(x=>Object.values(x).some(val => val!== '')); // filtre les lignes vides
 }
 
 function getChrono(heureDebut){
@@ -191,14 +143,28 @@ function buildAll(){
   ha+='</div>';
   document.getElementById('accueil').innerHTML=ha||'<div class="card">Aucune actualité</div>';
 
-  // LIVE
-  let hl=''; L.filter(m=>m['Score 1']!=='').forEach(m=>{
+  // LIVE - BUTS EXACTS DEPUIS FEUILLE 4
+  let hl='';
+  L.filter(m=>m['Score 1']!=='').forEach(m=>{
     let minute = getChrono(m['HeureDebut']);
+    const e1 = m['Equipe 1'];
+    const e2 = m['Equipe 2'];
+
+    // On prend les buts de ce match dans la feuille BUTS en filtrant par Equipe
+    const butsE1 = BU.filter(b => b.Equipe === e1);
+    const butsE2 = BU.filter(b => b.Equipe === e2);
+
+    let listeButs1 = butsE1.map(b=>`<div class="but-line"><span class="nom">⚽ ${b.Joueur}</span><span class="min">${b.Minute}'</span></div>`).join('');
+    let listeButs2 = butsE2.map(b=>`<div class="but-line"><span class="nom">⚽ ${b.Joueur}</span><span class="min">${b.Minute}'</span></div>`).join('');
+
     hl+=`<div class="card card-live">
       <div class="top-info"><span>Poule ${m['Poule']}</span><span style="color:var(--rouge)">● LIVE</span></div>
-      <div class="score-main"><div class="team-name">${m['Equipe 1']}</div><div class="score-num">${m['Score 1']} - ${m['Score 2']}</div><div class="team-name" style="text-align:right">${m['Equipe 2']}</div></div>
+      <div class="score-main"><div class="team-name">${e1}</div><div class="score-num">${butsE1.length} - ${butsE2.length}</div><div class="team-name" style="text-align:right">${e2}</div></div>
       <div class="chrono" data-heure="${m['HeureDebut']}">${minute}</div>
-      <div class="goals">⚽ ${m['Buteurs']}</div>
+      <div class="buts-wrap">
+        <div class="buts-col"><h4>${e1}</h4>${listeButs1 || '<span style="color:var(--gris); font-size:12px">Aucun but</span>'}</div>
+        <div class="buts-col"><h4>${e2}</h4>${listeButs2 || '<span style="color:var(--gris); font-size:12px">Aucun but</span>'}</div>
+      </div>
     </div>`;
   });
   document.getElementById('live').innerHTML=hl||'<div class="card">Aucun match en cours</div>';
@@ -208,7 +174,7 @@ function buildAll(){
   document.getElementById('next').innerHTML=hn||'<div class="card">Aucun match programmé</div>';
 
   // RESULTATS
-  let hf=''; [...F].reverse().forEach(m=> hf+=`<div class="card"><div class="top-info">${m['Date']} ${m['Heure']} | Poule ${m['Poule']}</div><div class="score-main"><div class="team-name">${m['Equipe 1']}</div><div class="score-num">${m['Score 1']} - ${m['Score 2']}</div><div class="team-name" style="text-align:right">${m['Equipe 2']}</div></div><div class="goals">⚽ ${m['Buteurs']}</div></div>`);
+  let hf=''; [...F].reverse().forEach(m=> hf+=`<div class="card"><div class="top-info">${m['Date']} ${m['Heure']} | Poule ${m['Poule']}</div><div class="score-main"><div class="team-name">${m['Equipe 1']}</div><div class="score-num">${m['Score 1']} - ${m['Score 2']}</div><div class="team-name" style="text-align:right">${m['Equipe 2']}</div></div></div>`);
   document.getElementById('fini').innerHTML=hf||'<div class="card">Aucun résultat</div>';
 
   // CLASSEMENT
@@ -223,7 +189,7 @@ function buildAll(){
   }
   document.getElementById('class').innerHTML=hc||'<div class="card">Pas encore de classement</div>';
 
-  // BUTEURS
+  // BUTEURS - Basé sur Feuille 4
   let tb={};
   BU.forEach(b=>{ if(b.Joueur) tb[b.Joueur]=(tb[b.Joueur]||0)+1; });
   let top=Object.entries(tb).sort((a,b)=>b[1]-a[1]).slice(0,10);
