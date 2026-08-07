@@ -5,58 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tournoi - Live Score</title>
 <style>
-    :root{
-        --bleu: #2563eb;
-        --bleu-clair: #eff6ff;
-        --gris: #f1f5f9;
-        --texte: #1e293b;
-        --rouge: #dc2626;
-    }
+    :root{--bleu:#2563eb;--bleu-clair:#eff6ff;--gris:#f1f5f9;--texte:#1e293b;--rouge:#dc2626;--vert:#16a34a}
     *{margin:0;padding:0;box-sizing:border-box;font-family: 'Segoe UI', Arial, sans-serif}
     body{background:var(--gris);color:var(--texte)}
-
-    /* HEADER */
     header{background:#fff;padding:15px 20px;box-shadow:0 2px 8px rgba(0,0,0,0.05);position:sticky;top:0;z-index:10}
-   .logo{font-size:1.5em;font-weight:800;color:var(--bleu)}
-   .logo span{color:var(--rouge)}
-
-    /* NAV */
-   .btns{display:flex;gap:10px;padding:15px 20px;background:#fff;border-bottom:1px solid #e2e8f0;overflow-x:auto}
-   .btn{background:var(--gris);border:none;color:var(--texte);padding:10px 20px;border-radius:8px;font-weight:600;cursor:pointer;white-space:nowrap}
-   .btn.active{background:var(--bleu);color:#fff}
-
-   .container{max-width:900px;margin:0 auto;padding:20px}
-
-    /* CARDS */
-   .card{background:#fff;border-radius:12px;padding:20px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
-   .score{display:flex;justify-content:space-between;align-items:center;font-size:2.2em;font-weight:800;text-align:center}
-   .team{display:flex;flex-direction:column;align-items:center;gap:5px;width:35%}
-   .team-logo{width:50px;height:50px;background:var(--bleu-clair);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--bleu)}
-   .minute{background:var(--rouge);color:#fff;padding:8px 15px;border-radius:20px;font-size:0.8em;font-weight:700}
-   .vs{font-size:0.5em;color:#94a3b8}
-
-    /* TABLE */
+  .logo{font-size:1.5em;font-weight:800;color:var(--bleu)}.logo span{color:var(--rouge)}
+  .btns{display:flex;gap:10px;padding:15px 20px;background:#fff;border-bottom:1px solid #e2e8f0;overflow-x:auto}
+  .btn{background:var(--gris);border:none;color:var(--texte);padding:10px 20px;border-radius:8px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .btn.active{background:var(--bleu);color:#fff}
+  .container{max-width:900px;margin:0 auto;padding:20px}
+  .card{background:#fff;border-radius:12px;padding:20px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+  .score{display:flex;justify-content:space-between;align-items:center;font-size:2.2em;font-weight:800;text-align:center}
+  .team{display:flex;flex-direction:column;align-items:center;gap:5px;width:35%}
+  .team-logo{width:50px;height:50px;background:var(--bleu-clair);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--bleu)}
+  .minute{background:var(--rouge);color:#fff;padding:8px 15px;border-radius:20px;font-size:0.8em;font-weight:700}
+  .minute.termine{background:var(--vert)}
+  .vs{font-size:0.5em;color:#94a3b8}
     table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.9em}
-    th{background:var(--bleu-clair);color:var(--bleu);padding:12px;text-align:left;font-weight:700}
-    td{padding:12px;text-align:left;border-bottom:1px solid #e2e8f0}
+    th{background:var(--bleu-clair);color:var(--bleu);padding:12px;text-align:center;font-weight:700}
+    td{padding:12px;text-align:center;border-bottom:1px solid #e2e8f0}
+    td:first-child, th:first-child{text-align:left}
     tr:hover{background:#f8fafc}
-
-   .buteur{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #e2e8f0}
-   .buteur span:first-child{font-weight:600}
-   .buteur span:last-child{background:var(--bleu-clair);color:var(--bleu);padding:4px 10px;border-radius:20px;font-weight:700}
-
-   .poule-titre{font-size:1.2em;font-weight:800;color:var(--bleu);margin-bottom:10px}
-
-    /* FOOTER */
+  .buteur{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #e2e8f0}
+  .buteur span:first-child{font-weight:600}
+  .buteur span:last-child{background:var(--bleu-clair);color:var(--bleu);padding:4px 10px;border-radius:20px;font-weight:700}
+  .poule-titre{font-size:1.2em;font-weight:800;color:var(--bleu);margin-bottom:10px}
     footer{background:#fff;text-align:center;padding:20px;margin-top:30px;color:#64748b;font-size:0.9em;border-top:1px solid #e2e8f0}
-   .loading{text-align:center;padding:40px;color:#94a3b8}
+  .loading{text-align:center;padding:40px;color:#94a3b8}
 </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">TOURNOI<span>.LIVE</span></div>
-</header>
+<header><div class="logo">TOURNOI<span>.LIVE</span></div></header>
 
 <nav class="btns">
     <button class="btn active" onclick="showTab('live',this)">🔴 LIVE</button>
@@ -72,9 +52,7 @@
     <div id="buteurs" class="tab" style="display:none"></div>
 </div>
 
-<footer>
-    © 2026 Tournoi.live - Tous droits réservés | Mise à jour auto toutes les 15s
-</footer>
+<footer>© 2026 Tournoi.live - Mise à jour auto toutes les 10s</footer>
 
 <script>
 const URLS = {
@@ -92,7 +70,8 @@ async function fetchCSV(url){
     return txt.split('\n').map(r => r.replace(/\r/g,'').split(',').map(c => c.trim()));
 }
 
-function calcMinute(heureDebut){
+function calcMinute(heureDebut, statut){
+    if(statut.toLowerCase().includes("term")) return "TERMINÉ"; // CORRECTION 1
     if(!heureDebut) return "00:00";
     heureDebut = heureDebut.replace('.',':');
     const [h,m] = heureDebut.split(':').map(Number);
@@ -100,8 +79,8 @@ function calcMinute(heureDebut){
     const debut = new Date(); debut.setHours(h,m,0);
     const now = new Date();
     let diff = Math.floor((now - debut)/60000);
-    if(diff < 0) diff = 0;
-    if(diff > 90) diff = 90;
+    if(diff < 0) return "À venir";
+    if(diff > 90) return "90'";
     return diff + "'";
 }
 
@@ -112,42 +91,32 @@ function showTab(id,btn){
     btn.classList.add('active');
 }
 
-// 1. LIVE
+// LIVE
 async function loadLive(){
     const [matchs, buts] = await Promise.all([fetchCSV(URLS.matchs), fetchCSV(URLS.buteursLive)]);
     const match = matchs[1];
-    if(!match ||!match[0]) return document.getElementById('live').innerHTML="<div class='loading'>Aucun match en cours</div>";
+    if(!match ||!match[0]) return document.getElementById('live').innerHTML="<div class='loading'>Aucun match</div>";
 
     const [domi, ext, statut, heure] = match;
-    const scoreDomi = buts.filter(b => b[1]?.toLowerCase() === domi.toLowerCase()).length;
-    const scoreExt = buts.filter(b => b[1]?.toLowerCase() === ext.toLowerCase()).length;
-    const minute = statut.toLowerCase().includes("cours")? calcMinute(heure) : statut;
+    const scoreDomi = buts.filter(b => b[1] && b[1].toLowerCase() === domi.toLowerCase()).length;
+    const scoreExt = buts.filter(b => b[1] && b[1].toLowerCase() === ext.toLowerCase()).length;
+    const minute = calcMinute(heure, statut);
+    const isTermine = minute === "TERMINÉ";
 
     document.getElementById('live').innerHTML = `
     <div class="card">
         <div class="score">
-            <div class="team">
-                <div class="team-logo">${domi.substring(0,2)}</div>
-                <div>${domi}</div>
-                <div>${scoreDomi}</div>
-            </div>
-            <div>
-                <div class="minute">${minute}</div>
-                <div class="vs">VS</div>
-            </div>
-            <div class="team">
-                <div class="team-logo">${ext.substring(0,2)}</div>
-                <div>${ext}</div>
-                <div>${scoreExt}</div>
-            </div>
+            <div class="team"><div class="team-logo">${domi.substring(0,2)}</div><div>${domi}</div><div>${scoreDomi}</div></div>
+            <div><div class="minute ${isTermine?'termine':''}">${minute}</div><div class="vs">VS</div></div>
+            <div class="team"><div class="team-logo">${ext.substring(0,2)}</div><div>${ext}</div><div>${scoreExt}</div></div>
         </div>
     </div>
     <div class="card"><h3>Buteurs du match</h3>
-        ${buts.filter(b => b[1]?.toLowerCase() === domi.toLowerCase() || b[1]?.toLowerCase() === ext.toLowerCase()).map(b => `<div class="buteur"><span>${b[0]}</span><span>${b[1]} ${b[2]}'</span></div>`).join('') || '<div class="loading">Aucun but pour le moment</div>'}
+        ${buts.filter(b => b[1] && (b[1].toLowerCase() === domi.toLowerCase() || b[1].toLowerCase() === ext.toLowerCase())).map(b => `<div class="buteur"><span>${b[0]}</span><span>${b[1]} ${b[2]}'</span></div>`).join('') || '<div class="loading">Aucun but</div>'}
     </div>`;
 }
 
-// 2. CLASSEMENT
+// CLASSEMENT COMPACT
 async function loadClassement(){
     const [equipes, resultats] = await Promise.all([fetchCSV(URLS.equipes), fetchCSV(URLS.resultats)]);
     let html = '';
@@ -156,26 +125,26 @@ async function loadClassement(){
     poules.forEach(poule => {
         const eqs = equipes.slice(1).filter(e => e[1] === poule).map(e => e[0]);
         let tab = {};
-        eqs.forEach(eq => tab[eq] = {J:0,G:0,N:0,P:0,BP:0,BC:0,PTS:0});
+        eqs.forEach(eq => tab[eq] = {J:0,G:0,N:0,P:0,PTS:0});
 
-        resultats.slice(1).filter(r => r[5] === poule).forEach(r => {
+        resultats.slice(1).filter(r => r[5] === poule && r[0]).forEach(r => {
             const [e1,e2,s1,s2] = [r[0],r[1],+r[2]||0,+r[3]||0];
-            if(tab[e1]){tab[e1].J++; tab[e1].BP+=s1; tab[e1].BC+=s2;}
-            if(tab[e2]){tab[e2].J++; tab[e2].BP+=s2; tab[e2].BC+=s1;}
+            if(tab[e1])tab[e1].J++; if(tab[e2])tab[e2].J++;
             if(s1>s2){if(tab[e1]){tab[e1].G++;tab[e1].PTS+=3;} if(tab[e2]){tab[e2].P++;}}
             if(s1<s2){if(tab[e2]){tab[e2].G++;tab[e2].PTS+=3;} if(tab[e1]){tab[e1].P++;}}
             if(s1===s2){if(tab[e1]){tab[e1].N++;tab[e1].PTS+=1;} if(tab[e2]){tab[e2].N++;tab[e2].PTS+=1;}}
         });
 
-        const classement = Object.entries(tab).sort((a,b)=>b[1].PTS-a[1].PTS || (b[1].BP-b[1].BC)-(a[1].BP-a[1].BC));
-        html += `<div class="card"><div class="poule-titre">POULE ${poule}</div><table><tr><th>#</th><th>Club</th><th>J</th><th>G</th><th>N</th><th>P</th><th>BP</th><th>BC</th><th>Diff</th><th>PTS</th></tr>`;
-        classement.forEach(([eq,s],i)=> html += `<tr><td>${i+1}</td><td><b>${eq}</b></td><td>${s.J}</td><td>${s.G}</td><td>${s.N}</td><td>${s.P}</td><td>${s.BP}</td><td>${s.BC}</td><td>${s.BP-s.BC}</td><td><b>${s.PTS}</b></td></tr>`);
+        const classement = Object.entries(tab).sort((a,b)=>b[1].PTS-a[1].PTS);
+        // CORRECTION 2: TABLEAU COMPACT
+        html += `<div class="card"><div class="poule-titre">POULE ${poule}</div><table><tr><th>#</th><th>Club</th><th>J</th><th>G</th><th>N</th><th>P</th><th>PTS</th></tr>`;
+        classement.forEach(([eq,s],i)=> html += `<tr><td>${i+1}</td><td><b>${eq}</b></td><td>${s.J}</td><td>${s.G}</td><td>${s.N}</td><td>${s.P}</td><td><b>${s.PTS}</b></td></tr>`);
         html += '</table></div>';
     });
     document.getElementById('classement').innerHTML = html || "<div class='loading'>Aucune donnée</div>";
 }
 
-// 3. PROGRAMME
+// PROGRAMME
 async function loadProgramme(){
     const data = await fetchCSV(URLS.programme);
     let html = '<div class="card"><h3>PROGRAMME DES MATCHS</h3><table><tr><th>Date</th><th>Heure</th><th>Match</th><th>Poule</th></tr>';
@@ -184,7 +153,7 @@ async function loadProgramme(){
     document.getElementById('programme').innerHTML = html;
 }
 
-// 4. BUTEURS AUTO
+// BUTEURS
 async function loadButeurs(){
     const data = await fetchCSV(URLS.buteurs);
     const count = {};
@@ -197,8 +166,7 @@ async function loadButeurs(){
 }
 
 loadLive(); loadClassement(); loadProgramme(); loadButeurs();
-setInterval(()=>{loadLive(); loadClassement(); loadProgramme(); loadButeurs();},15000);
+setInterval(()=>{loadLive(); loadClassement(); loadProgramme(); loadButeurs();},10000);
 </script>
-
 </body>
 </html>
