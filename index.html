@@ -3,228 +3,151 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TOURNOI LIVE</title>
+<title>Tournoi Live</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
-  :root{
-    --vert: #00C853;
-    --vert-clair: rgba(0,200,83,0.1);
-    --blanc: #FFFFFF;
-    --fond: #F5F7FA;
-    --card: #FFFFFF;
-    --noir: #1A1A1A;
-    --jaune: #FFB300;
-    --gris: #666666;
-    --rouge: #D32F2F;
-    --ombre: 0 4px 12px rgba(0,0,0,0.06);
-  }
-  *{ margin:0; padding:0; box-sizing:border-box; }
-  body{ background: var(--fond); color: var(--noir); font-family: 'Poppins', sans-serif; min-height: 100vh; padding-bottom: 70px; }
-
-  header{ text-align: center; padding: 25px 10px; background: var(--card); box-shadow: var(--ombre); }
-  header h1{ font-size: 28px; font-weight: 800; color: var(--vert); }
-
-.tabs{ display: flex; gap: 10px; padding: 15px; overflow-x: auto; background: var(--card); margin-bottom: 10px; box-shadow: var(--ombre); }
-.tab{ background: var(--fond); color: var(--gris); padding: 12px 18px; border-radius: 12px; flex:1; text-align:center; cursor:pointer; border: 1px solid #E0E0E0; font-weight: 700; font-size: 14px; transition: 0.3s; }
-.tab.active{ background: var(--vert); color: var(--blanc); border-color: var(--vert); }
-
-.card{ background: var(--card); border: 1px solid #E0E0E0; border-radius: 16px; padding: 18px; margin: 0 15px 15px 15px; box-shadow: var(--ombre); }
-.card-live{ border: 2px solid var(--vert); }
-
-.grid-actu{ display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:15px; padding: 0 15px; }
-.card-actu{ background: var(--card); border: 1px solid #E0E0E0; border-radius: 16px; overflow:hidden; box-shadow: var(--ombre); }
-.card-actu img{ width:100%; height:200px; object-fit:cover; background:#eee }
-.card-actu p{ padding:15px; font-size: 15px; font-weight: 600; }
-
-.buts-wrap{ display:flex; justify-content:space-between; gap:12px; margin-top:12px; }
-.buts-col{ width: 49%; }
-.buts-col h4{ font-size:13px; font-weight:700; color:var(--vert); margin-bottom:8px; padding-bottom:4px; border-bottom:2px solid var(--vert-clair); }
-.but-line{ display:flex; justify-content:space-between; background:var(--vert-clair); padding:6px 10px; border-radius:8px; margin-bottom:5px; font-size:13px; }
-.but-line.nom{ font-weight:600; }
-.but-line.min{ color:var(--vert); font-weight:800; }
-
-.top-info{ display:flex; justify-content:space-between; font-size: 12px; color: var(--gris); margin-bottom: 10px; font-weight: 600; }
-.score-main{ display:flex; justify-content:space-between; align-items:center; font-size: 24px; font-weight: 800; }
-.team-name{ flex:1; }
-.score-num{ color: var(--vert); padding: 0 15px; font-size: 32px; }
-.chrono{ background: var(--rouge); color: white; padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: 800; width: fit-content; margin-top:8px; }
-
-.poule{ font-weight: 800; color: var(--vert); margin: 20px 15px 10px 15px; font-size: 18px; }
-  table{ width: 100%; background: var(--card); border-radius: 14px; overflow: hidden; font-size: 15px; box-shadow: var(--ombre); }
-  th{ background: var(--vert-clair); color: var(--vert); padding: 14px 10px; font-weight: 700; }
-  td{ padding: 14px 10px; border-bottom: 1px solid #F0F0F0; }
-  footer{ background: var(--card); border-top: 1px solid #E0E0E0; padding: 15px 10px; text-align: center; position: fixed; bottom: 0; width: 100%; }
-  footer p{ color: var(--gris); font-size: 11px; }
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif}
+    body{background:#0f172a;color:#fff;padding:10px}
+   .btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+   .btn{background:#1e293b;border:2px solid #334155;color:#fff;padding:12px 18px;border-radius:8px;font-weight:bold;cursor:pointer}
+   .btn.active{background:#3b82f6;border-color:#3b82f6}
+   .card{background:#1e293b;border-radius:12px;padding:15px;margin-bottom:15px}
+   .score{display:flex;justify-content:space-around;align-items:center;font-size:2em;font-weight:bold}
+   .team{text-align:center}
+   .minute{background:#ef4444;padding:5px 10px;border-radius:20px;font-size:0.9em}
+    table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.9em}
+    th,td{padding:8px;text-align:left;border-bottom:1px solid #334155}
+    th{background:#334155}
+   .buteur{display:flex;justify-content:space-between;padding:8px;border-bottom:1px solid #334155}
+   .loading{text-align:center;padding:20px}
 </style>
 </head>
 <body>
 
-<header><h1>TOURNOI PREMIUM 2025</h1></header>
-
-<div class="tabs">
-  <div class="tab active" onclick="show('accueil', this)">ACCUEIL</div>
-  <div class="tab" onclick="show('live', this)">LIVE</div>
-  <div class="tab" onclick="show('next', this)">PROGRAMME</div>
-  <div class="tab" onclick="show('fini', this)">RÉSULTATS</div>
-  <div class="tab" onclick="show('class', this)">CLASSEMENT</div>
-  <div class="tab" onclick="show('buteurs', this)">BUTEURS</div>
+<div class="btns">
+    <button class="btn active" onclick="showTab('live')">LIVE</button>
+    <button class="btn" onclick="showTab('classement')">CLASSEMENT</button>
+    <button class="btn" onclick="showTab('programme')">PROGRAMME</button>
+    <button class="btn" onclick="showTab('buteurs')">BUTEURS</button>
 </div>
 
-<div id="accueil">Chargement...</div>
-<div id="live" style="display:none"></div>
-<div id="next" style="display:none"></div>
-<div id="fini" style="display:none"></div>
-<div id="class" style="display:none"></div>
-<div id="buteurs" style="display:none"></div>
-
-<footer><p>© 2025 TOURNOI PREMIUM | Actualisation auto</p></footer>
+<div id="live" class="tab"></div>
+<div id="classement" class="tab" style="display:none"></div>
+<div id="programme" class="tab" style="display:none"></div>
+<div id="buteurs" class="tab" style="display:none"></div>
 
 <script>
-// TES 5 LIENS
-const SHEET_ACCUEIL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDuJ40FPFdxFcV_8xqNmhIcKHIFpGtyE_FrUZ1eQnBYlcOaowymxrYhY34rQofcuQ42IcN/pub?gid=383038295&single=true&output=csv";
-const SHEET_BUTS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDuJ40FPFdxFcV_8xqNmhIcKHIFpGtyE_FrUZ1eQnBYlcOaowymxrYhY34rQofcuQ42IcN/pub?gid=54148263&single=true&output=csv"; // TON LIEN FEUILLE 4
-const SHEET_LIVE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDuJ40FPFdxFcV_8xqNmhIcKHIFpGtyE_FrUZ1eQnBYlcOaowymxrYhY34rQofcuQ42IcN/pub?gid=0&single=true&output=csv";
-const SHEET_NEXT = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDuJ40FPFdxFcV_8xqNmhIcKHIFpGtyE_FrUZ1eQnBYlcOaowymxrYhY34rQofcuQ42IcN/pub?gid=1457749805&single=true&output=csv";
-const SHEET_FINI = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ANKvWjZDuJ40FPFdxFcV_8xqNmhIcKHIFpGtyE_FrUZ1eQnBYlcOaowymxrYhY34rQofcuQ42IcN/pub?gid=1202405658&single=true&output=csv";
-
-let ACTU=[], BU=[], L=[],N=[],F=[];
-let isFirstLoad = true;
-
-function show(id, el){
-  document.querySelectorAll('#accueil,#live,#next,#fini,#class,#buteurs').forEach(d=>d.style.display='none');
-  document.getElementById(id).style.display='block';
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
+// TES LIENS CSV
+const URLS = {
+    matchs: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRl8wCXh_V2Xkd3cB4eivkqUZb0a3nrw-nlPFByec7ZulCWUFHXc4xo06wLr1OEzYtEsX9SI2HF8auF/pub?gid=0&single=true&output=csv",
+    buteursLive: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRl8wCXh_V2Xkd3cB4eivkqUZb0a3nrw-nlPFByec7ZulCWUFHXc4xo06wLr1OEzYtEsX9SI2HF8auF/pub?gid=705498821&single=true&output=csv",
+    equipes: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRl8wCXh_V2Xkd3cB4eivkqUZb0a3nrw-nlPFByec7ZulCWUFHXc4xo06wLr1OEzYtEsX9SI2HF8auF/pub?gid=543674070&single=true&output=csv",
+    programme: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRl8wCXh_V2Xkd3cB4eivkqUZb0a3nrw-nlPFByec7ZulCWUFHXc4xo06wLr1OEzYtEsX9SI2HF8auF/pub?gid=1749873809&single=true&output=csv",
+    resultats: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRl8wCXh_V2Xkd3cB4eivkqUZb0a3nrw-nlPFByec7ZulCWUFHXc4xo06wLr1OEzYtEsX9SI2HF8auF/pub?gid=1338870764&single=true&output=csv",
+    buteurs: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRl8wCXh_V2Xkd3cB4eivkqUZb0a3nrw-nlPFByec7ZulCWUFHXc4xo06wLr1OEzYtEsX9SI2HF8auF/pub?gid=1383311710&single=true&output=csv"
 }
 
-function csv(csv){
-  let l=csv.split('\n'),
-  h=l[0].split(',').map(x=>x.trim());
-  return l.slice(1).map(x=>{
-    let v=x.split(',');
-    let o={};
-    h.forEach((k,i)=>o[k]=v[i]?v[i].trim():'');
-    return o;
-  }).filter(x=>Object.values(x).some(val => val!== '')); // filtre les lignes vides
+async function fetchCSV(url){
+    const res = await fetch(url);
+    const txt = await res.text();
+    return txt.split('\n').map(r => r.split(','));
 }
 
-function getChrono(heureDebut){
-  if(!heureDebut) return "0'";
-  const [h,m,s=0] = heureDebut.split(':').map(Number);
-  const debut = new Date(); debut.setHours(h,m,s,0);
-  const now = new Date();
-  let diff = Math.floor((now - debut) / 1000 / 60);
-  if(diff < 0) diff = 0;
-  if(diff > 90) return "FT";
-  return diff + "'";
+// CALCUL MINUTE AUTO
+function calcMinute(heureDebut){
+    if(!heureDebut) return "00:00";
+    const [h,m] = heureDebut.split(':').map(Number);
+    const debut = new Date(); debut.setHours(h,m,0);
+    const now = new Date();
+    let diff = Math.floor((now - debut)/60000); // en minutes
+    if(diff < 0) diff = 0;
+    if(diff > 90) diff = 90;
+    return diff + "'";
 }
 
-function classement(){
-  let t={};
-  [...F,...L].forEach(m=>{ if(m['Score 1']==='') return;
-    let e1=m['Equipe 1'], e2=m['Equipe 2'], s1=+m['Score 1'], s2=+m['Score 2'], p=m['Poule'];
-    if(!t[e1]) t[e1]={e:e1,p:p,pts:0}; if(!t[e2]) t[e2]={e:e2,p:p,pts:0};
-    if(s1>s2) t[e1].pts+=3; else if(s2>s1) t[e2].pts+=3; else {t[e1].pts++; t[e2].pts++;}
-  });
-  return t;
+// TAB MANAGEMENT
+function showTab(id){
+    document.querySelectorAll('.tab').forEach(t => t.style.display='none');
+    document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).style.display='block';
+    event.target.classList.add('active');
 }
 
-function buildAll(){
-  // ACCUEIL
-  let ha='<div class="grid-actu">';
-  if(ACTU.length > 0){
-    const row = ACTU[0];
-    for(let i=1; i<=10; i++){
-      if(row[`Texte ${i}`]){
-        ha+=`<div class="card-actu"><img src="${i}.jpg" onerror="this.src='https://placehold.co/400x200/F5F7FA/00C853?text=ACTU+${i}'"><p>${row[`Texte ${i}`]}</p></div>`;
-      }
-    }
-  }
-  ha+='</div>';
-  document.getElementById('accueil').innerHTML=ha||'<div class="card">Aucune actualité</div>';
+// 1. LIVE
+async function loadLive(){
+    const [matchs, buts] = await Promise.all([fetchCSV(URLS.matchs), fetchCSV(URLS.buteursLive)]);
+    const match = matchs[1]; // ligne 2
+    if(!match) return;
+    const [domi, ext, statut, heure] = match;
+    const scoreDomi = buts.filter(b => b[1] === domi).length;
+    const scoreExt = buts.filter(b => b[1] === ext).length;
+    const minute = statut === "En cours"? calcMinute(heure) : statut;
 
-  // LIVE - BUTS EXACTS DEPUIS FEUILLE 4
-  let hl='';
-  L.filter(m=>m['Score 1']!=='').forEach(m=>{
-    let minute = getChrono(m['HeureDebut']);
-    const e1 = m['Equipe 1'];
-    const e2 = m['Equipe 2'];
-
-    // On prend les buts de ce match dans la feuille BUTS en filtrant par Equipe
-    const butsE1 = BU.filter(b => b.Equipe === e1);
-    const butsE2 = BU.filter(b => b.Equipe === e2);
-
-    let listeButs1 = butsE1.map(b=>`<div class="but-line"><span class="nom">⚽ ${b.Joueur}</span><span class="min">${b.Minute}'</span></div>`).join('');
-    let listeButs2 = butsE2.map(b=>`<div class="but-line"><span class="nom">⚽ ${b.Joueur}</span><span class="min">${b.Minute}'</span></div>`).join('');
-
-    hl+=`<div class="card card-live">
-      <div class="top-info"><span>Poule ${m['Poule']}</span><span style="color:var(--rouge)">● LIVE</span></div>
-      <div class="score-main"><div class="team-name">${e1}</div><div class="score-num">${butsE1.length} - ${butsE2.length}</div><div class="team-name" style="text-align:right">${e2}</div></div>
-      <div class="chrono" data-heure="${m['HeureDebut']}">${minute}</div>
-      <div class="buts-wrap">
-        <div class="buts-col"><h4>${e1}</h4>${listeButs1 || '<span style="color:var(--gris); font-size:12px">Aucun but</span>'}</div>
-        <div class="buts-col"><h4>${e2}</h4>${listeButs2 || '<span style="color:var(--gris); font-size:12px">Aucun but</span>'}</div>
-      </div>
+    document.getElementById('live').innerHTML = `
+    <div class="card">
+        <div class="score">
+            <div class="team">${domi}<br>${scoreDomi}</div>
+            <div class="minute">${minute}</div>
+            <div class="team">${ext}<br>${scoreExt}</div>
+        </div>
+    </div>
+    <div class="card"><h3>Buteurs du match</h3>
+        ${buts.filter(b => b[1] === domi || b[1] === ext).map(b => `<div>${b[0]} - ${b[1]} ${b[2]}'</div>`).join('')}
     </div>`;
-  });
-  document.getElementById('live').innerHTML=hl||'<div class="card">Aucun match en cours</div>';
-
-  // PROGRAMME
-  let hn=''; N.forEach(m=> hn+=`<div class="card"><div class="top-info">${m['Date']} - ${m['Heure']}</div><b>${m['Equipe 1']}</b> <span style="color:var(--vert)">VS</span> <b>${m['Equipe 2']}</b><div style="font-size:12px; color:var(--gris)">Poule ${m['Poule']}</div></div>`);
-  document.getElementById('next').innerHTML=hn||'<div class="card">Aucun match programmé</div>';
-
-  // RESULTATS
-  let hf=''; [...F].reverse().forEach(m=> hf+=`<div class="card"><div class="top-info">${m['Date']} ${m['Heure']} | Poule ${m['Poule']}</div><div class="score-main"><div class="team-name">${m['Equipe 1']}</div><div class="score-num">${m['Score 1']} - ${m['Score 2']}</div><div class="team-name" style="text-align:right">${m['Equipe 2']}</div></div></div>`);
-  document.getElementById('fini').innerHTML=hf||'<div class="card">Aucun résultat</div>';
-
-  // CLASSEMENT
-  let tc=classement(), poules={};
-  Object.values(tc).forEach(x=>{ if(!poules[x.p]) poules[x.p]=[]; poules[x.p].push(x); });
-  let hc='';
-  for(let p in poules){
-    poules[p].sort((a,b)=>b.pts-a.pts);
-    hc+=`<div class="poule">GROUPE ${p}</div><table><tr><th>#</th><th>CLUB</th><th>PTS</th></tr>`;
-    poules[p].forEach((x,i)=> hc+=`<tr><td>${i+1}</td><td>${x.e}</td><td><b>${x.pts}</b></td></tr>`);
-    hc+='</table>';
-  }
-  document.getElementById('class').innerHTML=hc||'<div class="card">Pas encore de classement</div>';
-
-  // BUTEURS - Basé sur Feuille 4
-  let tb={};
-  BU.forEach(b=>{ if(b.Joueur) tb[b.Joueur]=(tb[b.Joueur]||0)+1; });
-  let top=Object.entries(tb).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  let hbu='';
-  top.forEach((x,i)=> hbu+=`<div class="card"><b>${i+1}. ${x[0]}</b> <span style="float:right; color:var(--jaune); font-weight:800">${x[1]} BUTS</span></div>`);
-  document.getElementById('buteurs').innerHTML=hbu||'<div class="card">Aucun but marqué</div>';
 }
 
-function updateChronoOnly(){
-  document.querySelectorAll('.chrono').forEach(el=>{
-    let heure = el.getAttribute('data-heure');
-    el.innerText = getChrono(heure);
-  });
+// 2. CLASSEMENT
+async function loadClassement(){
+    const [equipes, resultats] = await Promise.all([fetchCSV(URLS.equipes), fetchCSV(URLS.resultats)]);
+    let html = '';
+    const poules = [...new Set(equipes.slice(1).map(e => e[1]))];
+
+    poules.forEach(poule => {
+        const eqs = equipes.slice(1).filter(e => e[1] === poule).map(e => e[0]);
+        let tab = {};
+        eqs.forEach(eq => tab[eq] = {J:0,G:0,N:0,P:0,BP:0,BC:0,PTS:0});
+
+        resultats.slice(1).filter(r => r[5] === poule).forEach(r => {
+            const [e1,e2,s1,s2] = [r[0],r[1],+r[2],+r[3]];
+            if(tab[e1]){tab[e1].J++; tab[e1].BP+=s1; tab[e1].BC+=s2;}
+            if(tab[e2]){tab[e2].J++; tab[e2].BP+=s2; tab[e2].BC+=s1;}
+            if(s1>s2){if(tab[e1]){tab[e1].G++;tab[e1].PTS+=3;} if(tab[e2]){tab[e2].P++;}}
+            if(s1<s2){if(tab[e2]){tab[e2].G++;tab[e2].PTS+=3;} if(tab[e1]){tab[e1].P++;}}
+            if(s1===s2){if(tab[e1]){tab[e1].N++;tab[e1].PTS+=1;} if(tab[e2]){tab[e2].N++;tab[e2].PTS+=1;}}
+        });
+
+        const classement = Object.entries(tab).sort((a,b)=>b[1].PTS-a[1].PTS);
+        html += `<div class="card"><h3>POULE ${poule}</h3><table><tr><th>#</th><th>Club</th><th>J</th><th>G</th><th>N</th><th>P</th><th>BP</th><th>BC</th><th>Diff</th><th>PTS</th></tr>`;
+        classement.forEach(([eq,s],i)=> html += `<tr><td>${i+1}</td><td>${eq}</td><td>${s.J}</td><td>${s.G}</td><td>${s.N}</td><td>${s.P}</td><td>${s.BP}</td><td>${s.BC}</td><td>${s.BP-s.BC}</td><td><b>${s.PTS}</b></td></tr>`);
+        html += '</table></div>';
+    });
+    document.getElementById('classement').innerHTML = html;
 }
 
-function loadData(){
-  Promise.all([
-    fetch(SHEET_ACCUEIL).then(r=>r.text()),
-    fetch(SHEET_BUTS).then(r=>r.text()),
-    fetch(SHEET_LIVE).then(r=>r.text()),
-    fetch(SHEET_NEXT).then(r=>r.text()),
-    fetch(SHEET_FINI).then(r=>r.text())
-  ])
-.then(([a,bu,l,n,f])=>{
-    ACTU=csv(a); BU=csv(bu); L=csv(l); N=csv(n); F=csv(f);
-    if(isFirstLoad){
-      buildAll();
-      isFirstLoad = false;
-    }
-  });
+// 3. PROGRAMME
+async function loadProgramme(){
+    const data = await fetchCSV(URLS.programme);
+    let html = '<div class="card"><h3>PROGRAMME</h3><table><tr><th>Date</th><th>Heure</th><th>Match</th><th>Poule</th></tr>';
+    data.slice(1).forEach(r => html += `<tr><td>${r[2]}</td><td>${r[3]}</td><td>${r[0]} vs ${r[1]}</td><td>${r[4]}</td></tr>`);
+    html += '</table></div>';
+    document.getElementById('programme').innerHTML = html;
 }
 
-loadData();
-setInterval(updateChronoOnly, 1000);
-setInterval(loadData, 30000);
+// 4. BUTEURS
+async function loadButeurs(){
+    const data = await fetchCSV(URLS.buteurs);
+    const count = {};
+    data.slice(1).forEach(r => { if(r[0]) count[r[0]] = (count[r[0]]||0)+1; });
+    const top = Object.entries(count).sort((a,b)=>b[1]-a[1]);
+    let html = '<div class="card"><h3>CLASSEMENT BUTEURS</h3>';
+    top.forEach(([nom,buts],i) => html += `<div class="buteur"><span>${i+1}. ${nom}</span><span><b>${buts}</b> buts</span></div>`);
+    html += '</div>';
+    document.getElementById('buteurs').innerHTML = html;
+}
+
+// LANCEMENT + REFRESH TOUTES 30s
+loadLive(); loadClassement(); loadProgramme(); loadButeurs();
+setInterval(()=>{loadLive(); loadClassement();},30000);
 </script>
+
 </body>
 </html>
