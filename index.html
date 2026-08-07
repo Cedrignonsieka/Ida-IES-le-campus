@@ -7,27 +7,27 @@
 <style>
     *{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif}
     body{background:#0f172a;color:#fff;padding:10px}
-   .btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
-   .btn{background:#1e293b;border:2px solid #334155;color:#fff;padding:12px 18px;border-radius:8px;font-weight:bold;cursor:pointer}
-   .btn.active{background:#3b82f6;border-color:#3b82f6}
-   .card{background:#1e293b;border-radius:12px;padding:15px;margin-bottom:15px}
-   .score{display:flex;justify-content:space-around;align-items:center;font-size:2em;font-weight:bold}
-   .team{text-align:center}
-   .minute{background:#ef4444;padding:5px 10px;border-radius:20px;font-size:0.9em}
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+  .btn{background:#1e293b;border:2px solid #334155;color:#fff;padding:12px 18px;border-radius:8px;font-weight:bold;cursor:pointer}
+  .btn.active{background:#3b82f6;border-color:#3b82f6}
+  .card{background:#1e293b;border-radius:12px;padding:15px;margin-bottom:15px}
+  .score{display:flex;justify-content:space-around;align-items:center;font-size:2em;font-weight:bold}
+  .team{text-align:center}
+  .minute{background:#ef4444;padding:5px 10px;border-radius:20px;font-size:0.9em}
     table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.9em}
     th,td{padding:8px;text-align:left;border-bottom:1px solid #334155}
     th{background:#334155}
-   .buteur{display:flex;justify-content:space-between;padding:8px;border-bottom:1px solid #334155}
-   .loading{text-align:center;padding:20px}
+  .buteur{display:flex;justify-content:space-between;padding:8px;border-bottom:1px solid #334155}
+  .loading{text-align:center;padding:20px}
 </style>
 </head>
 <body>
 
 <div class="btns">
-    <button class="btn active" onclick="showTab('live')">LIVE</button>
-    <button class="btn" onclick="showTab('classement')">CLASSEMENT</button>
-    <button class="btn" onclick="showTab('programme')">PROGRAMME</button>
-    <button class="btn" onclick="showTab('buteurs')">BUTEURS</button>
+    <button class="btn active" onclick="showTab('live',this)">LIVE</button>
+    <button class="btn" onclick="showTab('classement',this)">CLASSEMENT</button>
+    <button class="btn" onclick="showTab('programme',this)">PROGRAMME</button>
+    <button class="btn" onclick="showTab('buteurs',this)">BUTEURS</button>
 </div>
 
 <div id="live" class="tab"></div>
@@ -36,7 +36,6 @@
 <div id="buteurs" class="tab" style="display:none"></div>
 
 <script>
-// TES LIENS CSV
 const URLS = {
     matchs: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRl8wCXh_V2Xkd3cB4eivkqUZb0a3nrw-nlPFByec7ZulCWUFHXc4xo06wLr1OEzYtEsX9SI2HF8auF/pub?gid=0&single=true&output=csv",
     buteursLive: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRl8wCXh_V2Xkd3cB4eivkqUZb0a3nrw-nlPFByec7ZulCWUFHXc4xo06wLr1OEzYtEsX9SI2HF8auF/pub?gid=705498821&single=true&output=csv",
@@ -47,40 +46,42 @@ const URLS = {
 }
 
 async function fetchCSV(url){
-    const res = await fetch(url);
+    const res = await fetch(url + '&t=' + Date.now()); // anti-cache
     const txt = await res.text();
-    return txt.split('\n').map(r => r.split(','));
+    return txt.split('\n').map(r => r.replace(/\r/g,'').split(',').map(c => c.trim()));
 }
 
-// CALCUL MINUTE AUTO
+// CORRECTION MINUTE : accepte 19.25 ou 19:25
 function calcMinute(heureDebut){
     if(!heureDebut) return "00:00";
+    heureDebut = heureDebut.replace('.',':'); // si tu mets 19.25
     const [h,m] = heureDebut.split(':').map(Number);
+    if(isNaN(h)) return "00:00";
     const debut = new Date(); debut.setHours(h,m,0);
     const now = new Date();
-    let diff = Math.floor((now - debut)/60000); // en minutes
+    let diff = Math.floor((now - debut)/60000);
     if(diff < 0) diff = 0;
     if(diff > 90) diff = 90;
     return diff + "'";
 }
 
-// TAB MANAGEMENT
-function showTab(id){
+function showTab(id,btn){
     document.querySelectorAll('.tab').forEach(t => t.style.display='none');
     document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
     document.getElementById(id).style.display='block';
-    event.target.classList.add('active');
+    btn.classList.add('active');
 }
 
 // 1. LIVE
 async function loadLive(){
     const [matchs, buts] = await Promise.all([fetchCSV(URLS.matchs), fetchCSV(URLS.buteursLive)]);
-    const match = matchs[1]; // ligne 2
-    if(!match) return;
+    const match = matchs[1];
+    if(!match ||!match[0]) return document.getElementById('live').innerHTML="<div class='loading'>Aucun match</div>";
+
     const [domi, ext, statut, heure] = match;
-    const scoreDomi = buts.filter(b => b[1] === domi).length;
-    const scoreExt = buts.filter(b => b[1] === ext).length;
-    const minute = statut === "En cours"? calcMinute(heure) : statut;
+    const scoreDomi = buts.filter(b => b[1]?.toLowerCase() === domi.toLowerCase()).length;
+    const scoreExt = buts.filter(b => b[1]?.toLowerCase() === ext.toLowerCase()).length;
+    const minute = statut.toLowerCase().includes("cours")? calcMinute(heure) : statut;
 
     document.getElementById('live').innerHTML = `
     <div class="card">
@@ -91,7 +92,7 @@ async function loadLive(){
         </div>
     </div>
     <div class="card"><h3>Buteurs du match</h3>
-        ${buts.filter(b => b[1] === domi || b[1] === ext).map(b => `<div>${b[0]} - ${b[1]} ${b[2]}'</div>`).join('')}
+        ${buts.filter(b => b[1]?.toLowerCase() === domi.toLowerCase() || b[1]?.toLowerCase() === ext.toLowerCase()).map(b => `<div>${b[0]} - ${b[1]} ${b[2]}'</div>`).join('') || 'Aucun but'}
     </div>`;
 }
 
@@ -99,7 +100,7 @@ async function loadLive(){
 async function loadClassement(){
     const [equipes, resultats] = await Promise.all([fetchCSV(URLS.equipes), fetchCSV(URLS.resultats)]);
     let html = '';
-    const poules = [...new Set(equipes.slice(1).map(e => e[1]))];
+    const poules = [...new Set(equipes.slice(1).map(e => e[1]).filter(Boolean))];
 
     poules.forEach(poule => {
         const eqs = equipes.slice(1).filter(e => e[1] === poule).map(e => e[0]);
@@ -107,7 +108,7 @@ async function loadClassement(){
         eqs.forEach(eq => tab[eq] = {J:0,G:0,N:0,P:0,BP:0,BC:0,PTS:0});
 
         resultats.slice(1).filter(r => r[5] === poule).forEach(r => {
-            const [e1,e2,s1,s2] = [r[0],r[1],+r[2],+r[3]];
+            const [e1,e2,s1,s2] = [r[0],r[1],+r[2]||0,+r[3]||0];
             if(tab[e1]){tab[e1].J++; tab[e1].BP+=s1; tab[e1].BC+=s2;}
             if(tab[e2]){tab[e2].J++; tab[e2].BP+=s2; tab[e2].BC+=s1;}
             if(s1>s2){if(tab[e1]){tab[e1].G++;tab[e1].PTS+=3;} if(tab[e2]){tab[e2].P++;}}
@@ -115,38 +116,37 @@ async function loadClassement(){
             if(s1===s2){if(tab[e1]){tab[e1].N++;tab[e1].PTS+=1;} if(tab[e2]){tab[e2].N++;tab[e2].PTS+=1;}}
         });
 
-        const classement = Object.entries(tab).sort((a,b)=>b[1].PTS-a[1].PTS);
+        const classement = Object.entries(tab).sort((a,b)=>b[1].PTS-a[1].PTS || (b[1].BP-b[1].BC)-(a[1].BP-a[1].BC));
         html += `<div class="card"><h3>POULE ${poule}</h3><table><tr><th>#</th><th>Club</th><th>J</th><th>G</th><th>N</th><th>P</th><th>BP</th><th>BC</th><th>Diff</th><th>PTS</th></tr>`;
         classement.forEach(([eq,s],i)=> html += `<tr><td>${i+1}</td><td>${eq}</td><td>${s.J}</td><td>${s.G}</td><td>${s.N}</td><td>${s.P}</td><td>${s.BP}</td><td>${s.BC}</td><td>${s.BP-s.BC}</td><td><b>${s.PTS}</b></td></tr>`);
         html += '</table></div>';
     });
-    document.getElementById('classement').innerHTML = html;
+    document.getElementById('classement').innerHTML = html || "<div class='loading'>Aucune donnée</div>";
 }
 
 // 3. PROGRAMME
 async function loadProgramme(){
     const data = await fetchCSV(URLS.programme);
     let html = '<div class="card"><h3>PROGRAMME</h3><table><tr><th>Date</th><th>Heure</th><th>Match</th><th>Poule</th></tr>';
-    data.slice(1).forEach(r => html += `<tr><td>${r[2]}</td><td>${r[3]}</td><td>${r[0]} vs ${r[1]}</td><td>${r[4]}</td></tr>`);
+    data.slice(1).filter(r=>r[0]).forEach(r => html += `<tr><td>${r[2]}</td><td>${r[3]}</td><td>${r[0]} vs ${r[1]}</td><td>${r[4]}</td></tr>`);
     html += '</table></div>';
     document.getElementById('programme').innerHTML = html;
 }
 
-// 4. BUTEURS
+// 4. BUTEURS AUTO
 async function loadButeurs(){
     const data = await fetchCSV(URLS.buteurs);
     const count = {};
     data.slice(1).forEach(r => { if(r[0]) count[r[0]] = (count[r[0]]||0)+1; });
     const top = Object.entries(count).sort((a,b)=>b[1]-a[1]);
     let html = '<div class="card"><h3>CLASSEMENT BUTEURS</h3>';
-    top.forEach(([nom,buts],i) => html += `<div class="buteur"><span>${i+1}. ${nom}</span><span><b>${buts}</b> buts</span></div>`);
+    html += top.length? top.map(([nom,buts],i) => `<div class="buteur"><span>${i+1}. ${nom}</span><span><b>${buts}</b> buts</span></div>`).join('') : 'Aucun buteur';
     html += '</div>';
     document.getElementById('buteurs').innerHTML = html;
 }
 
-// LANCEMENT + REFRESH TOUTES 30s
 loadLive(); loadClassement(); loadProgramme(); loadButeurs();
-setInterval(()=>{loadLive(); loadClassement();},30000);
+setInterval(()=>{loadLive(); loadClassement(); loadProgramme(); loadButeurs();},15000); // refresh 15s
 </script>
 
 </body>
