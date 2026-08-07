@@ -9,29 +9,34 @@
     *{margin:0;padding:0;box-sizing:border-box;font-family: 'Segoe UI', Arial, sans-serif}
     body{background:var(--gris);color:var(--texte)}
     header{background:#fff;padding:15px 20px;box-shadow:0 2px 8px rgba(0,0,0,0.05);position:sticky;top:0;z-index:10}
-  .logo{font-size:1.5em;font-weight:800;color:var(--bleu)}.logo span{color:var(--rouge)}
-  .btns{display:flex;gap:10px;padding:15px 20px;background:#fff;border-bottom:1px solid #e2e8f0;overflow-x:auto}
-  .btn{background:var(--gris);border:none;color:var(--texte);padding:10px 20px;border-radius:8px;font-weight:600;cursor:pointer;white-space:nowrap}
-  .btn.active{background:var(--bleu);color:#fff}
-  .container{max-width:900px;margin:0 auto;padding:20px}
-  .card{background:#fff;border-radius:12px;padding:20px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
-  .score{display:flex;justify-content:space-between;align-items:center;font-size:2.2em;font-weight:800;text-align:center}
-  .team{display:flex;flex-direction:column;align-items:center;gap:5px;width:35%}
-  .team-logo{width:50px;height:50px;background:var(--bleu-clair);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--bleu)}
-  .minute{background:var(--rouge);color:#fff;padding:8px 15px;border-radius:20px;font-size:0.8em;font-weight:700}
-  .minute.termine{background:var(--vert)}
-  .vs{font-size:0.5em;color:#94a3b8}
+ .logo{font-size:1.5em;font-weight:800;color:var(--bleu)}.logo span{color:var(--rouge)}
+ .btns{display:flex;gap:10px;padding:15px 20px;background:#fff;border-bottom:1px solid #e2e8f0;overflow-x:auto}
+ .btn{background:var(--gris);border:none;color:var(--texte);padding:10px 20px;border-radius:8px;font-weight:600;cursor:pointer;white-space:nowrap}
+ .btn.active{background:var(--bleu);color:#fff}
+ .container{max-width:900px;margin:0 auto;padding:20px}
+ .card{background:#fff;border-radius:12px;padding:20px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+ .score{display:flex;justify-content:space-between;align-items:center;font-size:2.2em;font-weight:800;text-align:center}
+ .team{display:flex;flex-direction:column;align-items:center;gap:5px;width:35%}
+ .team-logo{width:50px;height:50px;background:var(--bleu-clair);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--bleu)}
+ .minute{background:var(--rouge);color:#fff;padding:8px 15px;border-radius:20px;font-size:0.8em;font-weight:700}
+ .minute.termine{background:var(--vert)}
+ .vs{font-size:0.5em;color:#94a3b8}
+
     table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.9em}
     th{background:var(--bleu-clair);color:var(--bleu);padding:12px;text-align:center;font-weight:700}
     td{padding:12px;text-align:center;border-bottom:1px solid #e2e8f0}
     td:first-child, th:first-child{text-align:left}
     tr:hover{background:#f8fafc}
-  .buteur{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #e2e8f0}
-  .buteur span:first-child{font-weight:600}
-  .buteur span:last-child{background:var(--bleu-clair);color:var(--bleu);padding:4px 10px;border-radius:20px;font-weight:700}
-  .poule-titre{font-size:1.2em;font-weight:800;color:var(--bleu);margin-bottom:10px}
+
+  /* NOUVEAU: BUTEURS 2 COLONNES */
+ .buteurs-wrap{display:flex;gap:20px}
+ .buteurs-col{flex:1}
+ .buteurs-col h4{margin-bottom:10px;color:var(--bleu)}
+ .but{padding:8px 0;border-bottom:1px dashed #e2e8f0;font-size:0.9em}
+
+ .poule-titre{font-size:1.2em;font-weight:800;color:var(--bleu);margin-bottom:10px}
     footer{background:#fff;text-align:center;padding:20px;margin-top:30px;color:#64748b;font-size:0.9em;border-top:1px solid #e2e8f0}
-  .loading{text-align:center;padding:40px;color:#94a3b8}
+ .loading{text-align:center;padding:40px;color:#94a3b8}
 </style>
 </head>
 <body>
@@ -64,14 +69,19 @@ const URLS = {
     buteurs: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRl8wCXh_V2Xkd3cB4eivkqUZb0a3nrw-nlPFByec7ZulCWUFHXc4xo06wLr1OEzYtEsX9SI2HF8auF/pub?gid=1383311710&single=true&output=csv"
 }
 
+// PARSER CSV PLUS SOLIDE POUR GOOGLE
+function parseCSV(txt){
+    return txt.split('\n').map(r => r.replace(/\r/g,'').split(',').map(c => c.trim().replace(/"/g,'')));
+}
+
 async function fetchCSV(url){
     const res = await fetch(url + '&t=' + Date.now());
     const txt = await res.text();
-    return txt.split('\n').map(r => r.replace(/\r/g,'').split(',').map(c => c.trim()));
+    return parseCSV(txt);
 }
 
 function calcMinute(heureDebut, statut){
-    if(statut.toLowerCase().includes("term")) return "TERMINÉ"; // CORRECTION 1
+    if(statut.toLowerCase().includes("term")) return "TERMINÉ";
     if(!heureDebut) return "00:00";
     heureDebut = heureDebut.replace('.',':');
     const [h,m] = heureDebut.split(':').map(Number);
@@ -91,15 +101,17 @@ function showTab(id,btn){
     btn.classList.add('active');
 }
 
-// LIVE
+// LIVE CORRIGÉ: BUTEURS SEPARES
 async function loadLive(){
     const [matchs, buts] = await Promise.all([fetchCSV(URLS.matchs), fetchCSV(URLS.buteursLive)]);
     const match = matchs[1];
     if(!match ||!match[0]) return document.getElementById('live').innerHTML="<div class='loading'>Aucun match</div>";
 
     const [domi, ext, statut, heure] = match;
-    const scoreDomi = buts.filter(b => b[1] && b[1].toLowerCase() === domi.toLowerCase()).length;
-    const scoreExt = buts.filter(b => b[1] && b[1].toLowerCase() === ext.toLowerCase()).length;
+    const butsDomi = buts.filter(b => b[1] && b[1].toLowerCase() === domi.toLowerCase());
+    const butsExt = buts.filter(b => b[1] && b[1].toLowerCase() === ext.toLowerCase());
+    const scoreDomi = butsDomi.length;
+    const scoreExt = butsExt.length;
     const minute = calcMinute(heure, statut);
     const isTermine = minute === "TERMINÉ";
 
@@ -111,62 +123,7 @@ async function loadLive(){
             <div class="team"><div class="team-logo">${ext.substring(0,2)}</div><div>${ext}</div><div>${scoreExt}</div></div>
         </div>
     </div>
-    <div class="card"><h3>Buteurs du match</h3>
-        ${buts.filter(b => b[1] && (b[1].toLowerCase() === domi.toLowerCase() || b[1].toLowerCase() === ext.toLowerCase())).map(b => `<div class="buteur"><span>${b[0]}</span><span>${b[1]} ${b[2]}'</span></div>`).join('') || '<div class="loading">Aucun but</div>'}
-    </div>`;
-}
-
-// CLASSEMENT COMPACT
-async function loadClassement(){
-    const [equipes, resultats] = await Promise.all([fetchCSV(URLS.equipes), fetchCSV(URLS.resultats)]);
-    let html = '';
-    const poules = [...new Set(equipes.slice(1).map(e => e[1]).filter(Boolean))];
-
-    poules.forEach(poule => {
-        const eqs = equipes.slice(1).filter(e => e[1] === poule).map(e => e[0]);
-        let tab = {};
-        eqs.forEach(eq => tab[eq] = {J:0,G:0,N:0,P:0,PTS:0});
-
-        resultats.slice(1).filter(r => r[5] === poule && r[0]).forEach(r => {
-            const [e1,e2,s1,s2] = [r[0],r[1],+r[2]||0,+r[3]||0];
-            if(tab[e1])tab[e1].J++; if(tab[e2])tab[e2].J++;
-            if(s1>s2){if(tab[e1]){tab[e1].G++;tab[e1].PTS+=3;} if(tab[e2]){tab[e2].P++;}}
-            if(s1<s2){if(tab[e2]){tab[e2].G++;tab[e2].PTS+=3;} if(tab[e1]){tab[e1].P++;}}
-            if(s1===s2){if(tab[e1]){tab[e1].N++;tab[e1].PTS+=1;} if(tab[e2]){tab[e2].N++;tab[e2].PTS+=1;}}
-        });
-
-        const classement = Object.entries(tab).sort((a,b)=>b[1].PTS-a[1].PTS);
-        // CORRECTION 2: TABLEAU COMPACT
-        html += `<div class="card"><div class="poule-titre">POULE ${poule}</div><table><tr><th>#</th><th>Club</th><th>J</th><th>G</th><th>N</th><th>P</th><th>PTS</th></tr>`;
-        classement.forEach(([eq,s],i)=> html += `<tr><td>${i+1}</td><td><b>${eq}</b></td><td>${s.J}</td><td>${s.G}</td><td>${s.N}</td><td>${s.P}</td><td><b>${s.PTS}</b></td></tr>`);
-        html += '</table></div>';
-    });
-    document.getElementById('classement').innerHTML = html || "<div class='loading'>Aucune donnée</div>";
-}
-
-// PROGRAMME
-async function loadProgramme(){
-    const data = await fetchCSV(URLS.programme);
-    let html = '<div class="card"><h3>PROGRAMME DES MATCHS</h3><table><tr><th>Date</th><th>Heure</th><th>Match</th><th>Poule</th></tr>';
-    data.slice(1).filter(r=>r[0]).forEach(r => html += `<tr><td>${r[2]}</td><td>${r[3]}</td><td><b>${r[0]}</b> vs <b>${r[1]}</b></td><td>${r[4]}</td></tr>`);
-    html += '</table></div>';
-    document.getElementById('programme').innerHTML = html;
-}
-
-// BUTEURS
-async function loadButeurs(){
-    const data = await fetchCSV(URLS.buteurs);
-    const count = {};
-    data.slice(1).forEach(r => { if(r[0]) count[r[0]] = (count[r[0]]||0)+1; });
-    const top = Object.entries(count).sort((a,b)=>b[1]-a[1]);
-    let html = '<div class="card"><h3>CLASSEMENT BUTEURS</h3>';
-    html += top.length? top.map(([nom,buts],i) => `<div class="buteur"><span>${i+1}. ${nom}</span><span>${buts} buts</span></div>`).join('') : '<div class="loading">Aucun buteur</div>';
-    html += '</div>';
-    document.getElementById('buteurs').innerHTML = html;
-}
-
-loadLive(); loadClassement(); loadProgramme(); loadButeurs();
-setInterval(()=>{loadLive(); loadClassement(); loadProgramme(); loadButeurs();},10000);
-</script>
-</body>
-</html>
+    <div class="card">
+        <h3>Buteurs du match</h3>
+        <div class="buteurs-wrap">
+            <div class="buteurs-col">
